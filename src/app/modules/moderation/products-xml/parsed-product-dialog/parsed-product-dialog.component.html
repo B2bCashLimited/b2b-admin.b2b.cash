@@ -1,0 +1,67 @@
+<div class="dialog-container">
+  <h3 class="mt-0">Сырой парсинг продуктов</h3>
+  <div class="mb-3 b-search-wrap">
+    <select class="col-3 form-control" [(ngModel)]="status" (change)="onStatusChange()" placeholder="Статус">
+      <option value="">Все</option>
+      <option [value]="0">Не найдены обязательные поля</option>
+      <option [value]="1">Категория найдена, но не распознана</option>
+      <option [value]="2">Найдено более одной подходящий категории</option>
+      <option [value]="3">Характеристики не соответствуют категории</option>
+      <option [value]="4">Категория найдена неточным соответствием</option>
+      <option [value]="5">Категория найдена точным соответствием</option>
+      <option [value]="6">Все поля распарсились корректно</option>
+    </select>
+  </div>
+  <div class="mb-4 b-accordion-wrap">
+    <div class="b-title-accordion">
+      <div class="coll-1">#</div>
+      <div class="coll-2">Исходный продукт</div>
+      <div class="coll-3">Продукт спарсился</div>
+      <div class="coll-4">Дата</div>
+      <div class="coll-5 flex-grow-1">Статус</div>
+    </div>
+    <div class="b-inner">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let item of dataSource;">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="align-items-center">
+              <div class="coll-1">{{item.id}}</div>
+              <div class="coll-2">{{item.source?.name}}</div>
+              <div class="coll-3">{{item.product?.nameRu}}</div>
+              <div class="coll-4">{{item.dateCreated.date | date: 'dd.MM.yyyy HH:mm'}}</div>
+              <div class="coll-5 flex-grow-1">
+                <span class="d-flex align-items-center"><i [class]="item.statusObject?.icon"></i>{{item.statusObject?.text}}</span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="d-flex justify-content-between">
+            <table class="coll b-accordion-table">
+              <tr *ngFor="let row of dataTableSource(item.source)">
+                <td>{{row.prop}}</td>
+                <td style="word-break: break-all">{{row.value}}</td>
+              </tr>
+            </table>
+
+            <table class="coll b-accordion-table">
+              <tr *ngFor="let row of dataTableSource(item.product)">
+                <td>{{row.prop}}</td>
+                <td style="word-break: break-all">{{row.value}}</td>
+              </tr>
+            </table>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <mat-paginator [length]="pager.length"
+                   [pageSize]="pager.pageSize"
+                   [pageIndex]="pager.pageIndex"
+                   [showFirstLastButtons]="true"
+                   (page)="onPageChanged($event)"></mat-paginator>
+  </div>
+
+  <div class="d-flex align-items-center justify-content-end">
+    <button class="btn-border" mat-dialog-close mat-button color="primary">Отмена</button>
+    <button class="mr-3" (click)="parsingProducts()" mat-raised-button color="primary">Сырой парсинг продуктов</button>
+    <button (click)="onSubmit()" mat-raised-button color="primary">Экспортировать продукты</button>
+  </div>
+</div>

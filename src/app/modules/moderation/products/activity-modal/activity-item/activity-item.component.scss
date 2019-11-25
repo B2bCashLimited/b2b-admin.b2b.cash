@@ -1,0 +1,61 @@
+@mixin rem($size) {
+    font-size: $size/16*1rem;
+}  
+
+:host{
+    background-color: #eee;
+    padding: 15px;
+    display: block;
+}
+
+img{
+    width: 150px;
+    height: 150px;
+}
+
+.ic-text{
+    color: #828282;
+}
+
+.checked {
+    i {
+      color: #27AE60!important;
+    }
+}
+
+.btn-fill{
+    background: #FD6F22;
+    box-shadow: none !important;
+    outline: none !important;
+    height: 40px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    @include rem(14);
+    color: #FFFFFF;
+  
+    ::ng-deep.mat-button-wrapper{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: normal;
+    }
+  
+    i{
+      color: #ffffff;
+      margin-left: 4px;
+      @include rem(18);
+    }
+}
+
+.color-gray{
+    color: #9B9B9B;
+}
+
+.activity-info{
+    min-width: 300px;
+    max-width: 300px;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 1 auto;
+}

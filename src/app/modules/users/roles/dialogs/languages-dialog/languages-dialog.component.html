@@ -1,0 +1,37 @@
+<div class="d-flex flex-column w-100" [formGroup]="formGroup">
+  <h4 class="m-0 mb-3">Выберите виды деятельности и страны</h4>
+  <div class="d-flex align-items-center" formGroupName="languages">
+    <mat-checkbox style="margin-right: 16px;" formControlName="En">
+      <i style="margin-left: 8px;" class="flag flag-us"></i></mat-checkbox>
+    <mat-checkbox style="margin-right: 16px;" formControlName="Ru">
+      <i style="margin-left: 8px;" class="flag flag-ru"></i></mat-checkbox>
+    <mat-checkbox formControlName="Cn">
+      <i style="margin-left: 8px;" class="flag flag-cn"></i></mat-checkbox>
+  </div>
+  <div formArrayName="activityNames"
+       *ngFor="let item of formGroup.get('activityNames')['controls']; index as idx">
+    <div [formGroupName]="idx">
+      <mat-checkbox formControlName="selected">{{item.get('name').value}}</mat-checkbox>
+    </div>
+  </div>
+  <div>
+    <div>
+      <b2b-working-schedule [scheduleData]="workingSchedule"
+                            [adminPositionId]="adminPositionId"
+                            (createdWorkingSchedule)="onCreatedWorkingScheduleChanged($event)"></b2b-working-schedule>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end mt-3">
+    <button
+      class="mr-3"
+      mat-raised-button color="primary"
+      (click)="onCloseClick(false)">
+      Отмена
+    </button>
+    <button mat-raised-button color="primary"
+            (click)="onCloseClick(true)">
+      Добавить
+    </button>
+  </div>
+</div>

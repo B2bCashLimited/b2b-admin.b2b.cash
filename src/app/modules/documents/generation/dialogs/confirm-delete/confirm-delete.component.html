@@ -1,0 +1,19 @@
+<div class="dialog-container">
+  <h4 class="mt-0">Удаление</h4>
+
+  <div class="d-flex flex-grow-1 mb-3">
+    Вы действительно хотите удалить {{_dialogData.title}}?
+  </div>
+
+  <div class="d-flex flex-grow-1 justify-content-end">
+    <button class="mr-2"
+            mat-raised-button
+            color="primary"
+            (click)="onCloseClick()">Закрыть
+    </button>
+    <button mat-raised-button
+            color="warn"
+            (click)="onCloseClick(true)">Удалить
+    </button>
+  </div>
+</div>

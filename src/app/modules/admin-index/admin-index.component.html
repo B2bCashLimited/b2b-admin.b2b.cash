@@ -1,0 +1,62 @@
+<mat-toolbar style="display: flex;flex-grow: 1;justify-content: space-between;" color="primary">
+  <button mat-icon-button (click)="drawer.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <button mat-raised-button (click)="onSingOutClick()">
+    <mat-icon>exit_to_app</mat-icon>
+    Выйти
+  </button>
+</mat-toolbar>
+<mat-sidenav-container
+  class="drawer-container"
+  (backdropClick)="closeDrawer()">
+  <mat-sidenav
+    class="drawer-container__menu" #drawer
+    (keydown.escape)="closeDrawer()" disableClose
+    [attr.role]="isHandset ? 'dialog' : 'navigation'"
+    [mode]="isHandset ? 'over' : 'side'"
+    [opened]="!isHandset">
+    <mat-nav-list>
+      <ng-template ngFor let-item [ngForOf]="menuItems">
+        <ng-template [ngIf]="!item.children">
+          <a mat-list-item
+            [routerLink]="item.url"
+            routerLinkActive="router-link-active" 
+            *ngxPermissionsOnly="item.permissions">
+            <mat-icon
+              style="margin-right: 10px;"
+              *ngIf="item.icon">{{item.icon}}
+            </mat-icon>
+            {{item.label}}
+          </a>
+        </ng-template>
+        <ng-template [ngIf]="item.children">
+          <div style="display: flex;flex-grow: 1;flex-direction: column;" *ngxPermissionsOnly="item.permissions">
+            <div style="display: flex;flex-grow: 1; align-items: center;padding: 0 16px;cursor: pointer;height: 48px;">
+              <mat-icon style="margin-right: 10px;">{{item.icon}}</mat-icon>
+              {{item.label}}
+            </div>
+            <ng-template ngFor let-child [ngForOf]="item.children">
+              <a mat-list-item
+                *ngxPermissionsOnly="child.permissions"
+                [routerLink]="child.url"
+                routerLinkActive="router-link-active">
+                <mat-icon
+                  style="margin-right: 10px;"
+                  *ngIf="child.icon">{{child.icon}}
+                </mat-icon>
+                {{child.label}}
+              </a>
+            </ng-template>
+          </div>
+        </ng-template>
+
+      </ng-template>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div style="padding: 16px;">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

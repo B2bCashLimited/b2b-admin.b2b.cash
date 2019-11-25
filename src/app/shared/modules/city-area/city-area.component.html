@@ -1,0 +1,36 @@
+<div class="city-area" (click)="clickInside($event)">
+    <div class="city-area__input-container">
+      <mat-form-field floatPlaceholder="never">
+        <input matInput
+               [placeholder]="_placeholder"
+               aria-label="State"
+               [formControl]="locationsCtrl"
+               autocomplete="off"
+               required>
+      </mat-form-field>
+    </div>
+    <div class="city-area__dropdown" [ngClass]="{'active': showDropdown}">
+      <div class="city-area__input-container d-flex justify-content-between align-items-center">
+        <mat-form-field floatPlaceholder="never">
+          <input matInput
+                 aria-label="State"
+                 placeholder="{{_placeholderArea}}"
+                 [formControl]="areaCtrl">
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="loading">
+        <mat-spinner diameter="15"></mat-spinner>
+      </div>
+
+      <div *ngIf="locations.length === 0 && !loading">Ничего не найдено</div>
+
+      <mat-list *ngIf="!loading" class="city-area__list">
+        <mat-list-item *ngFor="let location of locations; let i = index"
+                       class="city-area__list-item"
+                       (click)="onSelect($event, location, i)">
+          {{location}}
+        </mat-list-item>
+      </mat-list>
+    </div>
+</div>

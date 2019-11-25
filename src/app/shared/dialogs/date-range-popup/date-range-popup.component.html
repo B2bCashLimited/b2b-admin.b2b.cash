@@ -1,0 +1,20 @@
+<h3 class="mb-10 text-center">Выберите период</h3>
+<div class="row">
+  <div class="col-12">
+    <button class="btn btn-danger btn-sm mb-5" (click)="clearCalendar()">Сбросить</button>
+    <b2b-ctm-calendar class="mx-auto mb-5"
+      [clearResult]="resetCalendar"
+      [calendarType]="'interval'"
+      [periods]="selectedPeriods"
+      [status]="status"
+      [minDate]="minDate"
+      [maxDate]="maxDate"
+      (setStatus)="setStatus($event)"
+      (setMinDate)="setMinDate($event)">
+    </b2b-ctm-calendar>
+  </div>
+</div>
+<div class="d-flex align-items-center justify-content-around">
+  <button (click)="confirm(true)" mat-raised-button color="primary" [disabled]="selectedPeriods[0].dates.length < 1">Выбрать</button>
+  <button (click)="confirm()" mat-raised-button color="warn">Отменить</button>
+</div>

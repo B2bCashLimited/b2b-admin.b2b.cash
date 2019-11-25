@@ -1,0 +1,95 @@
+<div style="display: flex;flex-grow: 1;flex-direction: column;margin-top: 16px;">
+
+  <div style="display: flex;flex-grow: 1;" [formGroup]="formGroup">
+    <ng-select
+      style="margin-right: 16px;width: 250px;"
+      [items]="USERS_TYPES[0]"
+      bindLabel="type"
+      formControlName="userType"
+      placeholder="Тип пользователя">
+    </ng-select>
+
+    <ng-select
+      style="width: 250px;"
+      [items]="USERS_TYPES[1]"
+      bindLabel="type"
+      formControlName="clientType"
+      placeholder="Тип клиента">
+    </ng-select>
+  </div>
+
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="initiator">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Инициатор</th>
+      <td mat-cell *matCellDef="let element">
+        <div style="display:flex;flex-direction: column;">
+          <span>{{element.user.firstName}}</span>
+          <span>{{element.user.email}}</span>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="date">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Дата</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.dateCreated | date: 'dd.MM.yyyy | HH:mm' }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="clientType">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Тип клиента</th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.clientType">{{ element.clientType === 1 ? 'Покупатель' : 'Продавец'}}</span>
+        <div class="text-center w-100" *ngIf="!element.clientType">-</div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="group">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Группа</th>
+      <td mat-cell *matCellDef="let element">{{element.sendGroup || '-'}}</td>
+    </ng-container>
+    <ng-container matColumnDef="sender">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Отправитель</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="d-flex flex-column">
+          <span>{{element.senderEmail.email}}</span>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="template">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Шаблон</th>
+      <td mat-cell *matCellDef="let element">{{element.htmlTemplate.name}}</td>
+    </ng-container>
+    <ng-container matColumnDef="subject">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Тема</th>
+      <td mat-cell *matCellDef="let element">{{element.subject}}</td>
+    </ng-container>
+    <ng-container matColumnDef="statistics">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Статистика</th>
+      <td mat-cell *matCellDef="let element">
+        <div style="display: flex;" *ngIf="(element.statistics | async) as statistics">
+          <span matTooltip="Исходное количество" matTooltipPosition="above">{{statistics.countKickboxEmails}}/</span>
+          <span matTooltip="Подписались" matTooltipPosition="above">{{statistics.countRegisteredUsers}}/</span>
+          <span matTooltip="Отписались" matTooltipPosition="above">{{statistics.countUnsubscribeEmails}}/</span>
+          <span matTooltip="Отправлено" matTooltipPosition="above">{{statistics.countTotalEmails}}/</span>
+          <span matTooltip="Доставлено" matTooltipPosition="above">{{statistics.countMailgunSentEmails}}</span>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Действия</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="warn" (click)="onDeleteSentMailClick(element.id)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator
+    [length]="length"
+    [pageSize]="pageSize"
+    [hidePageSize]="true"
+    (page)="getPage($event)">
+  </mat-paginator>
+</div>

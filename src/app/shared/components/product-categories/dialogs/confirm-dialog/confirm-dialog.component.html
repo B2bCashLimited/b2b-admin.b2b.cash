@@ -1,0 +1,16 @@
+<div class="dialog-container">
+  <h4 style="margin-top: 0;">Удаление категории "{{categoryName}}"</h4>
+  <div style="margin-bottom: 16px;">
+    Вы действительно хотите удалить категорию?
+  </div>
+
+  <div style="display: flex;flex-grow: 1;justify-content: flex-end;">
+    <button style="margin-right: 10px;"
+            mat-raised-button color="primary"
+            (click)="onCloseClick(false)">Закрыть
+    </button>
+    <button mat-raised-button color="warn"
+            (click)="onCloseClick(true)">Удалить
+    </button>
+  </div>
+</div>

@@ -1,0 +1,577 @@
+<div class="dialog-container">
+  <h3 style="margin-top: 0;">Конфигурация СЕО для {{data.category.nameRu}}
+    (<span class="clipboard"
+           ngxClipboard
+           [cbContent]="'<pr>#n#</pr>'"
+           matTooltip="Скопировать в буфер обмена">#n#</span>)</h3>
+
+  <mat-form-field>
+    <mat-label>Select marketplace</mat-label>
+    <select matNativeControl
+            required
+            [formControl]="marketPlaceCtrl">
+      <option label="--select something --"></option>
+      <option [value]="1">Маркет для Физ лиц</option>
+      <option [value]="2">Маркет для Юр лиц</option>
+      <option [value]="3">Оформить заказ в клик</option>
+      <option [value]="4">Предзаказ из Китая</option>
+      <option [value]="5">Информация о товаре</option>
+    </select>
+  </mat-form-field>
+
+  <mat-expansion-panel #matExpansionPanel
+                       (opened)="togglePropertiesForm()"
+                       (closed)="togglePropertiesForm()"
+                       *ngIf="marketPlaceCtrl.value"
+                       style="background-color: moccasin">
+    <mat-expansion-panel-header style="background-color: #FF8F00"
+                                class="text-center">
+      <mat-panel-title>
+        {{!showPropertiesForm ? 'Задать характеристики' : 'Скрыть характеристики'}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div *ngIf="showPropertiesForm"
+         [formGroup]="propertiesFormGroup">
+      <div class="row my-4 justify-content-center">
+        <div class="col-6">
+          <mat-slide-toggle
+            [checked]="flag"
+            (change)="flexChange()">
+          </mat-slide-toggle>
+          <span *ngIf="flag">Любые значения невыбранных характеристик</span>
+          <span *ngIf="!flag">Точное совпадение выбранных характеристик</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4"
+             formGroupName="country">
+          <mat-slide-toggle
+            name="country"
+            [disabled]="flag"
+            (change)="togglePropEnable(propertiesFormGroup.controls.country['controls'].propValue)">
+          </mat-slide-toggle>
+          Страна(<span class="clipboard"
+                       ngxClipboard
+                       [cbContent]="'<pr>#c#</pr>'"
+                       matTooltip="Скопировать в буфер обмена">#c#</span>):
+          <ng-select
+            class="w-100"
+            [items]="countries"
+            formControlName="propValue"
+            [virtualScroll]="true"
+            clearAllText="Очистить"
+            notFoundText="Не найдено"
+            typeToSearchText="Введите для поиска"
+            [selectOnTab]="true"
+            bindLabel="nameRu"
+          ></ng-select>
+          <mat-checkbox formControlName="allValues">
+            Все значения
+          </mat-checkbox>
+        </div>
+        <div class="col-4"
+             formGroupName="city"
+             *ngIf="marketPlaceCtrl.value != e_MARKET_TYPES.TYPE_PRODUCT_INFO">
+          <mat-slide-toggle
+            name="city"
+            [disabled]="flag"
+            (change)="togglePropEnable(propertiesFormGroup.controls.city['controls'].propValue)">
+          </mat-slide-toggle>
+          Город(<span class="clipboard"
+                      ngxClipboard
+                      [cbContent]="'<pr>#city#</pr>'"
+                      matTooltip="Скопировать в буфер обмена">#city#</span>):
+          <ng-select
+            class="w-100"
+            [items]="cities"
+            formControlName="propValue"
+            [bindLabel]="'nameRu'"
+            [virtualScroll]="true"
+            clearAllText="Очистить"
+            notFoundText="Не найдено"
+            typeToSearchText="Введите для поиска"
+            [selectOnTab]="true"
+            [typeahead]="deliveryAddressCityTypeahead$"
+          >
+            <ng-template ng-label-tmp
+                         let-item="item">
+              <div *ngIf="item">{{item['nameRu']}}, {{item.region?.country['nameRu']}}</div>
+            </ng-template>
+            <ng-template ng-option-tmp
+                         let-item="item">
+              <div>{{item['nameRu']}}, {{item.region['nameRu']}}, {{item.region?.country['nameRu']}}</div>
+            </ng-template>
+          </ng-select>
+          <mat-checkbox formControlName="allValues">
+            Все значения
+          </mat-checkbox>
+        </div>
+        <div class="col-4"
+             formGroupName="manufacturer">
+          <mat-slide-toggle
+            name="manufacturer"
+            [disabled]="flag"
+            (change)="togglePropEnable(propertiesFormGroup.controls.manufacturer['controls'].propValue)">
+          </mat-slide-toggle>
+          Производитель(<span class="clipboard"
+                              ngxClipboard
+                              [cbContent]="'<pr>#m#</pr>'"
+                              matTooltip="Скопировать в буфер обмена">#m#</span>):
+          <ng-select
+            class="w-100"
+            [items]="manufacturers"
+            formControlName="propValue"
+            [virtualScroll]="true"
+            clearAllText="Очистить"
+            notFoundText="Не найдено"
+            typeToSearchText="Введите для поиска"
+            [selectOnTab]="true"
+            bindLabel="nameRu"
+          ></ng-select>
+
+          <mat-checkbox formControlName="allValues">
+            Все значения
+          </mat-checkbox>
+        </div>
+
+        <div class="col-4 offset-8" formGroupName="model">
+          <mat-slide-toggle
+            name="model"
+            [disabled]="flag"
+            (change)="togglePropEnable(propertiesFormGroup.controls.model['controls'].propValue)">
+          </mat-slide-toggle>
+          Модель(<span class="clipboard"
+                              ngxClipboard
+                              [cbContent]="'<pr>#model#</pr>'"
+                              matTooltip="Скопировать в буфер обмена">#model#</span>):
+          <ng-select
+            class="w-100"
+            [items]="models$ | async"
+            formControlName="propValue"
+            [virtualScroll]="true"
+            clearAllText="Очистить"
+            notFoundText="Не найдено"
+            typeToSearchText="Введите для поиска"
+            [selectOnTab]="true"
+            bindLabel="value">
+          </ng-select>
+          <mat-checkbox formControlName="allValues">Все значения</mat-checkbox>
+        </div>
+
+        <div class="col-4"
+             *ngFor="let prop of properties; let i = index"
+             formGroupName="{{prop.id}}">
+          <mat-slide-toggle
+            [name]="prop.id"
+            [disabled]="flag"
+            (change)="togglePropEnable(propertiesFormGroup.controls[prop.id].controls.propValue)">
+          </mat-slide-toggle>
+          {{prop.nameRu}}({{prop.id}})(<span class="clipboard"
+                                             ngxClipboard
+                                             [cbContent]="'<pr>#p' + prop.id + '#</pr>'"
+                                             matTooltip="Скопировать в буфер обмена">#p{{prop.id}}#</span>):
+
+          <div [ngSwitch]="prop.valueType">
+            <div *ngSwitchCase="1">
+              <mat-form-field>
+                <input matInput
+                       placeholder="string type"
+                       formControlName="propValue">
+              </mat-form-field>
+            </div>
+            <div *ngSwitchCase="2">
+              <mat-form-field>
+                <input matInput
+                       placeholder="number type"
+                       type="number"
+                       formControlName="propValue">
+              </mat-form-field>
+            </div>
+            <div *ngSwitchCase="3">
+              <ng-select
+                class="w-100"
+                formControlName="propValue"
+                [items]="prop['possibleValues' + formLang]"
+                [closeOnSelect]="true"
+                [hideSelected]="true"
+                [virtualScroll]="true"
+                bindValue="value"
+                bindLabel="display"
+                placeholder="select type"
+              ></ng-select>
+            </div>
+          </div>
+          <mat-checkbox formControlName="allValues">
+            Все значения
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+
+  <div class="row justify-content-center"
+       *ngIf="marketPlaceCtrl.value">
+    <div class="col-7 pb-3"
+         style="background-color: gainsboro">
+      <h6>Выбранные характеристики:</h6>
+      <div class="row"
+           *ngIf="!getChosenProps().length && !flag">
+        <div class="col-12">Ничего не выбрано</div>
+      </div>
+      <div class="row"
+           *ngIf="flag">
+        <div class="col-12">Любые значения любых характеристик</div>
+      </div>
+      <ng-container *ngIf="getChosenProps()">
+        <div class="row"
+             *ngFor="let chosenProp of getChosenProps()">
+          <div class="col-6">
+            {{chosenProp && chosenProp['name']}}:
+          </div>
+          <div class="col-6">
+            {{chosenProp && chosenProp['value']}}
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="wrap-spinner"
+       *ngIf="pending">
+    <mat-spinner></mat-spinner>
+  </div>
+  <h6 *ngIf="marketPlaceCtrl.value == e_MARKET_TYPES.TYPE_PRODUCT_INFO"
+      class="text-right">Название_товара(<span class="clipboard"
+                                               ngxClipboard
+                                               [cbContent]="'<pr>#prod#</pr>'"
+                                               matTooltip="Скопировать в буфер обмена">#prod#</span>)</h6>
+  <mat-tab-group (selectedTabChange)="changeLang($event)"
+                 *ngIf="!pending && marketPlaceCtrl.value"
+                 [formGroup]="seoFormGroup">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span class="flags f-ru"></span>
+        Ru
+      </ng-template>
+      <div class="demo-tab-content">
+        <div class="row">
+          <div class="col-12">
+            <h1 mat-dialog-title>Header(<span class="clipboard"
+                                              ngxClipboard
+                                              [cbContent]="'<pr>#h1#</pr>'"
+                                              matTooltip="Скопировать в буфер обмена">#h1#</span>)</h1>
+            <div class="d-flex"
+                 formGroupName="header">
+              <mat-form-field class="w-100">
+                <input matInput
+                       formControlName="nameRu"
+                       placeholder="Заголовок Ru">
+                <mat-hint
+                  *ngIf="seoFormGroup.value.header.nameRu">{{decodeMeta(seoFormGroup.value.header.nameRu)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <h2 mat-dialog-title>Title Tag(<span class="clipboard"
+                                                 ngxClipboard
+                                                 [cbContent]="'<pr>#title#</pr>'"
+                                                 matTooltip="Скопировать в буфер обмена">#title#</span>)</h2>
+            <div class="d-flex"
+                 formGroupName="title">
+              <mat-form-field class="w-100">
+                <input matInput
+                       formControlName="nameRu"
+                       placeholder="title Ru">
+                <mat-hint
+                  *ngIf="seoFormGroup.value.title.nameRu">{{decodeMeta(seoFormGroup.value.title.nameRu)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-6">
+            <h2 mat-dialog-title>Keywords Meta Tag</h2>
+            <div class="d-flex"
+                 formGroupName="keywords">
+              <mat-form-field class="w-100">
+                <input matInput
+                       formControlName="nameRu"
+                       placeholder="keywords Ru">
+                <mat-hint
+                  *ngIf="seoFormGroup.value.keywords.nameRu">{{decodeMeta(seoFormGroup.value.keywords.nameRu)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <h2 mat-dialog-title>Description Meta Tag</h2>
+            <div class="d-flex"
+                 formGroupName="metaDesc">
+              <mat-form-field class="w-100">
+                <textarea matInput
+                          formControlName="nameRu"
+                          placeholder="Description Ru"></textarea>
+                <mat-hint
+                  *ngIf="seoFormGroup.value.metaDesc.nameRu">{{decodeMeta(seoFormGroup.value.metaDesc.nameRu)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <h2 mat-dialog-title>Текстовое описание</h2>
+            <div class="d-flex"
+                 formGroupName="description">
+              <mat-form-field class="w-100">
+                <textarea matInput
+                          formControlName="nameRu"
+                          placeholder="Text Ru"></textarea>
+                <mat-hint
+                  *ngIf="seoFormGroup.value.description.nameRu">{{decodeMeta(seoFormGroup.value.description.nameRu)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span class="flags f-en"></span>
+        En
+      </ng-template>
+      <div class="demo-tab-content">
+        <div class="row">
+          <div class="col-12">
+            <h1 mat-dialog-title>Header(<span class="clipboard"
+                                              ngxClipboard
+                                              [cbContent]="'<pr>#h1#</pr>'"
+                                              matTooltip="Скопировать в буфер обмена">#h1#</span>)</h1>
+            <div class="d-flex"
+                 formGroupName="header">
+              <mat-form-field class="w-100">
+                <input matInput
+                       formControlName="nameEn"
+                       placeholder="Заголовок En">
+                <mat-hint
+                  *ngIf="seoFormGroup.value.header.nameEn">{{decodeMeta(seoFormGroup.value.header.nameEn)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <h2 mat-dialog-title>Title Tag(<span class="clipboard"
+                                                 ngxClipboard
+                                                 [cbContent]="'<pr>#title#</pr>'"
+                                                 matTooltip="Скопировать в буфер обмена">#title#</span>)</h2>
+            <div class="d-flex"
+                 formGroupName="title">
+              <mat-form-field class="w-100">
+                <input matInput
+                       formControlName="nameEn"
+                       placeholder="title En">
+                <mat-hint
+                  *ngIf="seoFormGroup.value.title.nameEn">{{decodeMeta(seoFormGroup.value.title.nameEn)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-6">
+            <h2 mat-dialog-title>Keywords Meta Tag</h2>
+            <div class="d-flex"
+                 formGroupName="keywords">
+              <mat-form-field class="w-100">
+                <input matInput
+                       formControlName="nameEn"
+                       placeholder="keywords En">
+                <mat-hint
+                  *ngIf="seoFormGroup.value.keywords.nameEn">{{decodeMeta(seoFormGroup.value.keywords.nameEn)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <h2 mat-dialog-title>Description Meta Tag</h2>
+            <div class="d-flex"
+                 formGroupName="metaDesc">
+              <mat-form-field class="w-100">
+                <textarea matInput
+                          formControlName="nameEn"
+                          placeholder="Description En"></textarea>
+                <mat-hint
+                  *ngIf="seoFormGroup.value.metaDesc.nameEn">{{decodeMeta(seoFormGroup.value.metaDesc.nameEn)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <h2 mat-dialog-title>Текстовое описание</h2>
+            <div class="d-flex"
+                 formGroupName="description">
+              <mat-form-field class="w-100">
+                <textarea matInput
+                          formControlName="nameEn"
+                          placeholder="Text En"></textarea>
+                <mat-hint
+                  *ngIf="seoFormGroup.value.description.nameEn">{{decodeMeta(seoFormGroup.value.description.nameEn)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span class="flags f-cn"></span>
+        Cn
+      </ng-template>
+      <div class="demo-tab-content">
+        <div class="row">
+          <div class="col-12">
+            <h1 mat-dialog-title>Header(<span class="clipboard"
+                                              ngxClipboard
+                                              [cbContent]="'<pr>#h1#</pr>'"
+                                              matTooltip="Скопировать в буфер обмена">#h1#</span>)</h1>
+            <div class="d-flex"
+                 formGroupName="header">
+              <mat-form-field class="w-100">
+                <input matInput
+                       formControlName="nameCn"
+                       placeholder="Заголовок Cn">
+                <mat-hint
+                  *ngIf="seoFormGroup.value.header.nameCn">{{decodeMeta(seoFormGroup.value.header.nameCn)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <h2 mat-dialog-title>Title Tag(<span class="clipboard"
+                                                 ngxClipboard
+                                                 [cbContent]="'<pr>#title#</pr>'"
+                                                 matTooltip="Скопировать в буфер обмена">#title#</span>)</h2>
+            <div class="d-flex"
+                 formGroupName="title">
+              <mat-form-field class="w-100">
+                <input matInput
+                       formControlName="nameCn"
+                       placeholder="title Cn">
+                <mat-hint
+                  *ngIf="seoFormGroup.value.title.nameCn">{{decodeMeta(seoFormGroup.value.title.nameCn)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-6">
+            <h2 mat-dialog-title>Keywords Meta Tag</h2>
+            <div class="d-flex"
+                 formGroupName="keywords">
+              <mat-form-field class="w-100">
+                <input matInput
+                       formControlName="nameCn"
+                       placeholder="keywords Cn">
+                <mat-hint
+                  *ngIf="seoFormGroup.value.keywords.nameCn">{{decodeMeta(seoFormGroup.value.keywords.nameCn)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <h2 mat-dialog-title>Description Meta Tag</h2>
+            <div class="d-flex"
+                 formGroupName="metaDesc">
+              <mat-form-field class="w-100">
+                <textarea matInput
+                          formControlName="nameCn"
+                          placeholder="Description Cn"></textarea>
+                <mat-hint
+                  *ngIf="seoFormGroup.value.metaDesc.nameCn">{{decodeMeta(seoFormGroup.value.metaDesc.nameCn)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <h2 mat-dialog-title>Текстовое описание</h2>
+            <div class="d-flex"
+                 formGroupName="description">
+              <mat-form-field class="w-100">
+                <textarea matInput
+                          formControlName="nameCn"
+                          placeholder="Text Cn"></textarea>
+                <mat-hint
+                  *ngIf="seoFormGroup.value.description.nameCn">{{decodeMeta(seoFormGroup.value.description.nameCn)}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab #recordsTab>
+      <ng-template mat-tab-label>
+        Записи в наличии
+      </ng-template>
+      <div class="demo-tab-content">
+        <div *ngIf="!createdRecords.length">Записи отсутствуют</div>
+        <div *ngIf="createdRecords.length">
+          <div class="row mb-3">
+            <div class="col-1 text-center font-weight-bold">id</div>
+            <div class="col-10 text-center font-weight-bold">filters</div>
+            <div class="col-1 text-center font-weight-bold">expand</div>
+          </div>
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let record of createdRecords">
+              <mat-expansion-panel-header>
+                <div class="row w-100">
+                  <div class="col-1">{{record.id}}</div>
+                  <div class="col-11"
+                       [title]="record.data">{{record.props}}</div>
+                </div>
+              </mat-expansion-panel-header>
+              <div class="row data-window justify-content-center">
+                <div class="col-12">
+                  <div class="row"
+                       *ngFor="let row of recordsData; let even = even;"
+                       [ngClass]="{grey: even}">
+                    <div class="col-2">
+                      {{row.name}}:
+                    </div>
+                    <div class="col-10">
+                      {{record[row.value]}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <mat-action-row>
+                <button mat-raised-button
+                        (click)="setDataToForm(record)"
+                        color="primary">Применить<i class="material-icons">edit</i></button>
+                <button mat-raised-button
+                        (click)="deleteRecord(record)"
+                        color="warn">удалить<i class="material-icons">delete_forever</i></button>
+              </mat-action-row>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <div class="d-flex align-items-center justify-content-between">
+    <button mat-dialog-close
+            mat-button
+            color="primary">Отмена
+    </button>
+    <button [disabled]="!(seoFormGroup && seoFormGroup.valid)"
+            (click)="onSubmit()"
+            mat-raised-button
+            color="primary">Сохранить
+    </button>
+  </div>
+</div>
+

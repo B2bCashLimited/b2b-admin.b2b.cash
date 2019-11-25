@@ -1,0 +1,60 @@
+<div class="b-inner">
+  <div class="wrap-dictionary" [formGroup]="formGroup">
+    <div [formGroupName]="item.ctrlName"
+      *ngFor="let item of dataSource"
+      class="d-flex align-items-start mb-3 ">
+
+      <div class="col-auto pl-0 d-flex align-items-center">
+        <select class="form-control width-3" formControlName="field">
+          <option *ngFor="let fld of fields" [value]="fld">{{fld}}</option>
+        </select>
+        <div class="b-arrow"><div class="b-arrow--line"></div></div>
+      </div>
+      <div class="col">
+        <div class="row mb-3">
+          <div *ngIf="formGroup.get(item.ctrlName).value?.type != 3" class="col-auto">
+            <div class="category-btn width-1" (click)="selectCategory(item)">{{item.category && item.category.nameRu || 'Выберите Категорию'}}</div>
+          </div>
+          <div *ngIf="formGroup.get(item.ctrlName).value?.type == 3" class="col-auto">
+            <div class="b-input width-1">
+              <input formControlName="value" placeholder="Инпут">
+            </div>
+          </div>
+          <div *ngIf="formGroup.get(item.ctrlName).value?.type == 1 || formGroup.get(item.ctrlName).value?.type == 4" class="col-auto">
+            <select class="form-control width-1" formControlName="prop" (change)="propChanges(item)">
+              <option *ngFor="let prop of filteredCategoryProperties(item.categoryProperties, formGroup.get(item.ctrlName).value?.type == 4)" [value]="prop.id">{{prop.nameRu}}</option>
+            </select>
+          </div>
+          <div *ngIf="formGroup.get(item.ctrlName).value?.type == 4" class="col-auto">
+            <select class="form-control width-2" formControlName="posValue" (change)="posValueChanges(item)">
+              <option *ngFor="let pv of filteredPossibleValues(item).possibleValuesRu" [value]="pv.value">{{pv.value}}</option>
+            </select>
+          </div>
+          <div class="col-auto pl-0">
+            <div class="btn-delete">
+              <button mat-icon-button (click)="deleteRow(item)" color="warn">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="wrap-radio-button col-auto">
+            <mat-radio-group formControlName="type" (change)="onRadioChange($event.value, item)">
+              <mat-radio-button class="mr-3" [value]="1" color="primary">Характеристика</mat-radio-button>
+              <mat-radio-button class="mr-3" [value]="2" color="primary">Категория</mat-radio-button>
+              <mat-radio-button class="mr-3" [value]="3" color="primary">Поле</mat-radio-button>
+              <mat-radio-button [value]="4" color="primary">Значения хар-ки</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center">
+    <button class="p-0" (click)="addRow()" mat-button color="primary">
+      <i class="bb bb-plus mr-2"></i> Добавить поле
+    </button>
+  </div>
+</div>

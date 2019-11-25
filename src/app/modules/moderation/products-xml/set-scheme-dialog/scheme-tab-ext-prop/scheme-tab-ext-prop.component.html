@@ -1,0 +1,52 @@
+<div class="b-inner">
+  <div class="d-flex align-items-center  mb-4">
+    <div class="coll-1">
+      <div class="text fw-500">У нас в базе</div>
+    </div>
+    <div class="coll-2">
+      <div class="text fw-500">В загруженном xml</div>
+    </div>
+  </div>
+
+  <div [formGroup]="formGroup">
+    <div [formGroupName]="item.ctrlName"
+      *ngFor="let item of dataSource"
+      class="d-flex align-items-center mb-3">
+      <div class="coll-1">
+        <select class="form-control" formControlName="prop">
+          <option *ngFor="let prop of categoryProperties" [value]="prop.id">{{prop.nameRu}}</option>
+        </select>
+      </div>
+      <div class="coll-2">
+        <div *ngIf="formGroup.get(item.ctrlName).value?.type == 1" class="b-input">
+          <input formControlName="path" placeholder="путь">
+        </div>
+        <div *ngIf="formGroup.get(item.ctrlName).value?.type == 2" class="b-input">
+          <input formControlName="value" placeholder="Точное значение">
+        </div>
+        <div *ngIf="formGroup.get(item.ctrlName).value?.type == 3" class="b-input">
+          <input formControlName="path" placeholder="путь">
+          <input formControlName="regex" placeholder="[a-zA-Z0-9]">
+        </div>
+      </div>
+      <div class="wrap-radio-button mr-2">
+        <mat-radio-group formControlName="type">
+          <mat-radio-button class="mr-3" [value]="1" color="primary">Путь</mat-radio-button>
+          <mat-radio-button class="mr-3" [value]="2" color="primary">Точное <br/> значение</mat-radio-button>
+          <mat-radio-button [value]="3" color="primary">Путь + регулярное <br/> выражение </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div *ngIf="!item.required" class="btn-delete">
+        <button mat-icon-button (click)="deleteRow(item)" color="warn">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    </div>
+
+  </div>
+  <div class="d-flex align-items-center">
+    <button class="p-0" (click)="addRow()" mat-button color="primary">
+      <i class="bb bb-plus mr-2"></i> Добавить характеристику
+    </button>
+  </div>
+</div>

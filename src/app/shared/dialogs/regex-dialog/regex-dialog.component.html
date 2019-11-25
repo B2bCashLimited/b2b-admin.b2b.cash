@@ -1,0 +1,100 @@
+<div mat-dialog-content>
+  <div class="d-flex">
+    <div class="coll-1">
+      <div class="b-regex-header">
+        Задание регулярного выражения
+      </div>
+
+      <table class="b-regex-preview-table">
+        <tr>
+          <td>
+            <div class="b-regex-input-text">Пример строки в файле</div>
+          </td>
+          <td>
+            <div class="b-regex-input d-flex">
+              <input placeholder="Введите значение характеристики из файла" [(ngModel)]="regexStringExample" (ngModelChange)="changePreview()">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="b-regex-input-text">Получим на выходе</div>
+          </td>
+          <td>
+            <div class="b-regex-input d-flex">
+              <div class="b-regex-example-text" [innerHTML]="regexApplyExample"></div>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <div class="b-regex-rules-wrap">
+        <div *ngFor="let rule of rules; let i = index" class="b-regex-rule-wrap" [ngClass]="getRuleColorForWrap(i, rule.active)">
+          <div class="d-flex b-regex-rule-header-wrap">
+            <div class="b-regex-rule-number">Правило №{{ i + 1 }}</div>
+            <div class="b-regex-rule-dot" [ngClass]="getRuleColor(i)"></div>
+            <div class="d-flex">
+              <div class="b-regex-rule-text">Начать с</div>
+              <div class="b-regex-input">
+                <select class="form-control" [(ngModel)]="rule.begining" (change)="changePreview()" [compareWith]="compareFn">
+                  <option *ngFor="let begining of ruleBeginings" [ngValue]="begining">{{ begining.title }}</option>
+                </select>
+                <input *ngIf="rule.begining && (rule.begining.id === 3 || rule.begining.id === 4)" placeholder="Введите слово или символ" [(ngModel)]="rule.string" (change)="changePreview()">
+              </div>
+              <mat-checkbox [ngClass]="getRuleColor(i, rule.active)" color="primary" [(ngModel)]="rule.active" (change)="changePreview()">
+                {{ rule.active ? 'Правило применено' : 'Применить правило' }}
+              </mat-checkbox>
+              <button mat-icon-button (click)="onCancelRule(i)" color="warn">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="b-regex-ruling-wrap">
+            <div *ngFor="let ruling of rule.rulings; let rulingI = index" class="b-regex-ruling" [ngClass]="{ 'active-bg': ruling.active }">
+              <div class="b-regex-input">
+                <select class="form-control" [(ngModel)]="ruling.ruling" (change)="changePreview()" [compareWith]="compareFn">
+                  <option *ngFor="let ruling of regexRulings" [ngValue]="ruling">{{ ruling.title }}</option>
+                </select>
+              </div>
+              <div class="b-regex-input">
+                <input placeholder="Кол-во символов" [(ngModel)]="ruling.number" (change)="changePreview()">
+              </div>
+              <div class="b-regex-ruling-checkbox-wrap">
+                <mat-checkbox color="primary" [(ngModel)]="ruling.optional" (change)="changePreview()" [disabled]="ruling.number">
+                  Опционально
+                </mat-checkbox>
+              </div>
+              <div class="d-flex justify-content-between b-regex-ruling-control-wrap">
+                <mat-slide-toggle color="primary" [(ngModel)]="ruling.active" (change)="changePreview()"></mat-slide-toggle>
+                <button mat-icon-button (click)="onCancelRuling(rule, rulingI)" color="warn">
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </div>
+            </div>
+            <button (click)="onAddRuling(rule)" mat-raised-button color="primary" class="b-regex-add-ruling-button">+</button>
+            <div style="clear: both"></div>
+          </div>
+        </div>
+      </div>
+      <div class="b-regex-control-buttons-wrap d-flex justify-content-end">
+        <button *ngIf="rules.length < 5" mat-raised-button (click)="onAddRule()" color="primary">+ Правило</button>
+        <button mat-raised-button (click)="onApplyClick()" color="primary">Сохранить правила</button>
+      </div>
+    </div>
+    <div class="coll-2">
+      <div class="b-regex-header">
+        Превью
+      </div>
+      <div class="b-regex-values-preview-wrap">
+        <div class="b-regex-values-preview-header d-flex justify-content-between">
+          <div>Обработано строк:</div><div>{{ leftToDo.length }} из {{ previewData.length }}</div>
+        </div>
+        <div class="b-regex-values-preview-subwrap">
+          <div *ngFor="let value of previewData" [innerHTML]="value"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ <!-- [compareWith]="compareFn" -->

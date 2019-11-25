@@ -1,0 +1,51 @@
+<ng-template #customCellTemplate let-day="day">
+  <div [ngClass]="{
+    'cal-cell-top': true,
+    'schedule': checkDate(day.date) === 'schedule',
+    'noschedule': checkDate(day.date) === 'noschedule',
+    'period-single': checkBorders(day.date) === 'single',
+    'period-start': checkBorders(day.date) === 'start',
+    'period-end': checkBorders(day.date) === 'end'}">
+    <span class="cal-day-number">
+      {{ day.date | calendarDate: 'monthViewDayNumber': config.locale }}
+    </span>
+  </div>
+</ng-template>
+
+<div class="b-calendar-wrap">
+  <div class="calendar-header d-flex align-items-center justify-content-between">
+    <div class="btn"
+         mwlCalendarPreviousView
+         [view]="view"
+         [(viewDate)]="viewDate"
+         (viewDateChange)="activeDayIsOpen = false">
+      <i class="material-icons">keyboard_arrow_left</i>
+    </div>
+
+    <h3>{{ viewDate | calendarDate: (view + 'ViewTitle'): config.locale }}</h3>
+
+    <div class="btn"
+         mwlCalendarNextView
+         [view]="view"
+         [(viewDate)]="viewDate"
+         (viewDateChange)="activeDayIsOpen = false">
+      <i class="material-icons">keyboard_arrow_right</i>
+    </div>
+  </div>
+
+  <div [ngSwitch]="view">
+    <mwl-calendar-month-view
+      [viewDate]="viewDate"
+      [cellTemplate]="customCellTemplate"
+      [weekStartsOn]="weekStartsOn"
+      [locale]="config.locale"
+      [refresh]="refresh"
+      (dayClicked)="dayClicked($event.day)"
+      (beforeViewRender)="beforeMonthViewRender($event)">
+    </mwl-calendar-month-view>
+  </div>
+</div>
+
+<button class="w-100 e-btn"
+        *ngIf="calendarType === 'schedule' && status !== 'scheduleIsSet' && status !== 'showCompletedSchedule' && showAddButton()"
+        (click)="setPeriod()">Добавить</button>

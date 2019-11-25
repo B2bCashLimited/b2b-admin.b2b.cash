@@ -1,0 +1,78 @@
+.popup-inner-3 {
+  max-width: 260px;
+  background-color: #ffffff;
+
+  .e-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    i {
+      color: #EB5757;
+      font-size: 2.25rem;
+    }
+  }
+
+  .color-red {
+    color: #EB5757;
+  }
+
+  .e-text {
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: .875rem;
+    text-align: center;
+    color: #000000;
+    letter-spacing: 0.0156297px;
+  }
+
+  .btn-full {
+    background: #EE6D06;
+    border: 1px solid #EE6D06;
+    height: 38px;
+    margin: 0 5px;
+    color: #ffffff;
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    font-size: .875rem;
+    box-shadow: none !important;
+    text-align: center;
+    padding: 0 8px;
+    max-width: 100px;
+
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: normal;
+      line-height: 1;
+    }
+  }
+
+  .btn-border {
+    border: 1px solid #EE6D06;
+    background-color: #ffffff;
+    height: 38px;
+    margin: 0 5px;
+    color: #EE6D06;
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    font-size: .875rem;
+    text-align: center;
+    box-shadow: none !important;
+    padding: 0 8px;
+    max-width: 100px;
+
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

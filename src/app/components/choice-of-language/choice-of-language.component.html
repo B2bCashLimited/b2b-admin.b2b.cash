@@ -1,0 +1,17 @@
+<div class="choice-language" [ngClass]="{'active':dropdown}" (click)="dropdown = !dropdown">
+  <span class="flags f-ru" [ngClass]="{'f-ru':(lang === 'Ru'), 'f-en':(lang === 'En'), 'f-cn':(lang === 'Cn')}"></span>
+  <ul>
+    <li (click)="changeLanguage('Ru')">
+      <span class="flags f-ru"></span>
+      Русский
+    </li>
+    <li (click)="changeLanguage('En')">
+      <span class="flags f-en"></span>
+      Английский
+    </li>
+    <li (click)="changeLanguage('Cn')">
+      <span class="flags f-cn"></span>
+      Китайский
+    </li>
+  </ul>
+</div>

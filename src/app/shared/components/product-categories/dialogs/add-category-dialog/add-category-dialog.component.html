@@ -1,0 +1,159 @@
+<div class="dialog-container"
+     [formGroup]="formGroup">
+  <h4 style="margin-top: 0;">
+    {{isEditMode ? 'Редактировать категорию' : 'Добавить категорию верхнего уровня'}}
+  </h4>
+  <div style="margin-bottom: 8px;font-weight: bold;font-size: 14px;"
+       *ngIf="isEditMode">
+    Категория используется в <span style="color: #ff761c">{{(count$ | async) || '0'}}</span> витринах.
+  </div>
+
+  <mat-form-field>
+    <input matInput
+           placeholder="Наименование категории Английское"
+           formControlName="nameEn">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput
+           placeholder="Наименование категории Русское"
+           formControlName="nameRu">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput
+           placeholder="Наименование категории Китайское"
+           formControlName="nameCn">
+  </mat-form-field>
+
+  <div style="display: flex; align-items: start; justify-content: space-between;">
+    <div style="display: flex; flex-direction: column; width: 100%;"
+         formArrayName="tnveds">
+      <div *ngFor="let item of formGroup.get('tnveds')['controls']; index as i; first as firstItem"
+           style="display: flex; flex-direction: column; width: 100%;">
+        <div style="display: flex; align-items: center; width: 100%;"
+             [formGroupName]="i">
+          <b2b-select-tnvd
+            style="margin-right: 16px;width: 100%;"
+            (tnvdChange)="onTnvdChanged($event, item)">
+          </b2b-select-tnvd>
+
+          <button mat-icon-button
+                  (click)="onDescriptionClick($event, item)"
+                  matTooltip="Подробности кода ТНВД"
+                  [disabled]="!item.get('tnved').value || (item.get('tnved').value && (item.get('tnved').hasError('min') || item.get('tnved').hasError('max')))">
+            <mat-icon [ngStyle]="{'color': item.get('tnved').value && !item.get('tnved').hasError('min') && !item.get('tnved').hasError('max') ? '#ff761c' : ''}">
+              info
+            </mat-icon>
+          </button>
+
+          <button mat-icon-button
+                  color="warn"
+                  (click)="deleteNewCreatedCode('tnved', item.value, i)"
+                  *ngIf="!firstItem">
+            <mat-icon>clear</mat-icon>
+          </button>
+
+          <button mat-icon-button
+                  color="primary"
+                  (click)="addNewCode('tnved')"
+                  *ngIf="item.value.isNew">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+
+        <div *ngIf="item.get('tnved').hasError('min') || item.get('tnved').hasError('max')"
+             style="color: #ff0000">Неправильное количество символов (9-11)
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; width: 100%;"
+         formArrayName="etsngs">
+      <div *ngFor="let item of formGroup.get('etsngs')['controls']; index as i; first as firstItem"
+           style="display: flex; flex-direction: column; width: 100%;">
+        <div style="display: flex; align-items: center; width: 100%;"
+             [formGroupName]="i">
+          <b2b-select-etsng
+            style="width: 100%;"
+            (etsngChange)="onEtsngChanged($event, item)">
+          </b2b-select-etsng>
+
+          <button mat-icon-button
+                  (click)="onDescriptionClick($event, item)"
+                  matTooltip="Подробности кода ЕТСНГ"
+                  [disabled]="!item.get('code').value || (item.get('code').value && (item.get('code').hasError('min') || item.get('code').hasError('max')))">
+            <mat-icon [ngStyle]="{'color': item.get('code').value && !item.get('code').hasError('min') && !item.get('code').hasError('max') ? '#ff761c' : ''}">
+              info
+            </mat-icon>
+          </button>
+
+          <button mat-icon-button
+                  color="warn"
+                  (click)="deleteNewCreatedCode('etsng', item.value, i)"
+                  *ngIf="!firstItem">
+            <mat-icon>clear</mat-icon>
+          </button>
+
+          <button mat-icon-button
+                  color="primary"
+                  (click)="addNewCode('etsng')"
+                  *ngIf="item.value.isNew">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+
+        <div *ngIf="item.get('code').hasError('min') || item.get('code').hasError('max')"
+             style="color: #ff0000">Неправильное количество символов (5-6)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex;width: 100%;margin-bottom: 16px;">
+    <div style="display:flex;flex-direction:column;width: 100%;margin-right: 16px;">
+      <div style="border-bottom: 1px solid #ccc;display: flex;align-items: center;"
+           *ngFor="let item of tnveds">
+        <span style="width: 100%;">{{item.tnved}}</span>
+        <button mat-icon-button
+                matTooltip="{{item.nameRu}}"
+                (click)="onExistedCodeDescriptionClicked($event)">
+          <mat-icon style="color: #ff761c">info</mat-icon>
+        </button>
+        <button mat-icon-button
+                color="warn"
+                (click)="deleteExistedCode('tnved', item)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;width: 100%;">
+      <div style="border-bottom: 1px solid #ccc;display: flex;align-items: center;"
+           *ngFor="let item of etsngs">
+        <span style="width: 100%;">{{item.code}}</span>
+        <button mat-icon-button
+                matTooltip="{{item.nameRu}}"
+                (click)="onExistedCodeDescriptionClicked($event)">
+          <mat-icon style="color: #ff761c">info</mat-icon>
+        </button>
+        <button mat-icon-button
+                color="warn"
+                (click)="deleteExistedCode('etsng', item)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex;flex-grow: 1;justify-content: flex-end;">
+    <button style="margin-right: 10px;"
+            mat-raised-button
+            color="primary"
+            (click)="onCloseClick(false)">Закрыть
+    </button>
+    <button mat-raised-button
+            color="primary"
+            [disabled]="formGroup.invalid"
+            (click)="onCloseClick(true)">
+      {{isEditMode ? 'Изменить' : 'Добавить'}}
+    </button>
+  </div>
+</div>

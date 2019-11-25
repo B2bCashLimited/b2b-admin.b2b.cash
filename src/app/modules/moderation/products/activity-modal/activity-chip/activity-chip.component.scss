@@ -1,0 +1,32 @@
+@mixin rem($size) {
+    font-size: $size/16*1rem;
+}
+
+:host{
+    margin-right: 10px;
+}
+
+.ic-text{
+    display: flex;
+    align-items: center;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    @include rem(14);
+    color: #828282;
+}
+
+.btn-delete{
+    cursor: pointer;
+  
+    i{
+      color: #EB5757;
+    }
+}
+
+.checked {
+    i {
+      color: #27AE60!important;
+    }
+}
+

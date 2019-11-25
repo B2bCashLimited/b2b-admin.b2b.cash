@@ -1,0 +1,22 @@
+<mat-card class="d-flex flex-column">
+  <h4>Рассыльщик</h4>
+
+  <nav class="d-flex w-100" mat-tab-nav-bar>
+    <ng-template ngFor let-link [ngForOf]="tabLinks">
+      <a
+        *ngxPermissionsOnly="link.permissions"
+        mat-tab-link
+        [routerLink]="link.url"
+        routerLinkActive
+        #tab="routerLinkActive"
+        [active]="tab.isActive">
+        {{link.label}}
+      </a>
+    </ng-template>
+  </nav>
+
+  <div class="d-flex flex-column w-100">
+    <router-outlet></router-outlet>
+  </div>
+
+</mat-card>

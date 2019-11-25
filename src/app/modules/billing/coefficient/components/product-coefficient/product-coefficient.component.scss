@@ -1,0 +1,47 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.coefficient-container {
+  display: flex;
+  align-items: center;
+  padding: 0 15px 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+.w-80 {
+  width: 80px !important;
+}
+
+.e-price {
+  line-height: 40px;
+  width: 100px;
+  text-align: right;
+}
+
+table {
+  width: 50%;
+}
+
+.table-container {
+  position: relative;
+  max-height: 400px;
+  overflow: auto;
+}
+
+th {
+  font-weight: bold;
+}
+
+.add-button {
+  color: #3f51b5;
+}
+
+.error {
+  border-color: #ff0000;
+}
+
+.mat-column-order-sum {
+  width: 260px;
+}

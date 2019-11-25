@@ -1,0 +1,12 @@
+<span *ngIf="format==='full'">
+  <span class = "stars" [innerHTML]="allStars"></span> {{rating}}
+</span>
+
+<span *ngIf="format==='small'">
+  <span class = "stars" [innerHTML]="half"><mat-icon>star_half</mat-icon>"</span> {{rating}}
+</span>
+
+<span *ngIf="format==='onlyfull'">
+  <span class = "stars" [innerHTML]="fullStars"><mat-icon>star_half</mat-icon>"</span> {{rating}}
+</span>
+

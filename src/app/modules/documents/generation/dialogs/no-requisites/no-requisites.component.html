@@ -1,0 +1,15 @@
+<div class="dialog-container">
+  <h4 class="mt-0">Внимание</h4>
+
+  <div class="d-flex flex-grow-1 mb-3">
+    Для страны&nbsp;<span class="selected-country">{{_dialogData.country}}</span>&nbsp;нет реквизитов.
+  </div>
+
+  <div class="d-flex flex-grow-1 justify-content-end">
+    <button class="mr-2"
+            mat-raised-button
+            color="primary"
+            (click)="onCloseClick()">Закрыть
+    </button>
+  </div>
+</div>

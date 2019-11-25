@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+table {
+  width: 100%;
+  tr:hover {
+    background: #f5f5f5;
+  }
+  tr > th,
+  tr > td {
+    padding: 0 8px;
+  }
+}

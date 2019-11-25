@@ -1,0 +1,64 @@
+@mixin rem($size) {
+  font-size: $size/16*1rem;
+}
+.all-wrapper {
+  height: 300px;
+}
+.wrapper {
+  height: 250px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.btn-wrapper {
+  height: 50px;
+  background: #fff;
+  .btn-fill {
+    display: block;
+    margin: 15px auto 0 auto;
+  }
+}
+.list-link{
+  background: #FFFFFF;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 6px 10px;
+
+  span{
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    @include rem(14);
+    color: #828282;
+  }
+}
+
+.btn-fill{
+  background: #FD6F22;
+  box-shadow: none !important;
+  outline: none !important;
+  height: 40px;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  @include rem(14);
+  color: #FFFFFF;
+
+  ::ng-deep.mat-button-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: normal;
+  }
+
+  i{
+    color: #ffffff;
+    margin-left: 4px;
+    @include rem(18);
+  }
+
+  &.width-120{
+    width: 120px;
+  }
+}

@@ -1,0 +1,60 @@
+<div class="dialog-container" [formGroup]="formGroup">
+  <h3 style="margin: 0 0 16px;">Редактирование характеристик</h3>
+
+  <div style="display: flex;align-items:center;width: 100%;">
+    <mat-form-field style="margin-right: 16px;width: 100%;">
+      <mat-select placeholder="Характеристики для просчета" formControlName="mainProperty">
+        <mat-option *ngFor="let prop of categoryProperties" [value]="prop.id">
+          {{prop.nameRu}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div style="display: flex;width: 100%;flex-direction: column;margin-bottom: 16px;">
+    <div style="display: flex;width: 100%;align-items: center;"
+         *ngFor="let item of formGroup.get('formula').value, index as idx">
+      <span style="min-width: 180px;border-bottom: 1px solid #ccc;padding-bottom: 5px;">{{item.action.label}}</span>
+      <span style="width: 100%;margin-left: 16px;border-bottom: 1px solid #ccc;padding-bottom: 5px;">{{item.property.nameRu}}</span>
+      <button mat-icon-button color="warn"
+              (click)="onDestroyClick(idx)">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div style="display: flex;align-items:center;width: 100%;margin-bottom: 16px;">
+    <mat-form-field>
+      <mat-select placeholder="Выберите действие" formControlName="action">
+        <mat-option *ngFor="let action of actions" [value]="action">
+          {{action.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field style="margin-left: 16px;width: 100%;">
+      <mat-select placeholder="Характеристики для просчета" formControlName="property">
+        <mat-option
+          *ngFor="let prop of categoryProperties | propertyPipe:formGroup.get('mainProperty').value"
+          [value]="prop">
+          {{prop.nameRu}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-icon-button color="primary"
+            [disabled]="!(formGroup.get('property').value && formGroup.get('action').value)"
+            (click)="onAddClick()">
+      <mat-icon>add_box</mat-icon>
+    </button>
+  </div>
+
+  <div style="display: flex;flex-grow: 1;justify-content: flex-end;">
+    <button
+      style="margin-right: 10px;"
+      mat-raised-button color="primary"
+      (click)="onCloseClick(false)">Закрыть
+    </button>
+    <button
+      mat-raised-button color="warn"
+      (click)="onCloseClick(true)">Завершить
+    </button>
+  </div>
+</div>

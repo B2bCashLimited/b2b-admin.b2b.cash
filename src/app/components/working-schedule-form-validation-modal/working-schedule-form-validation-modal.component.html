@@ -1,0 +1,13 @@
+ <mat-dialog-content class="">
+  <h5 class="e-title">'notAllFilled':</h5>
+  <mat-list class="e-list">
+    <mat-list-item *ngFor="let error of data.errors">
+      {{error}}
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="actions">
+    <button mat-raised-button mat-dialog-close>Закрыть</button>
+  </div>
+</mat-dialog-actions>

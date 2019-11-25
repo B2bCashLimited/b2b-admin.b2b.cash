@@ -1,0 +1,66 @@
+<mat-card class="d-flex flex-column" *ngIf="activityName">
+  <div class="row mb-2">
+    <div class="col-12">
+      <h5 class="title-h2">
+        <button class="d-inline-flex align-items-center e-back"
+          mat-button color="primary"
+          (click)="goBack()">
+          <span class="e-arrow">&larr;</span>
+        </button>
+        Коэффициент - Цена заказа
+      </h5>
+    </div>
+  </div>
+
+  <div class="d-flex mb-3">
+    <span class="flex-grow-1">
+      <i class="bb {{activityName.icon}} mr-2"></i>
+      <span *ngIf="!isBuyer">{{activityName.nameRu}}</span>
+      <span *ngIf="isBuyer">Тарифы для компаний / {{typeName}}</span>
+    </span>
+    <button
+      mat-raised-button color="primary"
+      (click)="onAddCategoryClick()">
+      Добавить категорию
+    </button>
+  </div>
+
+  <div class="d-flex flex-column pb-2">
+    <mat-accordion>
+      <ng-container
+        [ngTemplateOutlet]="isCustomsBrokers ? customsCoefficient : productCoefficient">
+      </ng-container>
+
+      <ng-template #productCoefficient>
+        <b2b-product-coefficient
+          *ngFor="let item of coefficients"
+          [item]="item" [currencies]="currencies"
+          (itemChange)="onChangeItem($event)">
+        </b2b-product-coefficient>
+      </ng-template>
+
+      <ng-template #customsCoefficient>
+        <b2b-customs-coefficient
+          *ngFor="let item of coefficients"
+          [baseTariff]="baseTariff"
+          [category]="item.category"
+          [deliveryTypes]="deliveryTypes"
+          [currencies]="currencies"
+          (itemChange)="onChangeItem($event)"
+          [item]="item">
+        </b2b-customs-coefficient>
+      </ng-template>
+
+    </mat-accordion>
+  </div>
+
+  <mat-paginator
+    [pageSizeOptions]="[25, 50, 100]"
+    [length]="length"
+    [pageSize]="pageSize"
+    [hidePageSize]="true"
+    showFirstLastButtons
+    (page)="getPage($event)">
+  </mat-paginator>
+
+</mat-card>

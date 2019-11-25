@@ -1,0 +1,41 @@
+<mat-card class="d-flex flex-column pt-3">
+  <div class="d-flex align-items-center w-100 mb-3">
+    <h4 class="m-0 mr-auto">Права сотрудников B2B.CASH</h4>
+    <button
+      *ngxPermissionsOnly="['SUPER_ADMIN', 'ROLES_CREATE']"
+      mat-raised-button color="primary"
+      routerLink="new">Добавить должность
+    </button>
+  </div>
+  <div class="d-flex align-items-center w-100 p-2"
+       style="border-bottom: 1px solid #ccc;"
+       *ngFor="let role of roles">
+      <span style="margin-right: auto;">
+        {{role.nameRu}} <span *ngIf="role.id===1">(по-умолчанию)</span>
+      </span>
+    <button
+      *ngxPermissionsOnly="['SUPER_ADMIN', 'ROLES_CREATE']"
+      mat-icon-button color="primary"
+      matTooltip="Создать должность с такими же правами"
+      matTooltipPosition="above"
+      [routerLink]="['clone', role.id]">
+      <mat-icon>file_copy</mat-icon>
+    </button>
+    <button
+      *ngxPermissionsOnly="['SUPER_ADMIN', 'ROLES_EDIT']"
+      mat-icon-button color="primary"
+      matTooltip="Настроить права" matTooltipPosition="above"
+      [routerLink]="['edit', role.id]">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <ng-template [ngIf]="role.id!==1">
+      <button
+        *ngxPermissionsOnly="['SUPER_ADMIN', 'ROLES_DELETE']"
+        mat-icon-button color="warn"
+        (click)="onDestroyClick(role.id)"
+        matTooltip="Удалить" matTooltipPosition="above">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </ng-template>
+  </div>
+</mat-card>

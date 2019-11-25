@@ -1,0 +1,18 @@
+<ng-select
+  [items]="countries$ | async"
+  (change)="onSelectCountriesChanged($event)"
+  (remove)="onRemoveCountriesChanged($event.value)"
+  (clear)="onClearCountriesChanged($event && $event.value)"
+  [loading]="loading"
+  [(ngModel)]="selectedCountries"
+  [maxSelectedItems]="maxSelectedItems"
+  [multiple]="multiple"
+  [closeOnSelect]="true"
+  [hideSelected]="true"
+  [virtualScroll]="true"
+  [appendTo]="appendTo"
+  [disabled]="disabled"
+  bindValue="id"
+  bindLabel="nameRu"
+  placeholder="Выберите страну">
+</ng-select>

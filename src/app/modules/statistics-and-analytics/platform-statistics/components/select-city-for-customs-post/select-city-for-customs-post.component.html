@@ -1,0 +1,14 @@
+<ng-select
+  bindLabel="fullAddress"
+  bindValue="id"
+  placeholder="Введите город для выбора таможенного поста"
+  [ngModel]="selectedCityId"
+  [disabled]="disabled"
+  [items]="citiesForCustomsPosts"
+  [multiple]="false"
+  [loading]="citiesLoading"
+  [closeOnSelect]="true"
+  [hideSelected]="true"
+  [typeahead]="citiesInput$"
+  (change)="onSelectedCityChanged($event)">
+</ng-select>

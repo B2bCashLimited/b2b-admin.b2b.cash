@@ -1,0 +1,15 @@
+<div class="dialog-container">
+  <h4>Объединить "{{property.nameRu}}" с</h4>
+  <div class="card-wrap">
+    <mat-radio-group  class="d-flex flex-column" [(ngModel)]="categoryPropertyTo">
+      <mat-radio-button class="d-flex my-3 px-3" *ngFor="let item of dataSource; trackBy: trackByFn" [value]="item.id">
+        {{item.nameRu}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <div class="d-flex justify-content-around">
+    <button mat-button color="primary" mat-dialog-close>Отмена</button>
+    <button [disabled]="!categoryPropertyTo" mat-raised-button color="primary" (click)="onJoinClick()">Объеденить</button>
+  </div>
+</div>

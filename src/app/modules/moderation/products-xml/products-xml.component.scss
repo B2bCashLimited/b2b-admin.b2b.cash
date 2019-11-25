@@ -1,0 +1,223 @@
+@import "../../../../../node_modules/bootstrap/scss/bootstrap.scss";
+
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.data-range {
+  position: relative;
+  border: 1px solid #cecece;
+  cursor: pointer;
+  height: 36px;
+  width: 100%;
+
+  .material-icons {
+    color: #3f51b5;
+  }
+
+  .inner-wrap {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 5px;
+    align-items: center;
+    font-size: 0.875rem;
+  }
+}
+
+.table-1 {
+  border: 1px double rgba(0, 0, 0, 0.12);
+  border-collapse: collapse;
+
+  th {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #383838;
+  }
+
+  td {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 15px;
+    color: #383838;
+
+    &:nth-child(5) {
+      max-width: 175px;
+    }
+
+    span {
+      font-style: italic;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 14px;
+      display: block;
+      color: #868686;
+    }
+
+    a {
+      color: #0EA3D1;
+
+      &:hover {
+        color: #0EA3D1;
+      }
+    }
+
+    .fw-500 {
+      font-weight: 500;
+    }
+
+    button {
+      width: 40px;
+      max-width: 40px;
+      min-width: 40px;
+      white-space: normal;
+      font-size: 13px;
+      line-height: 15px;
+      color: #FFFFFF;
+      border-radius: 3px;
+      height: 40px;
+      padding: 0;
+
+      &[disabled] {
+        background: #C7C7C7;
+      }
+
+      ::ng-deep.mat-button-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      i {
+        margin: 0;
+        width: auto;
+        height: auto;
+      }
+
+      .bb-wrench {
+        font-size: 24px;
+      }
+
+      .bb-focus-weak {
+        font-size: 24px;
+      }
+
+      .bb-chart-bar {
+        font-size: 24px;
+      }
+
+      .bb-list-checks {
+        font-size: 24px;
+      }
+
+      .bb-power {
+        font-size: 22px;
+      }
+    }
+
+    i {
+      width: 12px;
+      min-width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: block;
+      margin-right: 10px;
+
+      &.scheme-none {
+        background: #FF4B55;
+      }
+
+      &.scheme-base {
+        background: #FF6F00;
+      }
+
+      &.scheme-installed {
+        background: #00AB07;
+      }
+    }
+  }
+
+  td,
+  th {
+    padding: 14px 10px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  td.mat-cell:first-of-type,
+  td.mat-footer-cell:first-of-type,
+  th.mat-header-cell:first-of-type {
+    padding-left: 10px;
+    width: 70px;
+  }
+}
+
+.b-search-wrap{
+  align-items: center;
+  margin-bottom: 20px;
+
+  &.row{
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
+  [class*="col-"],
+  .col{
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .form-control{
+    width: 180px;
+    height: 40px;
+    background: #FAFAFA;
+    border: 1px solid #41479B;
+
+    ::ng-deep.mat-select-placeholder {
+      color: #383838;
+    }
+  }
+
+  .data-range{
+    width: 280px;
+    height: 40px;
+    border: 1px solid #41479B;
+
+    .inner-wrap{
+      height: 100%;
+    }
+  }
+
+  .input-group{
+    flex-flow: nowrap;
+    background: #FAFAFA;
+    border: 1px solid #41479B;
+    border-radius: 3px;
+    height: 40px;
+
+    input{
+      font-style: normal;
+      font-weight: normal;
+      font-size: 15px;
+      line-height: 18px;
+      color: #868686;
+      padding-left: 20px;
+      padding-right: 15px;
+    }
+
+    button{
+      height: 38px;
+      box-shadow: none !important;
+      width: 120px;
+      font-size: 14px;
+    }
+  }
+}

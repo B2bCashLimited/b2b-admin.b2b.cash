@@ -1,0 +1,16 @@
+<div class="d-flex bd-highlight activity-schedule-container" (click)="openDialog()">
+  <div class="py-2 flex-shrink-1 bd-highlight">
+    <span class="activity-schedule-ico d-flex align-items-center justify-content-center mr-2">
+      <i class="material-icons ">create</i>
+    </span>
+  </div>
+  <div class="p-1 w-100 bd-highlight" *ngIf="workingScheduleExists">
+    <span class="activity-schedule text2">График работы</span>
+    <span class="activity-schedule text1 text-capitalize">{{workingSchedule.isStandard ? ('гибкий график') : datesOfWeek}}</span>
+    <span class="activity-schedule text1" *ngIf="!workingSchedule.isStandard">{{workingTimes}}</span>
+    <span class="activity-schedule text2">UTC {{workingSchedule.timeZone.utcOffset}}</span>
+  </div>
+  <div class="p-1 w-100 bd-highlight" *ngIf="!workingScheduleExists">
+    <p class="activity-schedule text3">ГРАФИК НЕ УСТАНОВЛЕН</p>
+  </div>
+</div>

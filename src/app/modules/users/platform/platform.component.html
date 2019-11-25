@@ -1,0 +1,183 @@
+<mat-card style="display:flex;flex-grow: 1;flex-direction: column;">
+  <h2 style="margin: 0 auto 16px 0">Все пользователи</h2>
+  <div style="display: flex;flex-grow: 1;flex-direction: column;" [formGroup]="formGroup">
+    <div style="display: flex;">
+      <mat-form-field style="margin-right: 16px;width: 100%;">
+        <input matInput placeholder="Поиск по Ф.И.О" formControlName="searchName">
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+        <input matInput placeholder="Поиск по компании" formControlName="searchCompany">
+      </mat-form-field>
+    </div>
+    <div style="display: flex;align-items: center;">
+      <b2b-select-countries
+        class="w-50"
+        style="margin-right: 16px;"
+        [maxSelectedItems]="1"
+        (countriesChange)="countriesChange($event)"
+        [multiple]="false">
+      </b2b-select-countries>
+      <b2b-select-activity-names
+        class="w-50"
+        (selectedActivityNameChange)="selectedActivityNameChange($event)"
+        style="margin-right: 16px;">
+      </b2b-select-activity-names>
+    </div>
+  </div>
+
+  <div style="display: flex;align-items: center;" [formGroup]="formGroup">
+    <mat-form-field class="mr-3 pt-1">
+      <input matInput
+             [owlDateTime]="dateTimePickerFrom"
+             [owlDateTimeTrigger]="dateTimePickerFrom"
+             formControlName="dateCreateFrom"
+             placeholder="От (дата/время)"
+             autocomplete="off">
+      <i class="material-icons"
+         [owlDateTimeTrigger]="dateTimePickerFrom"
+         matSuffix>calendar_today</i>
+      <owl-date-time #dateTimePickerFrom></owl-date-time>
+    </mat-form-field>
+
+    <mat-form-field class="mr-3 pt-1">
+      <input matInput
+             [owlDateTime]="dateTimePickerTo"
+             [owlDateTimeTrigger]="dateTimePickerTo"
+             formControlName="dateCreateTo"
+             placeholder="До (дата/время)"
+             autocomplete="off">
+      <i class="material-icons"
+         [owlDateTimeTrigger]="dateTimePickerTo"
+         matSuffix>calendar_today</i>
+      <owl-date-time #dateTimePickerTo></owl-date-time>
+    </mat-form-field>
+
+    <button
+      *ngxPermissionsOnly="['SUPER_ADMIN', 'USERS_CREATE']"
+      style="margin-right: 16px;" mat-raised-button color="primary"
+      (click)="onAddNewUserClick()">Добавить пользователя
+    </button>
+    <button
+      *ngxPermissionsOnly="['SUPER_ADMIN', 'USERS_DELETE']"
+      mat-raised-button color="warn"
+      [disabled]="!selection.hasValue()"
+      (click)="onDestroySelectedUsersClick()">Удалить пользователя
+    </button>
+  </div>
+
+  <mat-spinner *ngIf="loading" class="mx-auto"></mat-spinner>
+
+  <table *ngIf="!loading" mat-table [dataSource]="dataSource">
+
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Имя</th>
+      <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+        {{element.name}}
+      </td>
+    </ng-container>
+
+    <!-- Contacts Column -->
+    <ng-container matColumnDef="contacts">
+      <th mat-header-cell *matHeaderCellDef>Контакты</th>
+      <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+        <div style="display: flex;flex-direction: column;">
+          <span>{{element.contacts.phone}}</span>
+          <span>{{element.contacts.email}}</span>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Date and Time Column -->
+    <ng-container matColumnDef="dateTime">
+      <th mat-header-cell *matHeaderCellDef>Дата/время</th>
+      <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+        <div>
+          <span>{{element.date}}</span>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Companies Column -->
+    <ng-container matColumnDef="companies">
+      <th style="width: 200px;" mat-header-cell *matHeaderCellDef>Компания</th>
+      <td style="padding: 0 8px;" mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+        <mat-form-field>
+          <mat-select [(value)]="element.selectedCompany" (valueChange)="onCompanyChange(element)">
+            <mat-option *ngFor="let company of element.companies" [value]="company.id">
+              {{company.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </td>
+    </ng-container>
+
+    <!-- Activities Column -->
+    <ng-container matColumnDef="activities">
+      <th style="width: 200px;" mat-header-cell *matHeaderCellDef>Виды деятельности</th>
+      <td style="padding: 0 8px;" mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+
+        <mat-form-field>
+          <mat-select [(value)]="element.selectedActivity">
+            <mat-option *ngFor="let activity of element.activities" [value]="activity">
+              {{activity}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </td>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+      <th style="width: 200px;" mat-header-cell *matHeaderCellDef>Статус</th>
+      <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+        <mat-button-toggle-group appearance="legacy" (change)="onStatusChanged($event.value, element)">
+          <mat-button-toggle [value]="true" [checked]="element.status">Активен</mat-button-toggle>
+          <mat-button-toggle [value]="false" [checked]="!element.status">Не активен</mat-button-toggle>
+        </mat-button-toggle-group>
+      </td>
+    </ng-container>
+
+    <!-- Employees Column -->
+    <ng-container matColumnDef="employees">
+      <th style="width: 80px;" mat-header-cell *matHeaderCellDef>Сотрудники</th>
+      <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+        <button mat-icon-button (click)="getEmployees(element)" [disabled]="!element.companies.length" class="ml-3">
+          <mat-icon>people</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        (click)="selection.toggle(row)">
+    </tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[25, 50, 100]"
+    [length]="length"
+    [pageSize]="pageSize"
+    [hidePageSize]="true"
+    showFirstLastButtons
+    (page)="getPage($event)">
+  </mat-paginator>
+</mat-card>

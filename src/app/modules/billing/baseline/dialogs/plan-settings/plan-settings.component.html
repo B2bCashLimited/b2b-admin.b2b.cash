@@ -1,0 +1,56 @@
+<div class="d-flex flex-column" [formGroup]="formGroup">
+  <h4 class="mt-0">Редактирование базового плана</h4>
+
+  <div class="d-flex align-items-center">
+    <mat-form-field
+      class="input-small w-auto mr-2" floatLabel="never"
+      *ngIf="formGroup.get('isFixed').value">
+      <input matInput placeholder="Стоимость"
+             autocomplete="off" autocorrect="off" type="number"
+             formControlName="priceExtra">
+    </mat-form-field>
+
+    <mat-form-field
+      class="w-auto mr-2" floatLabel="never"
+      *ngIf="!isForCountry && !formGroup.get('isFixed').value">
+      <input matInput placeholder="Коэффициент"
+             autocomplete="off" autocorrect="off" type="number"
+             formControlName="coefficient">
+      <span matSuffix>%</span>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="formGroup.get('isFixed').value" class="input-small w-auto mr-2" floatLabel="never">
+      <mat-select placeholder="Валюта" formControlName="currency">
+        <mat-option
+          *ngFor="let cur of currencies"
+          [value]="cur.id">{{cur.nameRu}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      *ngIf="!isForCountry"
+      mat-icon-button color="primary"
+      (click)="onChangePriceTypeClick()">
+      <mat-icon>sync</mat-icon>
+    </button>
+  </div>
+
+  <div class="d-flex mb-4">
+    <mat-radio-group formControlName="isPrepayment">
+      <mat-radio-button class="mr-4" [value]="1">Предоплата</mat-radio-button>
+      <mat-radio-button [value]="0">Постоплата</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <div class="d-flex justify-content-end">
+    <button
+      class="mr-2"
+      mat-raised-button color="primary"
+      (click)="onCloseClick(false)">Закрыть
+    </button>
+    <button
+      mat-raised-button color="warn"
+      (click)="onCloseClick(true)">Изменить
+    </button>
+  </div>
+</div>

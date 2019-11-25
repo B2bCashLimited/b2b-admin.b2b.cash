@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+.dialog-container {
+  max-height: 90vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.add-button {
+  align-self: center;
+}
+
+.override-icon {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.87);
+  opacity: 0.4;
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.b-checkbox-wrap {
+  ::ng-deep.mat-checkbox {
+
+    &.mat-accent {
+      .mat-ripple-element {
+        background-color: #3f51b5;
+      }
+    }
+
+    &.mat-accent {
+      &.mat-checkbox-checked {
+        .mat-checkbox-background {
+          background-color: #3f51b5;
+        }
+      }
+    }
+  }
+}

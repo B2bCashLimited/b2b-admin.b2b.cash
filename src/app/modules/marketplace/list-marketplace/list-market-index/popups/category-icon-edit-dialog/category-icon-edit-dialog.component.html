@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>
+  <div>Редактировать изображение категории</div>
+  <button (click)="imgFile.click()" color="primary" type="button" mat-raised-button>
+    Обзор
+  </button>
+  <input hidden type="file" #imgFile (change)="onImgFileAdded()" [accept]="allowedImageTypes">
+</h1>
+<div mat-dialog-content>
+  <div class="row">
+    <div class="col-12">
+    </div>
+
+    <div class="col-12">
+      <img *ngIf="imgUrl" class="img-thumbnail" [src]="imgUrl" alt="">
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions class="d-flex justify-content-center">
+  <button mat-button color="warn" [mat-dialog-close]="false">Закрыть</button>
+</div>

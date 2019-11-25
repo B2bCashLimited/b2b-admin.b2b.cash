@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+.popup {
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    align-self: center;
+    font-weight: 400;
+    color: #202020;
+    font-size: 1.25rem;
+    margin: 0 0 1.5rem 0;
+  }
+}

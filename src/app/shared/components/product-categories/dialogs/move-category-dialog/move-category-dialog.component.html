@@ -1,0 +1,55 @@
+<div class="dialog-container">
+  <h3 style="margin-top: 5px;">Переопределение категории <span class="color-red">{{selectedCategory.nameRu}}</span></h3>
+  <mat-form-field class="mr-3 flex-grow-1">
+    <input [formControl]="formControl"
+           matInput
+           placeholder="Поиск категорий..."
+           autocomplete="off">
+  </mat-form-field>
+
+  <mat-card class="d-flex flex-grow-1 flex-column">
+    <mat-tree [dataSource]="dataSource"
+              [treeControl]="treeControl">
+      <mat-tree-node *matTreeNodeDef="let node"
+                     matTreeNodeToggle
+                     matTreeNodePadding>
+        <div class="node-wrapper node-wrapper--default"
+             [class.selected]="node.id === nodeId"
+             (click)="categoryWithoutChildrenClicked(node)">
+          <span class="mr-auto ml-3">{{node.nameRu}}</span>
+
+          <div *ngTemplateOutlet="actions;context: {category: node}"></div>
+        </div>
+      </mat-tree-node>
+
+      <mat-tree-node *matTreeNodeDef="let node; when: hasChild"
+                     matTreeNodePadding>
+        <div class="node-wrapper"
+             [class.selected]="node.id === nodeId"
+             (click)="onExpandCategoryClick(node)">
+
+          <span class="toggle-children"
+                [class.toggle-children-wrapper-expanded]="treeControl.isExpanded(node)">
+          </span>
+
+          <span style="margin-right: auto;">{{node.nameRu}}</span>
+
+          <div *ngTemplateOutlet="actions;context: {category: node}"></div>
+        </div>
+      </mat-tree-node>
+    </mat-tree>
+  </mat-card>
+
+  <div class="but-move">
+    <button class="mr-3"
+            mat-raised-button
+            color="primary"
+            (click)="onCloseClick(false)">Закрыть
+    </button>
+    <button mat-raised-button
+            color="primary"
+            (click)="onMoveCategoryClick(fromIdCat, toIdCat)">Изменить
+    </button>
+  </div>
+</div>
+

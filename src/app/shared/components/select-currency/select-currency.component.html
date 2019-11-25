@@ -1,0 +1,6 @@
+<mat-select [formControl]="selectedCurrencyId">
+  <mat-option *ngFor="let item of currencies"
+              [value]="item.id">
+    {{item.nameRu}}
+  </mat-option>
+</mat-select>

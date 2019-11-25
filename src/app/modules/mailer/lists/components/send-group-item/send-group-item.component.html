@@ -1,0 +1,136 @@
+<mat-expansion-panel #groupExpansion [expanded]="!group.id">
+  <mat-expansion-panel-header>
+    <mat-panel-title class="d-flex align-items-center">
+      <span class="mr-auto">{{group.name}}</span>
+      <button mat-icon-button color="warn" (click)="onDestroyGroupClick($event)">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div class="d-flex pt-3 w-100" style="border-top: 1px solid #ccc;"
+       *ngIf="groupExpansion.expanded">
+    <mat-card class="d-flex flex-column w-100">
+      <mat-form-field style="width: 100%;">
+        <input matInput placeholder="Название группы" autofocus [(ngModel)]="group.name">
+      </mat-form-field>
+
+      <ng-select
+        class="pb-0 mb-3"
+        [items]="countries$ | async"
+        [(ngModel)]="group.sendGroupCountry"
+        [loading]="loading"
+        [multiple]="true"
+        [closeOnSelect]="true"
+        [hideSelected]="true"
+        [virtualScroll]="true"
+        appendTo="body"
+        bindLabel="nameRu"
+        placeholder="Выберите страну">
+      </ng-select>
+
+      <ng-select
+        class="pb-0 mb-3"
+        [items]="categories"
+        [(ngModel)]="group.sendGroupCategory"
+        [loading]="categoriesLoading"
+        [multiple]="true"
+        [closeOnSelect]="true"
+        [hideSelected]="true"
+        [virtualScroll]="true"
+        placeholder="Категории"
+        appendTo="body"
+        bindLabel="nameRu"
+        [typeahead]="categoriesInput"
+        (scrollToEnd)="onCategoriesScrollToEnd()">
+      </ng-select>
+
+      <div class="d-flex justify-content-end">
+        <button
+          mat-raised-button color="primary"
+          (click)="onSaveGroupClick()">Сохранить
+        </button>
+      </div>
+    </mat-card>
+    <div class="d-flex flex-column w-100 ml-3" *ngIf="group.id">
+      <div class="d-flex align-items-center">
+        <ng-select
+          class="flex-grow-1 mr-3 pb-0 mb-3"
+          placeholder="Добавить существующий список"
+          [items]="sendLists"
+          [typeahead]="listsInput"
+          [loading]="listsLoading"
+          [virtualScroll]="true"
+          [hideSelected]="true"
+          [markFirst]="true"
+          [addTag]="false"
+          [(ngModel)]="selectedSendList"
+          (scrollToEnd)="onListsScrollToEnd()"
+          (change)="onSelectedListsChanged($event)"
+          appendTo="body"
+          bindLabel="name">
+        </ng-select>
+        <button
+          mat-raised-button color="primary"
+          (click)="onAddNewListClick()">Создать новый список
+        </button>
+      </div>
+      <mat-accordion>
+        <mat-expansion-panel #sendListExpansion *ngFor="let list of group.sendList;index as idx">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="d-flex align-items-center">
+              <span class="mr-auto">{{list.name}}</span>
+              <button mat-icon-button color="warn" (click)="onDestroyListClick($event, list, idx)">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="d-flex flex-column" *ngIf="sendListExpansion.expanded">
+            <mat-form-field class="w-100">
+              <input matInput placeholder="Название списка" [(ngModel)]="list.name">
+            </mat-form-field>
+            <div class="drop-container" ngFileDrop [options]="options"
+                 (uploadOutput)="onUploadOutput($event, list)" [uploadInput]="uploadInput">
+              <label class="d-flex align-items-center h-100 w-100 justify-content-center">
+                <span>Перетащите файлы сюда или <span class="font-weight-bold">выберите файл</span></span>
+                <input class="d-none" type="file" ngFileSelect
+                       [options]="options" (uploadOutput)="onUploadOutput($event, list)"
+                       [uploadInput]="uploadInput" multiple>
+              </label>
+            </div>
+
+            <div
+              style="border-bottom: 1px solid #ccc;"
+              class="d-flex flex-column w-100 mb-3">
+              <div class="d-flex align-items-center"
+                   *ngFor="let file of list.sendListFiles">
+                <a [href]="file.url"
+                   style="text-decoration: none;"
+                   class="d-flex align-items-center mr-3"
+                   [download]="file.url">
+                  <mat-icon class="mr-2">list_alt</mat-icon>
+                  <span>{{ file.filename}}</span>
+                </a>
+                <span style="margin-right: 8px;font-size: 12px;color: #666;">Строк: {{ file.lines }}</span>
+                <button mat-icon-button color="warn" (click)="onRemoveFileClick(list, file)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+              <button
+                [disabled]="!list.sendListFiles || !list.sendListFiles.length"
+                mat-raised-button color="primary"
+                (click)="onSaveListClick(list)">Сохранить
+              </button>
+            </div>
+          </div>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+
+</mat-expansion-panel>

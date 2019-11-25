@@ -1,0 +1,49 @@
+<div *ngIf="!isConfirming">
+  <div class="d-flex font-weight-normal justify-content-between align-items-center">
+    <div class="d-flex">
+      <span class="ic-text mr-1"
+            [ngClass]="{'checked': activity.moderateStatus === 4}"
+            *ngIf="activity.type === 'manufactory'">
+        <i class="bb bb-manufactory"></i>
+      </span>
+      <span class="ic-text mr-1"
+            [ngClass]="{'checked': activity.moderateStatus === 4}"
+            *ngIf="activity.type === 'supplier'">
+        <i class="bb bb-provider"></i>
+      </span>
+      {{ activity.name}}
+    </div>
+    <span class="btn-delete" (click)="onClose()"><i class="material-icons">clear</i></span>
+  </div>
+
+  <div class="color-gray mt-2 mb-3">Режим модерации</div>
+
+  <mat-radio-group [(ngModel)]="trusted">
+    <mat-radio-button [value]="false">Ручной</mat-radio-button>
+    <mat-radio-button [value]="true">Авто</mat-radio-button>
+  </mat-radio-group>
+
+  <div class="d-flex justify-content-center">
+    <button mat-raised-button
+            class="btn-fill mt-3"
+            (click)="onSave()">
+      Сохранить
+    </button>
+  </div>
+</div>
+<div *ngIf="isConfirming">
+  <div class="text-center font-weight-normal">Все товары {{ activity.name }} будут отмодерированы.</div>
+  <div class="text-center"><b>Вы уверены?</b></div>
+  <div class="d-flex justify-content-around mt-3">
+    <button mat-raised-button
+            class="btn-fill btn-small"
+            (click)="confirmAutoModerating()">
+      Да
+    </button>
+    <button mat-raised-button
+            class="btn-fill btn-small"
+            (click)="isConfirming = false">
+      Нет
+    </button>
+  </div>
+</div>

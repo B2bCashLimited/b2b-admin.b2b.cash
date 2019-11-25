@@ -1,0 +1,73 @@
+@mixin rem($size) {
+    font-size: $size/16*1rem;
+}
+
+:host{
+    z-index: 10;
+    background-color: white;
+    padding: 10px;
+    width: 200px;
+    position: absolute;
+    top: 0;
+
+    .mat-radio-button + .mat-radio-button{
+        margin-left: 10px;
+    }
+}
+
+.ic-text{
+    color: #828282;
+}
+
+.checked {
+    i {
+        color: #27AE60!important;
+    }
+}
+
+.color-gray{
+    color: #9B9B9B;
+}
+
+.btn-delete{
+    cursor: pointer;
+  
+    i{
+      color: #EB5757;
+    }
+}
+  
+.btn-fill{
+    background: #FD6F22;
+    box-shadow: none !important;
+    outline: none !important;
+    height: 40px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    @include rem(14);
+    color: #FFFFFF;
+  
+    ::ng-deep.mat-button-wrapper{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: normal;
+    }
+  
+    i{
+      color: #ffffff;
+      margin-left: 4px;
+      @include rem(18);
+    }
+  
+    &.width-120{
+      width: 120px;
+    }
+
+    &.btn-small{
+        height: 30px;
+        min-width: 0;
+        width: 50px;
+    }
+}

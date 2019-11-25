@@ -1,0 +1,88 @@
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.activity-thumb {
+  width: 100%;
+  float: left;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+.activity-link {
+  width: 42px;
+  height: 42px;
+  vertical-align: middle;
+  display: inline-block;
+  border: 2px solid rgb(204, 204, 204);
+  border-radius: 50%;
+  margin-left: 8px;
+  position: relative;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+  i {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px !important;
+    color: #222;
+  }
+}
+
+.table td, .table th {
+  padding: .5rem;
+}
+
+.approved i {
+  background: rgba(61, 149, 26, 0.7);
+}
+
+.rejected i {
+  background: rgba(214, 39, 0, 0.7);
+}
+
+.refinement i {
+  background: rgba(14, 164, 209, 0.7);
+}
+
+.expectation i {
+  background: rgba(241, 151, 6, 0.7);
+}
+
+.count {
+  display: inline-block;
+  background-color: orange;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.loader-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+::ng-deep.ng-select .ng-select-container {
+  min-height: 45.5px;
+  height: 45.5px;
+}

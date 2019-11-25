@@ -1,0 +1,511 @@
+input:-webkit-autofill,
+input:-webkit-autofill:focus input:-webkit-autofill,
+input:-webkit-autofill:hover,
+select:-webkit-autofill,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:hover,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus {
+  border: 1px solid transparent;
+  -webkit-text-fill-color: #2c2c2b;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  transition: background-color 5000s ease-in-out 0s;
+  font-size: 0.875rem;
+}
+
+.closed-chat {
+  opacity: 0.5;
+}
+
+.opened-chat {
+  background-color: #DFE3E8;
+}
+
+.material-icons {
+  font-size: 16px;
+  vertical-align: text-bottom;
+}
+
+.bold {
+  font-weight: bold;
+}
+.flag {
+  height: 25px;
+  &.flag-ru {
+    background-position: -229px -360px;
+  }
+}
+
+* {
+  outline: none !important;
+}
+
+.chat__contacts {
+  width: 100%;
+  height: 565px;
+  padding-bottom: 3px;
+  background-color: #fcfcfc;
+  border: solid 1px #e4e4e4;
+  float: none;
+  position: relative;
+  border-right: none;
+}
+
+.chat__sorting {
+  margin-bottom: 1.125rem;
+  padding: 1rem 0.6875rem 0;
+
+  &::ng-deep.mat-button-toggle-group {
+    box-shadow: none !important;
+    width: 100%;
+  }
+
+  &::ng-deep.mat-button-toggle {
+    background-color: #fcfcfc;
+    border: solid 1px #e4e4e4;
+    color: #a4abb3;
+    font-family: Arimo;
+    font-size: 0.875rem;
+    font-weight: normal;
+    width: 33.333333%;
+
+    &:nth-child(1),
+    &:nth-child(2) {
+      border-right: none;
+    }
+
+    &.mat-button-toggle-checked {
+      background-color: #fa7500;
+      color: #ffffff;
+      border-top: 1px solid #fa7500;
+      border-bottom: 1px solid #fa7500;
+    }
+  }
+
+  &::ng-deep.mat-button-toggle-label {
+    margin-bottom: 0;
+    display: flex;
+    width: 100%;
+  }
+
+  &::ng-deep.mat-button-toggle-label-content {
+    height: 30px;
+    padding: 0 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+.chat__search {
+  position: relative;
+  margin-bottom: 0.625rem;
+  padding: 0 0.6875rem;
+
+  &.e-radio-button {
+    padding-top: 5px;
+  }
+
+  &-input {
+    width: 100%;
+    height: 35px;
+    font-family: Arimo;
+    font-style: italic;
+    font-size: 0.875rem;
+    font-weight: normal;
+    line-height: 1.39;
+    color: #a4abb3;
+    background-color: #ffffff;
+    border: solid 1px #e4e4e4;
+    padding-left: 0.625rem;
+    padding-right: 2.125rem;
+
+    &::-webkit-input-placeholder {
+      color: #a4abb3;
+    }
+
+    &::-moz-placeholder {
+      color: #a4abb3;
+    }
+
+    &:-moz-placeholder {
+      color: #a4abb3;
+    }
+
+    &:-ms-input-placeholder {
+      color: #a4abb3;
+    }
+  }
+
+  .material-icons {
+    position: absolute;
+    right: 1.313rem;
+    top: 0.4375rem;
+    bottom: 0;
+    color: #a4abb3;
+    font-size: 1.375rem;
+  }
+
+  .material-icons.center {
+    right: 0;
+    left: 0;
+    top: 0;
+    padding: 6px 0 0;
+    bottom: 0;
+    margin: 0 auto;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .material-icons.center:hover {
+    color: #fa7500;
+  }
+}
+
+.chat__select {
+  padding: 0 0.6875rem;
+
+  &::ng-deep.mat-select-arrow {
+    font-family: FontAwesome;
+    position: relative;
+    width: 12px;
+    height: 7px;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    margin: 0 4px;
+
+    &:before {
+      content: "\F107";
+      color: #3c4858;
+      font-size: 18px;
+      position: absolute;
+      top: -6px;
+      font-weight: bold;
+    }
+  }
+
+  &::ng-deep.mat-form-field-label {
+    font-family: Arimo;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #3c4858;
+  }
+
+  &::ng-deep.mat-form-field-infix {
+    width: 100%;
+    border-top: 0;
+  }
+
+  &::ng-deep.mat-form-field-wrapper {}
+
+  &::ng-deep.mat-form-field {
+    width: 100%;
+  }
+}
+
+.chat__list {
+  overflow-y: auto;
+  position: relative;
+  top: -1rem;
+
+  &__more {
+    color: #fa7500;
+    text-align: center;
+    margin: 10px auto 10px 0;
+    font-size: 0.5rem;
+  }
+
+  &::ng-deep.mat-list {
+    padding: 0;
+  }
+
+  &::ng-deep.mat-list .mat-list-item {
+    height: auto;
+  }
+
+  &::ng-deep.mat-list .mat-list-item:hover {
+    background: #dfe3e9;
+  }
+
+  &::ng-deep.mat-list-item-content {
+    padding: 0 !important;
+  }
+
+  a {
+    padding: 0.4375rem 0.6875rem 0.5rem;
+    text-decoration: none;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    clear: both;
+    border-radius: 0;
+    width: 100%;
+
+    &.active {
+      background-color: #fa7500;
+
+      .chat__list--date,
+      .chat__list--info,
+      .chat__list--name,
+      .chat__list--text {
+        color: #ffffff;
+      }
+
+      .chat__list--date {
+        i {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+
+  &--meta {
+    text-align: right;
+    position: absolute;
+    top: 3px;
+    right: 11px;
+  }
+
+  &--message-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 1px;
+    margin-bottom: 2px;
+  }
+
+  &--date {
+    font-family: Arimo;
+    font-size: 14px;
+    font-weight: 500;
+    color: #a4abb3;
+    display: flex;
+    line-height: 1;
+    white-space: nowrap;
+
+    i {
+      font-size: 0.75rem;
+      color: #fa7500;
+      margin-right: 3px;
+      font-weight: bold;
+    }
+  }
+
+  &.inwork {
+    top: 0;
+    color: #fa7500;
+    font-weight: bold;
+  }
+  &.absense {
+    top: 0;
+    color: #a4abb3;
+  }
+  &.posrate {
+    top: 0;
+    color: green;
+  }
+  &.negrate {
+    top: 0;
+    color: red;
+  }
+  &.ban {
+    top: 0;
+    color: red;
+  }
+
+  &--text-wrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  &--ordersBlock {
+    position: relative;
+    padding-right: 10px;
+  }
+
+  &--badge {
+    display: block;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    position: relative;
+    top: -4px;
+    background-color: #fa7500;
+    font-size: 0.875rem;
+    padding: 5px 7px 3px;
+    border-radius: 11px;
+    min-width: 22px;
+    text-align: center;
+
+    &--orders {
+      position: absolute;
+      right: -4px;
+      top: -6px;
+      background-color: #333;
+      font-family: Arimo;
+      font-size: 10px;
+      font-weight: 500;
+      color: #ffffff;
+      padding: 5px 1px 3px;
+      border-radius: 50%;
+      min-width: 20px;
+    }
+  }
+
+  &--photo {
+    display: block;
+    margin-right: 0.5rem;
+
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+  }
+
+  &--message {
+    overflow: hidden;
+    word-wrap: break-word;
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    height: inherit;
+  }
+
+  &--name {
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    font-family: Arimo;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #3c4858;
+    line-height: 1;
+    width: 100%;
+  }
+
+  &--info {
+    font-family: Arimo;
+    font-size: 0.75rem;
+    font-weight: normal;
+    line-height: 1;
+    color: #a4abb3;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    position: relative;
+    width: 100%;
+  }
+
+  &--text {
+    margin-top: 5px;
+    position: relative;
+    overflow: hidden;
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    //flex-grow: 1;
+    font-family: Arimo;
+    font-size: 0.875rem;
+    font-weight: normal;
+    line-height: 1;
+    color: #3c4858;
+  }
+}
+
+.e-radio-button {
+  ::ng-deep.mat-radio-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 12px;
+  }
+
+  ::ng-deep.mat-radio-label-content {
+    font-size: 0.875rem;
+    text-align: left;
+    font-weight: 500;
+    color: #2c2c2b;
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+
+  ::ng-deep.mat-radio-label {
+    margin-bottom: 0;
+  }
+
+  ::ng-deep.mat-radio-container {
+    width: 15px;
+    height: 15px;
+  }
+
+  ::ng-deep.mat-radio-outer-circle {
+    width: 15px;
+    height: 15px;
+    background-color: #ffffff;
+    border: solid 1px #cdcdcd;
+  }
+
+  ::ng-deep.mat-radio-inner-circle {
+    width: 5px;
+    height: 5px;
+    background-color: #ff761c;
+    left: 5px;
+    top: 5px;
+  }
+
+  ::ng-deep.mat-radio-button {
+    flex: 0 0 100%;
+    max-width: 100%;
+    line-height: 1.2;
+
+    &.mat-radio-disabled,
+    &.mat-radio-disabled,
+    &.mat-radio-label {
+      opacity: 0.5;
+    }
+  }
+
+  ::ng-deep.mat-radio-inner-circle {
+    transform: scale(0);
+  }
+
+  ::ng-deep.mat-radio-checked .mat-radio-inner-circle {
+    transform: scale(1);
+  }
+}
+@media only screen and (max-width: 991px) {
+  .chat__sorting {
+    &::ng-deep.mat-button-toggle {
+      font-size: 0.75rem;
+    }
+  }
+
+  .e-radio-button {
+    ::ng-deep.mat-radio-label-content {
+      font-size: 0.75rem;
+    }
+  }
+}
+@media only screen and (max-width: 767px) {
+  .chat__contacts {
+    float: none;
+    border-right: solid 1px #e4e4e4;
+  }
+
+  .e-radio-button {
+    ::ng-deep.mat-radio-label-content {
+      font-size: 0.875rem;
+    }
+  }
+}

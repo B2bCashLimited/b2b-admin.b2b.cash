@@ -1,0 +1,235 @@
+.coll-1 {
+  width: 730px;
+  margin-right: 10px;
+  position: relative;
+  padding-bottom: 50px;
+}
+.coll-2 {
+  width: 329px;
+}
+
+.rule-one {
+  color: green;
+}
+.rule-two {
+  color: orange;
+}
+.rule-three {
+  color: blue;
+}
+.rule-four {
+  color: red;
+}
+.rule-five {
+  color: pink;
+}
+
+.b-regex-header {
+  font-weight: bold;
+  font-size: 18px;
+}
+.b-regex-preview-table {
+  margin-left: -2px;
+  margin-top: 18px;
+  margin-bottom: 10px;
+
+  td {
+    padding: 0;
+  }
+
+  .b-regex-input {
+    input {
+      width: 536px;
+      border: 1px solid #cccccc;
+      border-radius: 3px;
+      height: 40px;
+      font-size: 15px;
+      padding-left: 10px;
+
+      &::placeholder {
+        color: #cccccc;
+      }
+    }
+  }
+}
+.b-regex-input-text {
+  padding-right: 9px;
+  font-size: 14px;
+}
+.b-regex-example-text {
+  height: 40px;
+  line-height: 40px;
+  max-width: 530px;
+  padding-left: 10px;
+  overflow: hidden;
+  color: #cccccc;
+}
+
+.b-regex-rules-wrap {
+  max-height: calc(65vh - 196px);
+  overflow-y: auto;
+}
+.b-regex-rule-wrap {
+  background: #f6f6f6;
+  padding: 9px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  margin-bottom: 15px;
+
+  &.rule-one-wrap {
+    border: 1px solid green;
+  }
+  &.rule-two-wrap {
+    border: 1px solid orange;
+  }
+  &.rule-three-wrap {
+    border: 1px solid blue;
+  }
+  &.rule-four-wrap {
+    border: 1px solid red;
+  }
+  &.rule-five-wrap {
+    border: 1px solid pink;
+  }
+
+  .b-regex-input {
+    select {
+      width: 140px;
+      height: 30px;
+      padding: 0 10px;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+    }
+
+    input {
+      width: 116px;
+      height: 30px;
+      padding: 0 10px;
+      border-radius: 4px;
+      border: 1px solid #cccccc;
+      margin-top: 5px;
+
+      &::placeholder {
+        color: #cccccc;
+      }
+    }
+  }
+}
+.b-regex-rule-header-wrap {
+  line-height: 40px;
+
+  .b-regex-input {
+    width: 140px;
+    margin-right: 80px;
+  }
+}
+.b-regex-rule-number {
+  font-size: 16px;
+}
+.b-regex-rule-dot {
+  height: 9px;
+  width: 9px;
+  border-radius: 50%;
+  margin: 15px 30px 0px 30px;
+  &.rule-one {
+    background: green;
+  }
+  &.rule-two {
+    background: orange;
+  }
+  &.rule-three {
+    background: blue;
+  }
+  &.rule-four {
+    background: red;
+  }
+  &.rule-five {
+    background: pink;
+  }
+}
+.b-regex-rule-text {
+  font-size: 14px;
+  margin-right: 20px;
+}
+
+.b-regex-ruling-wrap {
+
+}
+.b-regex-ruling {
+  width: 140px;
+  background: white;
+  padding: 10px;
+  float: left;
+  margin-right: 10px;
+  margin-top: 10px;
+  border-radius: 4px;
+
+  .b-regex-input {
+    input {
+      width: 116px;
+      height: 30px;
+      padding: 0 10px;
+      border-radius: 4px;
+      border: 1px solid #cccccc;
+      margin-top: 5px;
+
+      &::placeholder {
+        color: #cccccc;
+      }
+    }
+  }
+
+  &.active-bg {
+    background: rgba(212,214,240,1);
+  }
+}
+.b-regex-ruling-checkbox-wrap {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+}
+.b-regex-ruling-control-wrap {
+  mat-slide-toggle {
+    margin-top: 9px;
+  }
+}
+.b-regex-add-ruling-button {
+  border-radius: 50%;
+  min-width: 40px;
+  width: 40px;
+  height: 40px;
+  font-size: 25px;
+  padding: 0;
+  margin-top: 70px;
+  margin-bottom: 56px;
+}
+
+.b-regex-values-preview-wrap {
+  margin-top: 20px;
+  background: #FAFAFA;
+  height: calc(65vh - 42px);
+}
+.b-regex-values-preview-header {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 15px 0 10px 0;
+  margin: 0 15px 10px 15px;
+  border-bottom: 1px solid black;
+}
+.b-regex-values-preview-subwrap {
+  max-height: calc(65vh - 130px);
+  padding: 0 15px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.b-regex-control-buttons-wrap {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  button {
+    &:first-child {
+      margin-right: 10px;
+    }
+  }
+}

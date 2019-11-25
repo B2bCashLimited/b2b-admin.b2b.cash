@@ -1,0 +1,155 @@
+<div class="dialog-container b-checkbox-wrap"
+     [formGroup]="formGroup">
+  <h4 class="mt-0 mx-0 mb-3">
+    {{isEditMode ? 'Редактирование характеристики' : 'Добавьте характеристику'}}
+  </h4>
+  <div class="d-flex flex-column mb-3"
+       *ngIf="!withFormula">
+    <mat-checkbox
+      class="mr-3"
+      [disabled]="comparativeCharacteristics"
+      [(ngModel)]="namedCharacteristic"
+      [ngModelOptions]="{standalone: true}">Именная характеристика
+    </mat-checkbox>
+    <mat-checkbox
+      [disabled]="namedCharacteristic"
+      [(ngModel)]="comparativeCharacteristics"
+      [ngModelOptions]="{standalone: true}">Сравнительная Характеристика
+    </mat-checkbox>
+  </div>
+  <div class="d-flex flex-column">
+    <mat-form-field>
+      <input matInput
+             placeholder="Русское наименование"
+             formControlName="nameRu"
+             autocomplete="off">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="Английское наименование"
+             formControlName="nameEn"
+             autocomplete="off">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="Китайское наименование"
+             formControlName="nameCn"
+             autocomplete="off">
+    </mat-form-field>
+  </div>
+
+  <div class="d-flex flex-column">
+    <mat-form-field class="mr-3 w-100">
+      <mat-select placeholder="Выберите ед.изм."
+                  formControlName="controlUnitType">
+        <mat-option
+          *ngFor="let type of controlUnitTypes$ | async"
+          [value]="type.id">
+          {{type.nameRu}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select class="w-100"
+                  placeholder="Единицы измерения"
+                  formControlName="unit">
+        <mat-option
+          *ngFor="let unit of (units$ | async)?.units | controlUnitTypePipe: formGroup.value.controlUnitType"
+          [value]="unit.id">
+          {{unit.nameRu}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="d-flex flex-column">
+    <mat-form-field class="w-100" *ngIf="!withFormula">
+      <mat-select placeholder="Тип поля"
+                  formControlName="valueType">
+        <mat-option [value]="1">Текстовое значение</mat-option>
+        <mat-option [value]="2">Цифровое значение</mat-option>
+        <mat-option [value]="3">Список</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="d-flex flex-column"
+       *ngIf="formGroup.value.valueType===3">
+    <mat-form-field class="w-100">
+      <mat-chip-list #chipListRu>
+        <mat-chip *ngFor="let item of formGroup.value.possibleValuesRu, let i=index"
+                  [removable]="true"
+                  (removed)="onRemovePossibleValueClick(item, 'possibleValuesRu')">
+          {{item.value}}
+          <mat-icon *ngIf="canOverride(item.value)"
+                    (click)="overrideProperty(i)"
+                    class="override-icon ml-2"
+                    matTooltip="Переопределить"
+                    matTooltipPosition="above">create
+          </mat-icon>
+          <mat-icon matChipRemove
+                    matTooltip="Удалить"
+                    matTooltipPosition="above">cancel
+          </mat-icon>
+        </mat-chip>
+        <input placeholder="Наименование Русское"
+               [matChipInputFor]="chipListRu"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="true"
+               (matChipInputTokenEnd)="onAddPossibleValueClick($event, 'possibleValuesRu')"
+               autocomplete="off">
+      </mat-chip-list>
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <mat-chip-list #chipListEn>
+        <mat-chip *ngFor="let item of formGroup.value.possibleValuesEn"
+                  [removable]="true"
+                  (removed)="onRemovePossibleValueClick(item, 'possibleValuesEn')">
+          {{item.value}}
+          <mat-icon matChipRemove
+                    matTooltip="Удалить"
+                    matTooltipPosition="above">cancel
+          </mat-icon>
+        </mat-chip>
+        <input placeholder="Наименование Английское"
+               [matChipInputFor]="chipListEn"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="true"
+               (matChipInputTokenEnd)="onAddPossibleValueClick($event, 'possibleValuesEn')"
+               autocomplete="off">
+      </mat-chip-list>
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <mat-chip-list #chipListCn>
+        <mat-chip *ngFor="let item of formGroup.value.possibleValuesCn"
+                  [removable]="true"
+                  (removed)="onRemovePossibleValueClick(item, 'possibleValuesCn')">
+          {{item.value}}
+          <mat-icon matChipRemove
+                    matTooltip="Удалить"
+                    matTooltipPosition="above">cancel
+          </mat-icon>
+        </mat-chip>
+        <input placeholder="Наименование Китайское"
+               [matChipInputFor]="chipListCn"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="true"
+               (matChipInputTokenEnd)="onAddPossibleValueClick($event, 'possibleValuesCn')"
+               autocomplete="off">
+      </mat-chip-list>
+    </mat-form-field>
+  </div>
+</div>
+
+<div class="d-flex justify-content-end mt-3">
+  <button class="mr-2"
+          mat-raised-button
+          color="primary"
+          (click)="onCloseClick(false)">Закрыть
+  </button>
+  <button mat-raised-button
+          color="primary"
+          [disabled]="formGroup.invalid"
+          (click)="onCloseClick(true)">
+    {{isEditMode ? 'Изменить' : 'Добавить'}}
+  </button>
+</div>

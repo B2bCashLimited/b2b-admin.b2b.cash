@@ -1,0 +1,139 @@
+<h4>Кабинет руководителя</h4>
+<div *ngxPermissionsOnly="['SUPER_ADMIN', 'CHAT_MANAGER_VIEW']; else elseBlock; then thenBlock"></div>
+<ng-template #elseBlock>
+  <app-access-denied></app-access-denied>
+</ng-template>
+<ng-template #thenBlock>
+  <section class="wrapper">
+    <h1 class="title-h1 mb-3">Статистика консультантов</h1>
+    <div class="row d-flex align-items-end mb-4">
+      <div class="col-6 d-flex color-grey statistics-icons">
+        <div class=" mr-3">
+        <span class="">
+          <i class="bb bb-emoticon-excited fz-20"></i>
+        </span>
+          <div class="w-100">
+            {{consultantList?.positive}}
+          </div>
+        </div>
+        <div class=" mr-3">
+        <span class="">
+          <i class="bb bb-emoticon-dead fz-20"></i>
+        </span>
+          <div class="w-100">
+            {{consultantList?.negative}}
+          </div>
+        </div>
+        <div class=" mr-3">
+        <span class="">
+          <i class="material-icons fz-20 ">person</i>
+        </span>
+          <div class="w-100">
+            {{consultantList?.total}}
+          </div>
+        </div>
+        <!-- тут добавляется класс color-red  -->
+        <div class=" mr-3" [ngClass]="{'color-red': notEnoughConsultants()}">
+        <span class="">
+          <i class="material-icons fz-22">
+            av_timer
+          </i>
+        </span>
+          <div class="w-100">
+            {{secondsToDateString(consultantList?.totalResponseTime)}}
+          </div>
+        </div>
+
+        <div class="b-attention align-items-center" (click)="openNotEnoughConsultantsDialog()"
+             *ngIf="notEnoughConsultants()">
+          <i class="bb bb-alert-outline"></i>
+          <div>
+            <div class="e-text color-red text-uppercase">ВНИМАНИЕ!</div>
+            <div class="e-text">Нехватка консультантов!</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 d-flex align-items-end justify-content-end">
+        <div class="saturn-date">
+        </div>
+        <button mat-button class="e-btn ml-2" (click)="openSettingsDialog()" [disabled]="settingsSaveInProgress"><i class="material-icons">settings</i>
+        </button>
+      </div>
+    </div>
+
+    <div class="chat-card--wrap">
+      <div class="chat-card m-red" *ngFor="let cons of consultants">
+        <div class="row d-flex align-items-center justify-content-between">
+          <div class="chat-card--item col d-flex">
+            <div class="e-avatar">
+              <img alt="" class="img-fluid" [src]="consPhoto(cons)">
+            </div>
+            <div class="consultant-info">
+              <div class="name e-text">{{cons.firstName}} {{cons.middleName}} {{cons.lastName}}</div>
+              <div class="d-flex">
+                <div class="e-text d-flex align-items-center color-grey fz-13 mr-3" *ngIf="consHasRights(cons, 'ConsultantForGuests')">
+                  <i class="material-icons fz-18 color-grey mr-1">person</i> Гости
+                </div>
+                <div class="e-text d-flex align-items-center color-grey fz-13 mr-3" *ngIf="consHasRights(cons, 'ConsultantForBuyers')">
+                  <i class="material-icons fz-18 color-grey mr-1">account_box</i> Покупатели
+                </div>
+                <div class="e-text d-flex align-items-center color-grey fz-13 mr-3" *ngIf="consHasRights(cons, 'ConsultantForSellers')">
+                  <i class="bb bb-briefcase fz-18 color-grey mr-1"></i> Продавцы
+                </div>
+              </div>
+              <div class="d-flex fz-13 align-items-center">
+                <a class="e-phone" href="tel:{{cons.phone}}">
+                  {{cons.phone}}
+                </a>
+                <span class="pl-1 pr-1 color-silver">|</span>
+                <a href="mailto:{{cons.email}}" class="e-email">{{cons.email}}</a>
+              </div>
+            </div>
+          </div>
+          <div class="chat-card--item col-auto statistics-icons d-flex color-grey justify-content-between">
+            <div class=" ">
+        <span class="">
+          <i class="bb bb-emoticon-excited fz-20"></i>
+        </span>
+              <div class="w-100">
+                {{cons.stat.positive}}
+              </div>
+            </div>
+            <div class=" ">
+        <span class="">
+          <i class="bb bb-emoticon-dead fz-20"></i>
+        </span>
+              <div class="w-100">
+                {{cons.stat.negative}}
+              </div>
+            </div>
+            <div class=" ">
+        <span class="">
+          <i class="material-icons fz-20 ">person</i>
+        </span>
+              <div class="w-100">
+                {{cons.stat.total}}
+              </div>
+            </div>
+            <div class="font-weight-bold" [ngClass]="{'color-red' : consIsTrashTier(cons)}">
+        <span class="">
+          <i class="material-icons fz-22">
+            av_timer
+          </i>
+        </span>
+              <div class="w-100">
+                {{secondsToDateString(cons.stat.responseTime)}}
+              </div>
+            </div>
+          </div>
+          <div class="chat-card--item col-auto text-center color-dark-grey">
+            <div class="e-text font-weight-bold mb-3">Итого отработано</div>
+            <div class="e-text">{{secondsToDateString(cons.stat.workTime, 'HH:mm:ss')}}</div>
+          </div>
+          <div class="chat-card--item col-auto">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-template>

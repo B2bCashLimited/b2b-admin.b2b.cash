@@ -1,0 +1,20 @@
+::ng-deep .mat-dialog-content {
+  position: relative;
+
+  .scrollded-wrap {
+    max-height: 50vh;
+    overflow: auto;
+  }
+
+  .spinner {
+    top: calc(50% - 50px);
+    bottom: 0;
+    left: calc(50% - 50px);
+    right: 0;
+    position: relative;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,25 @@
+<div class="dialog-container">
+  <div class="d-flex mb-4 border-bottom">
+    <h4 class="w-50">Email</h4>
+    <h4 class="d-flex justify-content-center w-25">Количество</h4>
+    <h4 class="d-flex justify-content-center w-25">Действие</h4>
+  </div>
+
+  <div class="d-flex mb-2"
+       *ngFor="let item of receivedOffersStatistics">
+    <div class="w-50">{{item.email}}</div>
+    <div class="d-flex justify-content-center w-25">{{item.count}}</div>
+    <div class="d-flex justify-content-center w-25">
+      <i class="material-icons"
+         (click)="setEmailAsViewed(item)">remove_red_eye</i>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex flex-grow-1 justify-content-end">
+  <button class="mr-2"
+          mat-raised-button
+          color="primary"
+          (click)="onCloseClick()">Закрыть
+  </button>
+</div>

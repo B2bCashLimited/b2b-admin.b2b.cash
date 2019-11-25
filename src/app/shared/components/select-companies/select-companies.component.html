@@ -1,0 +1,16 @@
+<ng-select
+  bindLabel="nameRu"
+  bindValue="id"
+  placeholder="Выберите компанию"
+  [ngModel]="selectedCompanies"
+  [items]="companies"
+  [loading]="companiesLoading"
+  [multiple]="multiple"
+  [disabled]="disabled"
+  [closeOnSelect]="true"
+  [hideSelected]="true"
+  [virtualScroll]="true"
+  [typeahead]="companiesInput$"
+  (change)="onSelectedCompaniesChanged($event)"
+  (scrollToEnd)="onCompaniesScrollToEnd()"
+></ng-select>

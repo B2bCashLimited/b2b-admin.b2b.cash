@@ -1,0 +1,282 @@
+<section class="popup-wrapper">
+  <div class="e-popup-close d-flex align-items-center justify-content-center" *ngIf="!successPopupToggle">
+    <i class="bb bb-net" (click)="onNoClick()"></i>
+  </div>
+  <div class="popup-working-hours" *ngIf="!successPopupToggle">
+    <form [formGroup]="workingScheduleForm" (ngSubmit)="onFormSubmit()" novalidate>
+      <div class="popup-title">
+        Время работы {{!!data.scheduleData ? data.scheduleData.name : ('компании')}}
+      </div>
+      <div class="popup-select mb-3">
+        <div class="popup-subtitle">Часовой пояс</div>
+        <mat-select placeholder="" floatLabel="never" formControlName="timeZone">
+          <mat-option *ngFor="let zone of timeZoneList" [value]="zone.id">
+            {{zone.nameRu}}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class="popup-radio-button mb-3">
+        <div class="popup-subtitle">Вид графика</div>
+        <mat-radio-group formControlName="isStandard">
+          <div class="row">
+            <div class="col-auto">
+              <mat-radio-button [value]="0">Стандартный</mat-radio-button>
+            </div>
+            <div class="col-auto">
+              <mat-radio-button [value]="1">Гибкий</mat-radio-button>
+            </div>
+          </div>
+        </mat-radio-group>
+      </div>
+      <!-- блок для стандартного вида графика -->
+      <section *ngIf="workingScheduleForm.get('isStandard').value === 0">
+        <div class="popup-radio-button mb-3">
+          <div class="popup-subtitle">Выберите тип рабочего времени</div>
+          <mat-radio-group formControlName="isRegular">
+            <div class="row">
+              <div class="col-auto">
+                <mat-radio-button [value]="0">Одно время на все дни</mat-radio-button>
+              </div>
+              <div class="col-auto">
+                <mat-radio-button [value]="1">Разное время</mat-radio-button>
+              </div>
+            </div>
+          </mat-radio-group>
+        </div>
+        <!-- блок для  Одно время на все дни-->
+        <section *ngIf="workingScheduleForm.get('isRegular').value === 0">
+          <div class="popup-checkbox-button mb-3">
+            <div class="popup-subtitle">Выберите рабочие дни</div>
+            <div class="row">
+              <div class="col-auto mb-2" *ngFor="let wDay of weekList; index as i">
+                <mat-checkbox (change)="onChangeSelectedDay(i, $event)" [checked]="isCheckedOneTimeForAllDays(i)" [disabled]="isWorkingScheduleExists">{{wDay}}</mat-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="popup-input" formGroupName="workingTime">
+            <div class="popup-subtitle">Время рабочего дня</div>
+            <div class="d-flex justify-content-start align-items-center">
+              <div class="b-start d-flex flex-wrap">
+                <div class="popup-small-title w-100">Начало</div>
+                <mat-form-field class="input-small mb-3" floatLabel="never">
+                  <input matInput placeholder="00" formControlName="startHour" appHourInputDirective autocomplete="off">
+                  <span matSuffix>:</span>
+                </mat-form-field>
+                <mat-form-field class="input-small mb-3" floatLabel="never">
+                  <input matInput placeholder="00" formControlName="startMinute" appMinuteInputDirective autocomplete="off">
+                </mat-form-field>
+              </div>
+              <span class="ml-2 mr-2">-</span>
+
+              <div class="b-end d-flex flex-wrap">
+                <div class="popup-small-title w-100">Окончание</div>
+                <mat-form-field class="input-small mb-3" floatLabel="never">
+                  <input matInput placeholder="00" formControlName="endHour" appHourInputDirective autocomplete="off">
+                  <span matSuffix>:</span>
+                </mat-form-field>
+                <mat-form-field class="input-small mb-3" floatLabel="never">
+                  <input matInput placeholder="00" formControlName="endMinute" appMinuteInputDirective autocomplete="off">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- блок для Разное время -->
+        <section *ngIf="workingScheduleForm.get('isRegular').value === 1" formArrayName="differentTimes">
+          <div class="popup-subtitle">Выберите рабочие дни</div>
+          <div class="row" *ngFor="let item of workingScheduleForm.get('differentTimes')['controls']; first as f; index as i;">
+            <ng-container [formGroupName]="i">
+              <div class="col-auto" [ngClass]="{'pt-5': f}">
+                <mat-checkbox (change)="onChangeSelectedDay(i, $event)" [checked]="isCheckedDifferentTimes(item)" [disabled]="isWorkingScheduleExists">{{weekList[i]}}</mat-checkbox>
+              </div>
+              <div class="col-auto popup-input">
+                <div class="d-flex justify-content-start align-items-start">
+                  <div class="b-start d-flex flex-wrap">
+                    <div class="popup-small-title w-100" *ngIf="f">Начало</div>
+                    <mat-form-field class="input-small" floatLabel="never">
+                      <input matInput placeholder="00" formControlName="startHour" appHourInputDirective autocomplete="off">
+                      <span matSuffix>:</span>
+                    </mat-form-field>
+                    <mat-form-field class="input-small" floatLabel="never">
+                      <input matInput placeholder="00" formControlName="startMinute" appMinuteInputDirective autocomplete="off">
+                    </mat-form-field>
+                  </div>
+                  <span class="ml-2 mr-2">-</span>
+
+                  <div class="b-end d-flex flex-wrap">
+                    <div class="popup-small-title w-100"  *ngIf="f">Окончание</div>
+                    <mat-form-field class="input-small mb-3" floatLabel="never">
+                      <input matInput placeholder="00" formControlName="endHour" appHourInputDirective autocomplete="off">
+                      <span matSuffix>:</span>
+                    </mat-form-field>
+                    <mat-form-field class="input-small mb-3" floatLabel="never">
+                      <input matInput placeholder="00" formControlName="endMinute" appMinuteInputDirective autocomplete="off">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </section>
+
+        <div class="row mb-2">
+          <div class="col-12 justify-content-center d-flex">
+            <button mat-raised-button color="accent" class="e-btn-fill" [disabled]="isPending">
+              <em>{{isWorkingScheduleExists ? ('Изменить график работы') : ('Сохранить')}}</em>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- блок для Гибкий вида графика -->
+      <section *ngIf="workingScheduleForm.get('isStandard').value === 1">
+        <div class="popup-subtitle">Выберите рабочий день</div>
+        <div class="popup-calendar">
+          <!-- место для календаря -->
+          <b2b-ctm-calendar
+            [selectablePeriod]="true"
+            [selectableCalendar]="selectableCalendar"
+            [existedSelectedDays]="selectedDays"
+            [isHoliday]="isSelectedDayHoliday"
+            [minDate]="minDate"
+            [maxDate]="maxDate"
+            (selectedDaysArray)="onSelectedDaysArrayChange($event)"
+            (selectedDayObject)="onSelectedDayObjectChange($event)"></b2b-ctm-calendar>
+        </div>
+        <div class="popup-subtitle text-center" *ngIf="isDaySelected()">{{isSelectedDayHoliday ? ('Выходной день:') : ('Рабочее время:')}} <span class="font-weight-bold">{{selectedDayLabel}}</span></div>
+        <div class="popup-input" *ngIf="isDaySelected() && !isSelectedDayHoliday">
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="b-start d-flex flex-wrap">
+              <div class="popup-small-title w-100">Начало</div>
+              <mat-form-field class="input-small mb-3" floatLabel="never">
+                <input matInput placeholder="00" appHourInputDirective [(ngModel)]="selectedDay.startHour" [ngModelOptions]="{standalone: true}" maxlength="2" autocomplete="off">
+                <span matSuffix>:</span>
+              </mat-form-field>
+              <mat-form-field class="input-small mb-3" floatLabel="never">
+                <input matInput placeholder="00" appMinuteInputDirective [(ngModel)]="selectedDay.startMinute" [ngModelOptions]="{standalone: true}" maxlength="2" autocomplete="off">
+              </mat-form-field>
+            </div>
+            <span class="ml-2 mr-2 justify-content-center">-</span>
+
+            <div class="b-end d-flex flex-wrap">
+              <div class="popup-small-title w-100">Окончание</div>
+              <mat-form-field class="input-small mb-3" floatLabel="never">
+                <input matInput placeholder="00" appHourInputDirective [(ngModel)]="selectedDay.endHour" [ngModelOptions]="{standalone: true}" maxlength="2" autocomplete="off">
+                <span matSuffix>:</span>
+              </mat-form-field>
+              <mat-form-field class="input-small mb-3" floatLabel="never">
+                <input matInput placeholder="00" appMinuteInputDirective [(ngModel)]="selectedDay.endMinute" [ngModelOptions]="{standalone: true}" maxlength="2" autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="isWorkingTimeSet()">
+          <div class="col-12 justify-content-center d-flex mb-2">
+            <button mat-raised-button class="e-btn-border w-100" type="button" (click)="setDayAsHoliday()">
+              <em>{{isSelectedDayHoliday ? ('Рабочий') : ('Выходной')}}</em> <i class="material-icons ml-2">add</i>
+            </button>
+          </div>
+
+          <div class="col-12 justify-content-center d-flex mb-2">
+            <button mat-raised-button color="accent" class="e-btn-fill w-100" type="button" (click)="finishSchedule()">
+              <em>Завершить диапозон графика</em>
+            </button>
+          </div>
+          <!--<div class="col-12 justify-content-center d-flex mb-2" *ngIf="false">
+            <button mat-raised-button class="e-btn-border w-100" type="button">
+              <em>Шаг назад</em>
+            </button>
+          </div>-->
+        </div>
+
+        <div class="row" *ngIf="actionButtons">
+          <div class="col-12 justify-content-center d-flex mb-2">
+            <button mat-raised-button class="e-btn-border w-100" type="button" (click)="showStretchPeriod()">
+              <em>Протянуть диапазон</em> <i class="material-icons ml-2">add</i>
+            </button>
+          </div>
+
+          <div class="col-12 justify-content-center d-flex mb-2">
+            <button mat-raised-button color="accent" class="e-btn-fill w-100" [disabled]="isPending">
+              <em>Сохранить график в таком виде</em>
+            </button>
+          </div>
+        </div>
+
+        <div class="row mb-2" *ngIf="isStretchPeriod">
+          <div class="col-12">
+            <div class="popup-subtitle">Выберите рабочий день</div>
+
+            <div class="row">
+              <div class="col-6 ">
+                <div class="popup-input">
+                  <div class="d-flex flex-column justify-content-center align-items-center">
+                    <mat-form-field class=" " floatLabel="never">
+                      <input matInput placeholder="31.12.2019" formControlName="stretchPeriod" autocomplete="off">
+                    </mat-form-field>
+
+                    <span class="e-text-small text-danger pt-2" *ngIf="stretchDateError">{{stretchDateError}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6 ">
+                <button mat-raised-button color="accent" class="e-btn-fill m-width w-100" type="button" (click)="stretchPeriod()" [disabled]="!workingScheduleForm.get('stretchPeriod').valid">
+                  <em>Протянуть</em>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isWorkingScheduleExists || saveAfterStretch">
+          <div class="col-12 justify-content-center align-items-center d-flex mb-2" *ngIf="!isWorkingScheduleExists && !dateForShow && !timeForShow && selectedDays.length > 0">
+            <div class="row justify-content-center">
+              <div class="col-8 d-flex">
+                <i class="material-icons mr-2">touch_app</i><p class="m-0 e-text-small">Нажмите на дату чтобы посмотреть время</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 justify-content-center align-items-center d-flex mb-2" *ngIf="selectedDays.length > 0 && (dateForShow || timeForShow)">
+            <div class="row justify-content-center">
+              <div class="col-12 d-flex flex-column align-items-center">
+                <p class="m-0 font-weight-bold" *ngIf="dateForShow">{{dateForShow}}</p>
+                <p class="m-0 font-weight-bold" *ngIf="timeForShow">{{timeForShow}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 justify-content-center d-flex mb-2">
+            <button mat-raised-button color="accent" class="e-btn-fill w-100" [disabled]="isPending">
+              <em>{{isWorkingScheduleExists ? ('Изменить график работы') : ('Сохранить график работы')}}</em>
+            </button>
+          </div>
+        </div>
+      </section>
+    </form>
+  </div>
+
+  <div class="popup-working-save" *ngIf="successPopupToggle">
+    <div class="row mb-4">
+      <div class="col-12 d-flex justify-content-center">
+        <i class="bb bb-check"></i>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 d-flex justify-content-center">
+        <div class="popup-title">
+          График работы успешно сохранен
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 d-flex justify-content-center">
+        <button mat-raised-button color="accent" class="e-btn-fill" (click)="onNoClick()">
+          <em>Ок</em>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.e-back {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.e-arrow {
+  font-size: 30px;
+}

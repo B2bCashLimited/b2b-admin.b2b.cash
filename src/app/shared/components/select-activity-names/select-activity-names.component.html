@@ -1,0 +1,15 @@
+<ng-select
+  [items]="activityNames$ | async"
+  (change)="onSelectedActivityNameChanged($event)"
+  [loading]="loading"
+  [maxSelectedItems]="maxSelectedItems"
+  [(ngModel)]="selectedActivityName"
+  [multiple]="multiple"
+  [closeOnSelect]="true"
+  [hideSelected]="true"
+  [virtualScroll]="true"
+  [disabled]="disabled"
+  bindValue="id"
+  bindLabel="nameRu"
+  placeholder="Выберите вид деятельности">
+</ng-select>

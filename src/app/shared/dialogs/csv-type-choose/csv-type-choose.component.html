@@ -1,0 +1,40 @@
+<h5 class="mt-0 mb-4 text-center">Скачать файл:</h5>
+
+<div class="d-flex flex-column">
+  <p>Ссылка Google: {{googleUrl || noFileText}}</p>
+
+  <button mat-raised-button color="primary" class="mr-2 p-0" [disabled]="isPending || !googleUrl"
+          (click)="closeDialog()">
+    <a #google class="d-block w-100">Для Google</a>
+  </button>
+
+  <p>Ссылка Google identity: {{googleIdentityUrl || noFileText}}</p>
+
+  <button mat-raised-button color="primary" class="mr-2 p-0" [disabled]="isPending || !googleIdentityUrl"
+          (click)="closeDialog()">
+    <a #googleIdentity class="d-block w-100">Для Google identity</a>
+  </button>
+
+  <p>Ссылка Yandex XML: {{yandexXMLUrl || noFileText}}</p>
+
+  <button mat-raised-button color="primary" class="p-0" [disabled]="isPending || !yandexXMLUrl" (click)="closeDialog()">
+    <a #yandexXML class="d-block w-100">Для Yandex XML</a>
+  </button>
+
+  <p>Ссылка Yandex CSV: {{yandexCSVUrl || noFileText}}</p>
+
+  <button mat-raised-button color="primary" class="p-0" [disabled]="isPending || !yandexCSVUrl" (click)="closeDialog()">
+    <a #yandexCSV class="d-block w-100">Для Yandex CSV</a>
+  </button>
+
+  <p>Ссылка k50: {{k50Url || noFileText}}</p>
+
+  <button mat-raised-button color="primary" class="p-0" [disabled]="isPending || !k50Url" (click)="closeDialog()">
+    <a #k50 class="d-block w-100">Для k50</a>
+  </button>
+</div>
+
+<div class="d-flex justify-content-center mt-5">
+  <button mat-raised-button color="warn" (click)="closeDialog()">Закрыть
+  </button>
+</div>

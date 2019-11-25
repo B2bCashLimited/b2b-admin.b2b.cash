@@ -1,0 +1,69 @@
+<div class="b-inner">
+  <div class="d-flex b-dictionary-header-wrap">
+    <div class="b-dictionary-header-coll1">
+      В загруженном xls
+    </div>
+    <div class="b-dictionary-header-coll2">
+      У нас в базе
+    </div>
+  </div>
+  <div [formGroup]="formGroup">
+    <div [formGroupName]="item.ctrlName" *ngFor="let item of dataSource" class="d-flex b-dictionary-line-wrap">
+      <div class="b-dictionary-line-coll1">
+        <select class="form-control width-3" formControlName="field" (change)="resetValueForField(formGroup.get(item.ctrlName))">
+          <option *ngFor="let fld of fields" [value]="fld.column">{{ fld.name }}</option>
+        </select>
+        <select *ngIf="formGroup.get(item.ctrlName).value?.field && formGroup.get(item.ctrlName).value?.type === 4"
+                class="form-control width-3" formControlName="valueStat">
+          <option *ngFor="let value of getValuesForField(formGroup.get(item.ctrlName).value?.field)" [value]="value">{{ value }}</option>
+        </select>
+      </div>
+      <div class="b-dictionary-line-coll2">
+        <div class="b-arrow"><div class="b-arrow--line"></div></div>
+      </div>
+      <div class="b-dictionary-line-coll3">
+        <div *ngIf="formGroup.get(item.ctrlName).value?.type !== 3">
+          <div class="category-btn width-1" (click)="selectCategory(item)">{{item.category && item.category.nameRu || 'Выберите категорию'}}</div>
+        </div>
+        <div *ngIf="formGroup.get(item.ctrlName).value?.type === 3">
+          <div class="b-input width-1">
+            <input formControlName="value" placeholder="Инпут">
+          </div>
+        </div>
+        <div class="wrap-radio-button">
+          <mat-radio-group formControlName="type" (change)="onRadioChange($event.value, item, formGroup.get(item.ctrlName))">
+            <mat-radio-button class="mr-3" [value]="1" color="primary">Характеристика</mat-radio-button>
+            <mat-radio-button class="mr-3" [value]="2" color="primary">Категория</mat-radio-button>
+            <mat-radio-button class="mr-3" [value]="3" color="primary">Поле</mat-radio-button>
+            <mat-radio-button [value]="4" color="primary">Значения хар-ки</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+      <div class="b-dictionary-line-coll4">
+        <div *ngIf="formGroup.get(item.ctrlName).value?.type === 1 || formGroup.get(item.ctrlName).value?.type === 4">
+          <select class="form-control width-2" formControlName="prop" (change)="propChanges(item)">
+            <option *ngFor="let prop of filteredCategoryProperties(item.categoryProperties, formGroup.get(item.ctrlName).value?.type == 4)" [value]="prop.id">{{prop.nameRu}}</option>
+          </select>
+        </div>
+        <div *ngIf="formGroup.get(item.ctrlName).value?.type === 4">
+          <select class="form-control width-2" formControlName="posValue" (change)="posValueChanges(item)">
+            <option *ngFor="let pv of filteredPossibleValues(item)?.possibleValuesRu" [value]="pv.value">{{pv.value}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="b-dictionary-line-coll5">
+        <div class="btn-delete">
+          <button mat-icon-button (click)="deleteRow(item)" color="warn">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center">
+    <button class="p-0" (click)="addRow()" mat-button color="primary">
+      <i class="bb bb-plus mr-2"></i> Добавить поле
+    </button>
+  </div>
+</div>

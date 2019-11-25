@@ -1,0 +1,42 @@
+@import '~ngx-toastr/toastr.css';
+@import "~@ng-select/ng-select/themes/material.theme.css";
+@import "~quill/dist/quill.snow.css";
+@import "app/styles/bootstrap";
+@import "app/styles/flags";
+@import "app/styles/theme";
+@import "app/styles/b2bcash";
+@import "app/styles/_b2bcash-category";
+@import "app/components/ctm-calendar/scheduleCalendar";
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+$fa-font-path: '~font-awesome/fonts';
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #fafafa;
+}
+
+[class^="col-"],
+[class^="container"] {
+  box-sizing: border-box;
+}
+
+// Hide HTML5 Up and Down arrows
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

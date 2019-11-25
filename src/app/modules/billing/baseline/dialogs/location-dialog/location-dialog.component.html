@@ -1,0 +1,45 @@
+<div class="d-flex flex-column">
+  <h4 class="mt-0">Добавить {{type}}</h4>
+
+  <div class="d-flex mb-4">
+    <b2b-select-countries
+      class="w-100"
+      *ngIf="dialogData.type==='country'"
+      appendTo="body"
+      [maxSelectedItems]="1"
+      (countriesChange)="onLocationSelected($event)"
+      [multiple]="false">
+    </b2b-select-countries>
+
+    <b2b-select-region
+      class="w-100"
+      *ngIf="dialogData.type==='region' && dialogData.node"
+      [validator]="false"
+      [countryId]="dialogData.node.country"
+      placeholder="Регион"
+      [limit]="25"
+      (locationSelected)="onLocationSelected($event)">
+    </b2b-select-region>
+
+    <b2b-select-city
+      class="w-100"
+      *ngIf="dialogData.type==='locality' && dialogData.node"
+      [validator]="false"
+      [regionId]="dialogData.node.region"
+      placeholder="Город"
+      (locationSelected)="onLocationSelected($event)">
+    </b2b-select-city>
+  </div>
+
+  <div class="d-flex justify-content-end">
+    <button
+      class="mr-3"
+      mat-raised-button color="primary"
+      (click)="onCloseClick(false)">Закрыть
+    </button>
+    <button
+      mat-raised-button color="warn"
+      (click)="onCloseClick(true)">Добавить
+    </button>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="loading-shade" *ngIf="isLoading">
+  <mat-spinner></mat-spinner>
+</div>
+<div class="buttons" mat-dialog-actions>
+  <button class="mr-2"
+    mat-raised-button
+    color="primary"
+    (click)="closeDialog()">Закрыть
+  </button>
+  <button class="mr-2"
+    mat-raised-button
+    color="primary"
+    (click)="sandListCategory()">Сохранить
+  </button>
+</div>
+<mat-form-field class="flex-grow-1 mr-3">
+  <input [formControl]="formControl"
+         matInput
+         placeholder="Поиск категорий..."
+         autocomplete="off">
+</mat-form-field>
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+   <div class="node-wrapper node-wrapper--default">
+    <button mat-icon-button disabled></button>
+    <mat-checkbox class="checklist-leaf-node"
+      [checked]="checklistSelection.isSelected(node)"
+      (change)="checklistSelection.toggle(node);">{{node.nameRu}}</mat-checkbox>
+      <div *ngTemplateOutlet="actions;context: {category: node}"></div>
+    </div>
+  </mat-tree-node>
+
+  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+  <div class="node-wrapper">
+    <button mat-icon-button matTreeNodeToggle
+            [attr.aria-label]="'toggle ' + node.filename">
+      <mat-icon class="mat-icon-rtl-mirror">
+        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+      </mat-icon>
+    </button>
+    <mat-checkbox [checked]="descendantsAllSelected(node)"
+      [indeterminate]="descendantsPartiallySelected(node)"
+      (change)="todoItemSelectionToggle(node)">{{node.nameRu}}</mat-checkbox>
+      </div>
+  </mat-tree-node>
+</mat-tree>
+

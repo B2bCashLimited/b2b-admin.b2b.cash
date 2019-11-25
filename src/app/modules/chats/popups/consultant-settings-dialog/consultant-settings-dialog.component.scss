@@ -1,0 +1,28 @@
+p {
+  margin-bottom: 0;
+  color:#A5A5A5;
+
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.seconds {
+  position: relative;
+  top: 12px;
+  left: 9px;
+}
+.e-input {
+  font-size: 0.9rem;
+  &::ng-deep.mat-form-field-wrapper {
+    padding-bottom: 0;
+    width: 30%;
+  }
+  &::ng-deep.mat-form-field-infix {
+    padding: 0.3em 0 0.8em 0;
+  }
+  &::ng-deep.mat-form-field-flex {
+    width: 45px;
+  }
+}

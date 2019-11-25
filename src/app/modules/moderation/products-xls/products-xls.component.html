@@ -1,0 +1,133 @@
+<div class="">
+  <div class="row b-search-wrap">
+    <div class="col-auto">
+      <mat-select class="form-control" [(ngModel)]="structureStatus" placeholder="Статус схемы">
+        <mat-option value="">Все</mat-option>
+        <mat-option [value]="0">Схема не установлена</mat-option>
+        <mat-option [value]="1">Установлены категории</mat-option>
+        <mat-option [value]="2">Схема установлена</mat-option>
+      </mat-select>
+    </div>
+    <div class="col-auto">
+      <div class="data-range"
+           (click)="onDateChange()"
+           matTooltip="Выберите период"
+           matTooltipPosition="above">
+        <div class="inner-wrap">
+          От {{startDate | date:'dd.MM.yy'}} до {{finishDate | date:'dd.MM.yy'}}
+          <i class="material-icons">date_range</i>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="input-group">
+        <input type="text" matInput placeholder="Поиск">
+        <span matSuffix>
+          <button mat-raised-button color="primary" (click)="onSearch()">
+            <i class="fa fa-search" aria-hidden="true"></i> Поиск
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mat-elevation-z8 text-center">
+  <table class="table-1" mat-table [dataSource]="dataSource" matSort>
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> ID </th>
+      <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="dateAndUser">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">
+        Дата создания и изменения
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <div>{{row.dateCreated.date | date: 'dd.MM.yyyy HH:mm'}}</div>
+        <div>{{row.dateUpdated.date | date: 'dd.MM.yyyy HH:mm'}}</div>
+      </td>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="activityAndShowcase">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">
+        <div>Вид деятельности,</div>
+        <div>ID витрины</div>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <div class="fw-500" *ngIf="row.showcase && row.showcase.company">{{row.showcase.company.name}}</div>
+        <div>{{row.showcase ? row.showcase.id : '--'}}</div>
+      </td>
+    </ng-container>
+
+    <!-- File or url Column -->
+    <ng-container matColumnDef="fileOrUrl">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Файл или сcылка на XLS </th>
+      <td mat-cell *matCellDef="let row">
+        <div class="d-flex">
+          <div *ngIf="row.fileUrl" class="b-file-url">
+            <a [href]="row.fileUrl" target="_blank">{{row.fileName}}</a>
+          </div>
+          <a *ngIf="row.fileUrl" [href]="row.fileUrl" target="_blank">
+            <button mat-raised-button color="primary" class="mx-1"
+              matTooltip="Скачать файл" matTooltipPosition="above">
+              <i class="bb bb-down"></i>
+            </button>
+          </a>
+          <button (click)="File.click()" mat-raised-button color="primary" class="mx-1"
+            matTooltip="Загрузить файл" matTooltipPosition="above">
+            <i class="bb bb-up"></i>
+          </button>
+          <input type="file" #File hidden (change)="onFileAdded(row.id, $event)">
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Статус схемы</th>
+      <td mat-cell *matCellDef="let row">
+        <div class="d-flex align-items-center">
+          <i [class]="row.statusObject.icon"></i>
+          <div class="text-left">{{row.statusObject.text}}</div>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Действие</th>
+      <td mat-cell *matCellDef="let row">
+        <div class="d-flex">
+          <button mat-raised-button color="primary" class="mx-1"
+            matTooltip="Задать схему" matTooltipPosition="above"
+            (click)="onSetSchemeClick(row)">
+            <i class="bb bb-wrench"></i>
+          </button>
+          <button mat-raised-button color="primary" class="mx-1"
+            matTooltip="Задачи" matTooltipPosition="above"
+            (click)="onTaskClick(row)">
+            <i class="bb bb-list-checks"></i>
+          </button>
+          <button mat-raised-button color="primary" class="mx-1"
+            matTooltip="Сырой парсинг продуктов" matTooltipPosition="above"
+            (click)="onParsedProductClick(row)">
+            <i class="bb bb-power"></i>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    [length]="pager.length"
+    [pageSize]="pager.pageSize"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+</div>

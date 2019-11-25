@@ -1,0 +1,16 @@
+<div class="dialog-container">
+  <h3 style="margin-top: 0;">Удаление шаблона</h3>
+
+  <div style="margin-bottom: 16px;">
+    Если вы удалите шаблон, то для ранее оцененных компаний потребуется повторная оценка. Вы уверены, что хотите удалить шаблон?
+  </div>
+
+  <div style="display: flex;flex-grow: 1;justify-content: flex-end;">
+    <button style="margin-right: 10px;" mat-raised-button color="warn"
+            (click)="onCloseClick(true)">Удалить
+    </button>
+    <button mat-raised-button color="primary"
+            (click)="onCloseClick(false)">Отмена
+    </button>
+  </div>
+</div>

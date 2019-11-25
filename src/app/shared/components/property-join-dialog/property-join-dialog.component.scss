@@ -1,0 +1,60 @@
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.card-wrap {
+  height: 70vh;
+  overflow: auto;
+  margin-bottom: 20px;
+  table {
+    box-shadow: none !important;
+    width: 100%;
+    tr {
+      height: auto !important;
+    }
+    th {
+      font-weight: bold;
+      color: #000000;
+    }
+    td {
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      &:first-child {
+        border-right: 1px solid #ffffff;
+        border-top: 1px solid #ffffff;
+      }
+      &:nth-child(2) {
+        border-top: 1px solid #ffffff;
+        width: 80px;
+        text-align: center;
+      }
+    }
+    th,
+    td {
+      padding: 8px 10px;
+      &:last-child {
+        border-color: #ffffff;
+        width: 30px;
+        text-align: center;
+      }
+    }
+  }
+}
+
+.b-checkbox-wrap {
+  ::ng-deep.mat-checkbox {
+    &.mat-accent {
+      .mat-ripple-element {
+        background-color: #3f51b5;
+      }
+    }
+    &.mat-accent {
+      &.mat-checkbox-checked {
+        .mat-checkbox-background {
+          background-color: #3f51b5;
+        }
+      }
+    }
+  }
+}

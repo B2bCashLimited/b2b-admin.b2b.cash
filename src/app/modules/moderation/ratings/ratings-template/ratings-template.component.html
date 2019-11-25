@@ -1,0 +1,71 @@
+<!-- Заголовок -->
+<section>
+  <h4 *ngIf="create"><a id="back-arrow" (click)="back()"> < </a>  Создание нового шаблона</h4>
+  <h4 *ngIf="edit"><a id="back-arrow" (click)="back()"> < </a> Редактирование шаблона "{{country?.nameRu}}"</h4>
+</section>
+Переключение языков
+<section>
+  <div class="d-flex justify-content-end language-button-wrap">
+    <button (click)="activeLanguage='Ru'" [ngClass]="{opaque: activeLanguage !== 'Ru'}"><img src="/assets/img/svg-icons/ru.svg"></button>
+    <button (click)="activeLanguage='En'" [ngClass]="{opaque: activeLanguage !== 'En'}"><img src="/assets/img/svg-icons/en.svg"></button>
+    <button (click)="activeLanguage='Cn'" [ngClass]="{opaque: activeLanguage !== 'Cn'}"><img src="/assets/img/svg-icons/cn.svg"></button>
+  </div>
+</section>
+
+<!-- Вопросы -->
+<section class="questions-section" *ngIf="!loading" [formGroup]="form">
+  <div class="questions-block" formArrayName="questions">
+    <div *ngFor="let question of questionsForm.controls; let indexQuestion = index" class="question" formGroupName="{{indexQuestion}}">
+      <div class="number">{{indexQuestion + 1}}</div>
+      <div class="content">
+        <div class="question-title">
+          <input *ngIf="activeLanguage === 'Ru'" formControlName="questionRu" placeholder="Введите вопрос для оценки" class="e-input">
+          <input *ngIf="activeLanguage === 'En'" formControlName="questionEn" placeholder="Введите вопрос для оценки" class="e-input">
+          <input *ngIf="activeLanguage === 'Cn'" formControlName="questionCn" placeholder="Введите вопрос для оценки" class="e-input">
+          <button
+            *ngIf="indexQuestion !== 0"
+            mat-button
+            (click)="removeQuestion(form, indexQuestion)"
+            color="warn"
+            class="remove-button"
+          ><i class="material-icons">remove_circle</i></button>
+        </div>
+        <div class="question-answers" formArrayName="answers">
+          <div class="question-answer" *ngFor="let answer of question.controls.answers.controls; let indexAnswer = index" formGroupName="{{indexAnswer}}">
+            <input *ngIf="activeLanguage === 'Ru'" formControlName="answerRu" placeholder="Вариант ответа"  class="e-input">
+            <input *ngIf="activeLanguage === 'En'" formControlName="answerEn" placeholder="Вариант ответа"  class="e-input">
+            <input *ngIf="activeLanguage === 'Cn'" formControlName="answerCn" placeholder="Вариант ответа"  class="e-input">
+            <select formControlName="scope" placeholder="Цена"  class="e-input">
+              <option value="0">0</option>
+              <option value="0.5">0.5</option>
+              <option value="1">1</option>
+            </select>
+            <button
+              *ngIf="indexAnswer !== 0"
+              mat-button
+              (click)="removeAnswer(question, indexAnswer)"
+              color="warn"
+              class="remove-button"
+            ><i class="material-icons">remove_circle</i></button>
+
+          </div>
+        </div>
+        <div class="answer-add">
+          <button mat-button (click)="pushAnswer(question)">
+            <i class="material-icons">add_circle_outline</i> <span> Добавить вариант ответа</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="question">
+    <div class="number"></div>
+    <div class="content question-add">
+      <button mat-raised-button (click)="addQuestion(form)" class="" [disabled]="questions.length > 5">
+        <i class="material-icons">add_circle_outline</i> <span> Добавить вопрос</span>
+      </button>
+      <button mat-raised-button color="primary" (click)="save(form)">Сохранить</button>
+    </div>
+  </div>
+</section>

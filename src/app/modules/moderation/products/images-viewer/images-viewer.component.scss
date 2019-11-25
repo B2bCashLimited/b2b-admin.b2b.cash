@@ -1,0 +1,72 @@
+:host{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    overflow: auto;
+}
+
+.viewing-img {
+    max-width: 85vw;
+    max-height: 100vh;
+}
+
+.viewer-action {
+    position: fixed;
+    width: 20%;
+    height: 100%;
+    top: 0;
+
+    &:hover{
+        cursor: pointer;
+        color: gray;
+    }
+}
+
+.viewer-prev-area{
+    left: 0;
+    text-align: left;
+}
+
+.viewer-next-area {
+    right: 0;
+    text-align: right;
+}
+
+
+.viewer-close-area {
+    right: 0;
+    width: 100px !important;
+    height: 100px !important;
+    z-index: 1050;
+    text-align:right;
+}
+
+.fa {
+    color: inherit;
+    position: relative;
+    top: 45%;
+}
+
+.fa-angle-left{
+    left: 60px;
+}
+
+.fa-angle-right {
+    right: 60px;
+}
+
+.fa-times{
+    top: 35px !important;
+    right: 37px;
+}
+
+.active-btn{
+    color: gray;
+}

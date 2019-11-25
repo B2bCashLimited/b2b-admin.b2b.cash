@@ -1,0 +1,155 @@
+<mat-card class="d-flex flex-grow-1 flex-column">
+  <div class="d-flex align-items-center mb-3 w-100">
+    <h2 class="m-0 flex-grow-1">Уточните набор бизнес-значений для Витрины</h2>
+    <button class="align-self-start" mat-raised-button color="primary"
+            (click)="onAddBusinessPropertyDialogClick()">
+      Добавить еще бизнес-значение
+    </button>
+  </div>
+  <div class="d-flex flex-column flex-grow-1">
+    <div class="d-flex justify-content-between flex-grow-1 mb-3">
+      <div class="d-flex flex-column mr-2 w-100">
+        <div class="d-flex justify-content-between mb-2 px-3">
+          <span>Наименование характеристик</span>
+          <span>Добавить форму</span>
+        </div>
+        <div class="d-flex flex-column min-h-50 border-grey flex-grow-1">
+          <div class="d-flex align-items-center border-bottom-grey p-3"
+               *ngFor="let categoryProperty of businessProperties">
+            <span class="mr-auto">
+              {{categoryProperty.nameRu || categoryProperty.nameEn || categoryProperty.nameCn}}
+            </span>
+            <div class="d-flex">
+              <button mat-icon-button color="warn"
+                      (click)="onDestroyBusinessPropertyClick(categoryProperty)">
+                <mat-icon>clear</mat-icon>
+              </button>
+              <button mat-icon-button color="primary"
+                      (click)="onEditBusinessPropertyClick(categoryProperty)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="primary"
+                      (click)="onAddBusinessPropertyClick(categoryProperty)">
+                <mat-icon>add_box</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column w-100 ml-2">
+        <div class="d-flex justify-content-between px-3 mb-2">
+          <span>Наименование характеристик</span>
+          <span>Удалить из формы</span>
+        </div>
+        <div class="d-flex flex-column min-h-50 border-grey"
+          cdkDropList (cdkDropListDropped)="dropBusinessProperties($event)">
+          <div class="example-box" *ngFor="let categoryProperty of businessPropertiesToShow" cdkDrag>
+            <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+            <span class="mr-auto">
+              {{categoryProperty.nameRu || categoryProperty.nameEn || categoryProperty.nameCn}}
+            </span>
+
+            <button mat-icon-button color="primary"
+                    (click)="onDisableBusinessPropertyClick(categoryProperty)">
+              <mat-icon>indeterminate_check_box</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex align-items-center mb-3 w-100">
+    <h2 class="m-0 flex-grow-1">Уточните набор бизнес-значений для Витрины</h2>
+    <button class="align-self-start"
+            mat-raised-button color="primary"
+            (click)="onAddCategoryFeatureDialogClick()">
+      Добавить характеристики
+    </button>
+  </div>
+  <div class="d-flex flex-grow-1 flex-column">
+    <div class="d-flex flex-grow-1 justify-content-between mb-3">
+      <div class="d-flex flex-column mr-2 w-100">
+        <div class="d-flex justify-content-between mb-2 px-3">
+          <span>Наименование характеристик</span>
+          <span>Добавить форму</span>
+        </div>
+        <div class="d-flex flex-grow-1 flex-column border-grey min-h-50">
+          <div class="d-flex align-items-center border-bottom-grey p-2"
+               *ngFor="let categoryProperty of categoryProperties">
+            <span class="mr-auto">
+              {{categoryProperty.nameRu || categoryProperty.nameEn || categoryProperty.nameCn}}
+            </span>
+            <div class="d-flex">
+              <button mat-icon-button color="primary"
+                  *ngIf="!categoryProperty.default"
+                  (click)="onDeleteCategoryPropertyFromProducts(categoryProperty)">
+                <i class="bb bb-delete-value"></i>
+              </button>
+              <button mat-icon-button color="primary"
+                (click)="onOverrideCategoryPropertyFromProducts(categoryProperty)"
+                *ngIf="!categoryProperty.default">
+                <i class="bb bb-override"></i>
+              </button>
+              <button mat-icon-button color="primary"
+                *ngIf="!categoryProperty.default"
+                (click)="onJoinCategoryProperties(categoryProperty)">
+                <i class="bb bb-combine"></i>
+              </button>
+
+              <div *ngIf="!categoryProperty.default" class="e-line"></div>
+
+              <button mat-icon-button color="warn"
+                      [disabled]="categoryProperty.default || categoryProperty.isSpecial"
+                      (click)="onDestroyCategoryPropertyClick(categoryProperty)">
+                <mat-icon>clear</mat-icon>
+              </button>
+              <button mat-icon-button color="primary"
+                      [disabled]="categoryProperty.default"
+                      (click)="onEditCategoryPropertyClick(categoryProperty)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="primary"
+                      [disabled]="categoryProperty.default"
+                      (click)="onAddCategoryPropertyClick(categoryProperty)">
+                <mat-icon>add_box</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex ml-2 w-100 flex-column">
+        <div class="d-flex justify-content-between px-3 mb-2">
+          <span>Наименование характеристик</span>
+          <span>Удалить из формы</span>
+        </div>
+        <div class="d-flex flex-column flex-grow-1 border-grey overflow-hidden min-h-50"
+          cdkDropList (cdkDropListDropped)="drop($event)">
+          <div class="example-box" *ngFor="let categoryProperty of categoryPropertiesToShow" cdkDrag>
+            <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+            <span class="mr-auto">
+              {{categoryProperty.nameRu || categoryProperty.nameEn || categoryProperty.nameCn}}
+            </span>
+
+            <div class="d-flex align-items-center">
+              <mat-checkbox class="mr-1"
+                [checked]="categoryProperty.isFormula"
+                (change)="onChangeFormulaClick($event.checked, categoryProperty)">
+                Авто просчет
+              </mat-checkbox>
+              <button mat-icon-button color="primary"
+                      [disabled]="categoryProperty.isFormula || categoryProperty.isSpecial"
+                      (click)="onRemoveFormulaClick(categoryProperty)">
+                <mat-icon>indeterminate_check_box</mat-icon>
+              </button>
+              <button mat-icon-button color="primary"
+                      [disabled]="!categoryProperty.isFormula"
+                      (click)="onEditFormulaClick(categoryProperty)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card>

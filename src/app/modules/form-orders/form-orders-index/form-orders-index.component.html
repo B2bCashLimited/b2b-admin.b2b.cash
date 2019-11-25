@@ -1,0 +1,18 @@
+<mat-card class="d-flex flex-column">
+  <h4>Сформировать заказ</h4>
+  <mat-form-field class="w-100 mb-4">
+    <input [formControl]="formControl" matInput placeholder="Поиск категорий..." autocomplete="off">
+  </mat-form-field>
+  <div class="d-flex flex-column">
+    <b2b-form-orders-item
+      *ngFor="let category of categories;"
+      [category]="category">
+    </b2b-form-orders-item>
+  </div>
+  <mat-paginator
+    [length]="length"
+    [pageSize]="pageSize"
+    [hidePageSize]="true"
+    (page)="getPage($event)">
+  </mat-paginator>
+</mat-card>

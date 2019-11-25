@@ -1,0 +1,16 @@
+<ng-select
+  bindLabel="companyName"
+  bindValue="id"
+  placeholder="Выберите реквизит по компаниям"
+  [(ngModel)]="selectedRequisiteId"
+  [items]="requisites"
+  [loading]="isLoading"
+  [multiple]="false"
+  [disabled]="disabled"
+  [closeOnSelect]="true"
+  [hideSelected]="true"
+  [virtualScroll]="true"
+  [typeahead]="requisiteInput$"
+  (change)="onSelectedRequisiteChanged($event)"
+  (scrollToEnd)="onRequisitesScrollToEnd()">
+</ng-select>

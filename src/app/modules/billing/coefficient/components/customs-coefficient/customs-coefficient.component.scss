@@ -1,0 +1,90 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-small ::ng-deep .mat-form-field-infix {
+  width: 100px;
+}
+
+.w-80 {
+  width: 80px !important;
+}
+
+.e-price {
+  line-height: 40px;
+  width: 100px;
+  text-align: right;
+}
+
+@mixin rem($size) {
+  font-size: $size/16*1rem;
+}
+
+.e-find-input {
+  height: 50px;
+  flex-grow: 1;
+  position: relative;
+
+  &.bb {
+    position: relative;
+
+    .e-icon {
+      width: 30px;
+      height: 30px;
+      margin-left: 9px;
+      position: relative;
+      min-width: 30px;
+      cursor: pointer;
+    }
+
+    &:before {
+      position: absolute;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "b2bcash";
+      font-size: 0.825rem;
+      color: #BDBDBD;
+      left: 5px;
+      top: 50%;
+      margin-top: -7px;
+    }
+
+    &::ng-deep.mat-form-field-placeholder {
+      padding-left: 32px;
+      padding-top: 18px;
+    }
+
+    &::ng-deep.mat-input-element {
+      padding-left: 32px;
+    }
+  }
+
+  &.icon-gray-package {
+    &:before {
+      content: "\e9d2";
+      font-family: 'b2bcash';
+
+      @include rem(22);
+      position: absolute;
+      top: 50%;
+      margin-top: -15px;
+      bottom: 0;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #CCCCCC;
+      left: 8px;
+    }
+  }
+
+  &::ng-deep b2b-station-country {
+    height: 100%;
+    width: 100%;
+  }
+}

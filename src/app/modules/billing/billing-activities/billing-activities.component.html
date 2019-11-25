@@ -1,0 +1,59 @@
+<mat-card style="display: flex;flex-grow: 1;flex-direction: column;">
+  <h4>Настройка тарифных планов</h4>
+  <h5>Глобальные тарифы</h5>
+
+  <div style="display: flex;flex-grow: 1;align-items: center;border-bottom: 1px solid #ccc;padding: 8px 0;">
+    <span style="margin-right: auto;display: flex;align-items: center"><i style="font-size: 24px;margin-right: 8px;" class="bb bb-modern-buildings"></i> Тарифы для компаний</span>
+    <div>
+      <a color="primary"
+        mat-button class="mr-2"
+        [routerLink]="[15, 'coefficient']"
+        [queryParams]="{isCustom: true, service: 1}">
+        Тамож. очистка <i class="bb bb-percent ml-2"></i>
+      </a>
+      <a color="primary"
+        mat-button class="mr-2"
+        [routerLink]="[15, 'coefficient']"
+        [queryParams]="{isCustom: true, service: 2}">
+        Тамож. перевоз. <i class="bb bb-percent ml-2"></i>
+      </a>
+      <!-- <button style="margin-right: 8px;" mat-button color="primary">
+        Коэф. товар <i class="bb bb-percent ml-2"></i>
+      </button> -->
+      <!-- <button style="margin-right: 8px;" mat-button color="primary">
+        Тамож. очистка <i class="bb bb-percent ml-2"></i>
+      </button>
+      <button style="margin-right: 8px;" mat-button color="primary">
+        Тамож. перевоз. <i class="bb bb-percent ml-2"></i>
+      </button> -->
+      <button mat-button color="primary" [routerLink]="[15, 'baseline']">
+        Базовый план <i class="material-icons ml-2">home</i>
+      </button>
+    </div>
+  </div>
+  <h5>По виду деятельности</h5>
+  <ng-template ngFor let-item [ngForOf]="activityNames$ | async">
+    <div style="display: flex;flex-grow: 1;padding: 8px 0;align-items: center;border-bottom: 1px solid #ccc;">
+      <span style="margin-right: auto;display: flex;align-items: center;"><i style="font-size: 24px;width: 30px;display: inline-block;text-align: center;margin-right: 8px;" class="bb {{item.icon}}"></i> {{item.nameRu}}</span>
+      <div class="d-flex">
+        <a color="primary"
+          *ngIf="item.id == 3 || item.id == 4"
+          mat-button class="mr-2"
+          [routerLink]="[item.id, 'coefficient']"
+          [queryParams]="{isCustom: true}">
+          Коэффициент <i class="bb bb-percent ml-2"></i>
+        </a>
+        <a color="primary"
+          *ngIf="item.id > 4"
+          mat-button class="mr-2"
+          [routerLink]="[item.id, 'baseline']"
+          [queryParams]="{isOrderPrice: true}">
+          Заказы <i class="material-icons ml-2">mail_outline</i>
+        </a>
+        <a mat-button color="primary" [routerLink]="[item.id, 'baseline']">
+          Базовый план <i class="material-icons ml-2">home</i>
+        </a>
+      </div>
+    </div>
+  </ng-template>
+</mat-card>

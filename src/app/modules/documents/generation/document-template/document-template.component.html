@@ -1,0 +1,80 @@
+<section class="section-wrap">
+  <div class="row mb-2">
+    <div class="col-12">
+      <div class="d-flex">
+        <a class="d-inline-flex align-items-center e-back"
+           routerLink="/documents/generation">
+          <i class="material-icons pr-2 color-orange">undo</i>
+        </a>
+        <h5 class="title-h2"><span *ngIf="isNewDocument">Новый </span>{{isAct ? 'Акт' : 'Счёт/Инвойс'}}</h5>
+      </div>
+    </div>
+  </div>
+
+  <div class="row"
+       [formGroup]="formGroup">
+    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+      <b2b-select-countries
+        [multiple]="false"
+        [disabled]="isCountryDisabled"
+        [selectedCountries]="selectedCountry?.id"
+        [defaultValue]="false"
+        (countriesChange)="onCountriesChanged($event)"></b2b-select-countries>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+      <b2b-select-requisite
+        [reset]="resetRequisites"
+        [countryId]="selectedCountry?.id"
+        [selectedCountryName]="selectedCountry?.nameRu"
+        [disabled]="isRequisitesDisabled"
+        [selectedRequisiteId]="selectedRequisiteId"
+        [templateName]="formGroup.get('templateName').valueChanges"
+        (selectedRequisiteChanged)="onSelectedRequisiteChanged($event)"
+      ></b2b-select-requisite>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-6 col-lg-4 pt-1">
+      <mat-form-field class="w-100">
+        <input matInput
+               placeholder="Название шаблона"
+               formControlName="templateName"
+               autocomplete="off">
+      </mat-form-field>
+    </div>
+  </div>
+
+  <b2b-act-invoice-template
+    [isAct]="isAct"
+    [isInvoice]="isInvoice"
+    [requisite]="requisiteTemplate"
+    [isViewDocument]="isViewDocument"
+    [countryId]="selectedCountry?.id"
+    (editDocumentChange)="onEditDocumentChanged($event)"
+  >
+    <div class="loading-shade"
+         *ngIf="isLoading">
+      <mat-spinner></mat-spinner>
+    </div>
+  </b2b-act-invoice-template>
+</section>
+
+<div *ngIf="selectedCountry?.id && requisiteTemplate && (isNewDocument || isEditDocument)"
+     class="row b-row">
+  <div class="col-sm-auto col-12 ml-auto">
+    <button class="btn-border w-100"
+            color="primary"
+            routerLink="/documents/generation"
+            mat-raised-button>Отмена
+    </button>
+  </div>
+
+  <div class="col-sm-auto col-12">
+    <button class="fill-btn w-100"
+            color="primary"
+            mat-raised-button
+            (click)="onSubmit()"
+            [disabled]="formGroup.invalid">Сохранить
+    </button>
+  </div>
+</div>

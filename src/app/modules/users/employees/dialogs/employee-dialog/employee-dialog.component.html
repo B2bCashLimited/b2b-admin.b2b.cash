@@ -1,0 +1,50 @@
+<div class="dialog-container" [formGroup]="formGroup">
+  <h4>
+    {{isEditMode ? 'Редактирование сотрудника' : 'Добавить нового сотрудника'}}
+  </h4>
+  <mat-form-field>
+    <input matInput autocomplete="off" placeholder="Фамилия" formControlName="lastName">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput autocomplete="off" placeholder="Имя" formControlName="firstName">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput autocomplete="off" placeholder="Отчество" formControlName="middleName">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput autocomplete="off" placeholder="Телефон" formControlName="phone">
+  </mat-form-field>
+  <div style="display:flex;flex-grow: 1;">
+    <mat-form-field style="margin-right: 16px;width: 100%;">
+      <input matInput autocomplete="off" placeholder="Email" formControlName="email">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <input matInput autocomplete="off" placeholder="Придумайте пароль" formControlName="password">
+    </mat-form-field>
+  </div>
+  <div style="display:flex;flex-grow: 1;">
+    <mat-form-field style="margin-right: 16px;width: 100%;">
+      <mat-select placeholder="Роль" formControlName="adminLevel">
+        <mat-option [value]="1">Администратор</mat-option>
+        <mat-option [value]="2">Сотрудник</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-select placeholder="Должность" formControlName="adminPosition">
+        <mat-option *ngFor="let role of roles$ | async" [value]="role.id">{{role.nameRu}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div style="display: flex;flex-grow: 1;justify-content: flex-end;">
+    <button style="margin-right: 10px;"
+            mat-raised-button color="primary"
+            (click)="onCloseClick(false)">Закрыть
+    </button>
+    <button mat-raised-button color="primary"
+            [disabled]="formGroup.invalid"
+            (click)="onCloseClick(true)">
+      {{isEditMode ? 'Изменить' : 'Добавить'}}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<div class="chat__contacts" #ListContainer>
+  <div #ListCollection>
+    <div class="chat__sorting">
+    </div>
+    <div class="chat__search row m-0">
+      <div class="col-md-12 col-12 p-0">
+        <input type="text" class="chat__search-input" [formControl]="searchInput" placeholder="{{'find'}}">
+      </div>
+    </div>
+    <div class="chat__search e-radio-button">
+    </div>
+    <div class="chat__select">
+      <mat-form-field>
+        <mat-select placeholder="" [formControl]="activeCategory" floatPlaceholder="never">
+          <mat-option [value]="-1">Все чаты</mat-option>
+          <mat-option [value]="0">Входящие открытые</mat-option>
+          <mat-option [value]="1">Входящие закрытые</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="chat__list" [style.height.px]="dimensions.ListCollection">
+    <div class="d-flex h-100 justify-content-center align-items-center"
+         *ngIf="!emptyList && filtered?.length == 0">
+      <div>Нет чатов</div>
+    </div>
+    <mat-list role="list">
+      <mat-list-item role="listitem" *ngFor="let contact of filtered; let i = index"
+                     [ngClass]="{'closed-chat': contact.closed, 'opened-chat': isCurrentChat(contact)}">
+        <a (click)="openChat(contact)">
+                <span class="chat__list--photo pull-left">
+                  <img class="im_dialog_photo" [src]="getContactLogoUrl(contact)">
+                </span>
+          <span class="chat__list--message">
+            <span class="chat__list--message-top">
+              <span class="chat__list--name">
+                {{contact.name ? contact.name : contact.chatNames[0]}}
+              </span>
+              <span [hidden]="!contact.activityKey[0]">
+                <i class="icon-activities {{OCCUPATION_CLASS[activityKey(contact.activityKey[0])]}}"
+                   matTooltip="{{ activityName(contact.activityKey[0]) }}" matTooltipPosition="above"></i>
+              </span>&nbsp;
+              <span class="flag flag-{{getCountry2Letters(contact.country)}}"
+                    matTooltip="{{contact.country['name' + config.locale]}}" matTooltipPosition="above"></span>
+            </span>
+            <span class="chat__list--info">
+              <span><i class="material-icons" matTooltip="клиент" matTooltipPosition="above">person</i>
+                {{contact.owner.firstName}} {{contact.owner.lastName}} (клиент)</span>
+            </span>
+            <span class="chat__list--text-wrap">
+              <span class="chat__list--text" [ngClass]="{bold: contact.countUnread > 0}">
+                {{contact.lastMessage ? contact.lastMessage : 'Нет сообщений'}}
+              </span>
+              <span *ngIf="contact.countUnread > 0" class="chat__list--badge mr-1">
+                {{contact.countUnread}}
+              </span>
+              <span class="chat__list--date ">
+                {{time(contact.activityDate.date)}}
+              </span>
+            </span>
+            <span class="chat__list--text-wrap justify-content-end"
+                  *ngIf="contact.closed || (!contact.closed && contact.closedBy)"><span
+              class="chat__list {{closed(contact).class}}">
+              <i class="bb bb-{{closed(contact).icon}}" *ngIf="closed(contact).icon"></i> {{closed(contact).message}}
+            </span></span>
+            <span class="chat__list--text-wrap justify-content-end" *ngIf="!contact.closed && !contact.closedBy"><i
+              class="material-icons" matTooltip="Время, прошедшее с момента обращения клиента">av_timer</i> {{timers[i] || '--:--'}}</span>
+            </span>
+        </a>
+      </mat-list-item>
+    </mat-list>
+    <div class="chat__list__more d-flex h-100 justify-content-center align-items-center" [hidden]="!loading">
+      <div>
+        <i class="fa fa-refresh fa-spin fa-3x fa-fw fa-ico" aria-hidden="true"></i>
+        <span class="sr-only">
+          Загружаю...
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

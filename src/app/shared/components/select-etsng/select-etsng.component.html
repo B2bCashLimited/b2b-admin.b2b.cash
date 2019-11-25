@@ -1,0 +1,29 @@
+<ng-select
+  placeholder="Код ЕТСНГ"
+  bindLabel="code"
+  bindValue="code"
+  addTagText="Новый код"
+  notFoundText="Ничего не найдено"
+  typeToSearchText="Введите код ЕТСНГ"
+  [clearSearchOnAdd]="true"
+  [addTag]="true"
+  [hideSelected]="true"
+  [loading]="loading"
+  [virtualScroll]="true"
+  [markFirst]="true"
+  [items]="etsngs"
+  [typeahead]="etsngsInput"
+  (scrollToEnd)="onEtsngsScrollToEnd()"
+  (change)="onSelectedEtsngChanged($event)"
+  b2bOnlyDigitsInput>
+  <ng-template ng-option-tmp let-item="item">
+    <div style="display: flex;align-items: center;width: 100%;">
+      <span style="margin-right: auto;">{{item.code}}</span>
+      <button mat-icon-button
+              matTooltip="{{item.nameRu}}"
+              (click)="onDescriptionClick($event)">
+        <mat-icon style="color: #ff761c">info</mat-icon>
+      </button>
+    </div>
+  </ng-template>
+</ng-select>

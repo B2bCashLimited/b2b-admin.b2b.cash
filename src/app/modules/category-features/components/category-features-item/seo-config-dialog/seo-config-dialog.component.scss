@@ -1,0 +1,47 @@
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.dialog-container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.add-button {
+  align-self: center;
+}
+
+.demo-tab-content{
+  padding: 15px;
+}
+
+.clipboard {
+  background-color: azure;
+  cursor: pointer;
+}
+
+.flags{
+  height: 14px;
+  width: 22px;
+  background-size: cover;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25);
+  background-position: 50% 50%;
+  display: inline-block;
+  margin-right: 5px;
+  &.f-ru {
+    background-image: url("../../../../../../assets/img/svg-icons/ru.svg");
+  }
+  &.f-en {
+    background-image: url("../../../../../../assets/img/svg-icons/en.svg");
+  }
+  &.f-cn {
+    background-image: url("../../../../../../assets/img/svg-icons/cn.svg");
+  }
+}
+
+.grey {
+  background-color: oldlace;
+}

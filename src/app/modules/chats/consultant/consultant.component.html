@@ -1,0 +1,49 @@
+<h4>Кабинет консультанта</h4>
+<div *ngxPermissionsOnly="['SUPER_ADMIN', 'CHAT_CONSULTANT_VIEW']; else elseBlock; then thenBlock"></div>
+<ng-template #elseBlock>
+  <app-access-denied></app-access-denied>
+</ng-template>
+<ng-template #thenBlock>
+  <div class="container container-mobile">
+    <div class="chats-header">
+      <div class="mr-4">
+        <div class="chats-header--name">Кабинет {{userFIO}}</div>
+        <div class="chats-header--position">
+          <i class="bb bb-account-card-details"></i>Консультант
+        </div>
+      </div>
+      <div class="d-flex align-items-center">
+        <div class="chats-header--button" (click)="clickPowerButton()">
+          <div class="power-btn" [ngClass]="{active: isInWork}">
+            <i class="material-icons">power_settings_new</i>
+          </div>
+        </div>
+        <div class="chats-header--info">
+          <div class="e-text">В работе</div>
+          <div class="e-text">
+            <!-- если число зеленое, добавляем класс  color-green-->
+            <span class="" [ngClass]="{'color-green': timeOverLimit(startTime, limitTime)}">{{secondsToDateString(startTime)}}</span> /
+            <span>{{secondsToDateString(limitTime)}}</span></div>
+          <div class="e-text">Обслужено</div>
+          <div class="e-text d-flex align-items-center">
+            <span class="color-green">{{worked.pos}}</span>
+            <span class="pl-1 pr-1 color-silver">|</span>
+            <span class="color-red">{{worked.neg}}</span>
+            <span class="pl-1 pr-1 color-silver">|</span>
+            <span class="color-dark-grey d-inline-flex align-items-center">{{worked.total}} <i class="material-icons ml-1">person</i></span>
+          </div>
+        </div>
+      </div>
+      <div class="working-schedule p-2 text-center">
+        <p>График работы</p>
+        <span *ngIf="!workingScheduleForToday().isHoliday">{{workingScheduleForToday().begin}} - {{workingScheduleForToday().end}}</span>
+        <span *ngIf="workingScheduleForToday().isHoliday" class="color-red">Выходной</span>
+      </div>
+    </div>
+
+    <div class="chat__container">
+      <app-chat-contacts class="chat-contacts-wrap" [activities]="activities"></app-chat-contacts>
+      <app-chat-window class="chat-contacts-window" (chatWasClosed)="closedChatsCounterUpdate()"></app-chat-window>
+    </div>
+  </div>
+</ng-template>

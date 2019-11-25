@@ -1,0 +1,278 @@
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+table {
+  width: 100%;
+}
+
+button{
+  box-shadow: none !important;
+  font-size: .8125rem;
+}
+
+.section-wrap{
+  background-color: #ffffff;
+  padding: 16px;
+  user-select: none;
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  ::ng-deep .mat-form-field-infix {
+    width: 100%;
+  }
+}
+
+.fill-btn{
+  color: #ffffff;
+  background: #3f51b5;
+  box-shadow: none !important;
+  border: 1px solid #3f51b5;
+  box-sizing: border-box;
+  border-radius: 3px;
+  transition: .2s ease-out;
+  height: 36px;
+  min-width: 150px;
+
+  ::ng-deep.mat-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    line-height: 1;
+    white-space: normal;
+  }
+
+  &:hover{
+    background: #2f3c88;
+  }
+}
+
+::ng-deep mat-tab-body {
+  height: 100%;
+}
+
+.b-tab-group{
+  ::ng-deep.mat-tab-label{
+    color: #41479B;
+    font-size: 18px;
+    opacity: 1;
+    padding: 0;
+    margin-right: 60px;
+    height: 36px;
+
+    &.mat-tab-label-active{
+      color: #000000;
+    }
+  }
+
+  ::ng-deep.mat-tab-body-content{
+    overflow: visible;
+  }
+
+  ::ng-deep.mat-tab-header{
+    border-bottom: none;
+    margin-bottom: 20px;
+  }
+}
+
+.b-radio-group{
+  ::ng-deep.mat-radio-checked {
+    .mat-radio-outer-circle {
+      border-color: #3f51b5;
+    }
+  }
+
+  ::ng-deep.mat-radio-inner-circle,
+  ::ng-deep.mat-ripple-element{
+    background-color: #3f51b5 !important;
+  }
+}
+
+mat-radio-button {
+  margin: 5px 5px 5px 0;
+}
+
+.table {
+  &--buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .material-icons {
+      color: #3f51b5;
+    }
+  }
+
+  .bb {
+    color: #3f51b5;
+    font-size: .875rem;
+
+    &.bb-ship-sea {
+      font-size: 1rem;
+    }
+
+    &.bb-rails-world {
+      font-size: 1rem;
+    }
+
+    &.bb-rails-country {
+      font-size: 1rem;
+    }
+
+    &.bb-lorry-world {
+      font-size: 1rem;
+    }
+
+    &.bb-plane-world {
+      font-size: 1.25rem;
+    }
+
+    &.bb-plane-country {
+      font-size: 1rem;
+    }
+
+    &.bb-provider {
+      font-size: 1rem;
+    }
+
+    &.bb-factory {
+      font-size: 1rem;
+    }
+
+    &.bb-customs {
+      font-size: 1.25rem;
+    }
+
+    &.bb-customs-license {
+      font-size: 1.25rem;
+    }
+  }
+
+  .wrap-bb {
+    width: 35px;
+    display: inline-flex;
+    justify-content: center;
+    margin-right: 4px;
+  }
+}
+
+.form-datepicker{
+  padding: 0 10px;
+  background: #ffffff;
+  border: 1px solid #E4E4E4;
+  height: 44px;
+  box-sizing: border-box;
+  border-radius: 0;
+
+  ::ng-deep .mat-form-field-flex{
+    height: 100%;
+    align-items: center;
+  }
+  ::ng-deep .mat-input-element{
+    height: 100%;
+  }
+
+  ::ng-deep .mat-form-field-underline{
+    display: none;
+  }
+  ::ng-deep .mat-form-field-infix{
+    border: none;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  ::ng-deep .mat-form-field-wrapper{
+    padding: 0;
+    height: 100%;
+  }
+  ::ng-deep .mat-datepicker-toggle-default-icon{
+    fill: #3f51b5;
+    width: 20px !important;
+  }
+}
+
+.table-container {
+  position: relative;
+  max-height: 400px;
+  overflow: auto;
+}
+
+::ng-deep .loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Column Widths */
+.mat-column-send-day {
+  width: 80px;
+}
+
+.mat-column-country {
+  max-width: 250px;
+}
+
+.mat-column-number,
+.mat-column-action,
+.mat-column-flag,
+.mat-column-currency {
+  width: 50px;
+}
+
+.mat-column-accrual {
+  width: 200px;
+}
+
+.mat-column-id {
+  width: 100px;
+}
+
+.mat-header-cell {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.data-range {
+  position: relative;
+  border: 1px solid #cecece;
+  cursor: pointer;
+  height: 36px;
+  width: 100%;
+
+  .material-icons {
+    color: #3f51b5;
+  }
+
+  .inner-wrap {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 5px;
+    align-items: center;
+    font-size: 0.875rem;
+  }
+}

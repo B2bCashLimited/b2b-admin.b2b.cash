@@ -1,0 +1,62 @@
+<mat-card style="display: flex;flex-direction: column;flex-grow: 1;"
+          [formGroup]="formGroup">
+  <h2>Прокачки</h2>
+  <div class="b-checkbox-wrap" style="display: flex; align-items:center;margin-bottom: 16px;">
+    <mat-checkbox style="margin-right: 20px;"
+                  formControlName="searchBySeen">
+      <span>Просмотренные</span>
+    </mat-checkbox>
+    <mat-checkbox formControlName="searchByNotSeen">
+      <span>Не просмотренные</span>
+      <span class="badge badge-primary ml-2">{{totalNotModeratedCounter}}</span>
+    </mat-checkbox>
+  </div>
+  <mat-accordion>
+    <mat-expansion-panel
+      *ngFor="let category of categories | moderateStatus : formGroup.value"
+      [expanded]="isExpanded(category.id)"
+      (opened)="onCategoryExpanded(category.id)"
+      (closed)="changeCategoryModerateStatus(category)">
+      <mat-expansion-panel-header>
+        <mat-panel-title style="align-items: center;">
+          <div style="display: flex;flex-direction: column;">
+            <div>{{category.nameRu}}
+              <mat-icon color="primary"
+                        *ngIf="!category.viewedByModerator">fiber_new
+              </mat-icon>
+            </div>
+            <span>{{category.proposedByCompany?.nameRu}}</span>
+          </div>
+        </mat-panel-title>
+        <mat-panel-description style="flex-grow: 0;align-items: center;">
+          <span *ngIf="category.dateCreated">{{category.dateCreated | date : 'dd/MM/yyyy'}}</span>
+          <button mat-icon-button
+                  color="warn"
+                  (click)="onDestroyCategoryClick($event, category)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div style="display: flex;flex-grow: 1; flex-direction: column;"
+           *ngFor="let char of category.properties; index as idx">
+        <div style="display: flex;">
+          <i class="bb bb-rating-full"
+             [class.show]="char.special===3"></i>
+          <i class="bb bb-diamond"
+             [class.show]="char.specialWorth==1"></i>
+          <span style="margin-right: 16px;">{{idx + 1}}. {{char.nameRu}}</span>
+        </div>
+        <p>{{char.possibleValuesRu}}</p>
+      </div>
+      <div *ngIf="category.properties">{{category.properties[0]?.formula?.value}}</div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+  <mat-paginator
+    [length]="length"
+    [pageSize]="pageSize"
+    [hidePageSize]="true"
+    (page)="getPage($event)">
+  </mat-paginator>
+</mat-card>

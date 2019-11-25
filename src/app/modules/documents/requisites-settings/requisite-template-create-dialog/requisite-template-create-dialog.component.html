@@ -1,0 +1,440 @@
+<div class="popup-new-template">
+  <form [formGroup]="formGroup"
+        (ngSubmit)="onSubmit()"
+        novalidate>
+    <h5 class="mt-0 mb-3">Шаблон реквизитов компании</h5>
+    <div class="row align-items-center">
+      <div class="col mb-2">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-5">
+            <b2b-select-countries
+              [selectedCountries]="selectedCountry"
+              [multiple]="false"
+              (countriesChange)="onCountriesChanged($event)">
+            </b2b-select-countries>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-7 pt-1">
+            <mat-form-field class="w-100">
+              <input matInput
+                     formControlName="name"
+                     placeholder="{{isRussia ? 'Название шаблона' : 'Template name'}}"
+                     autocomplete="off"
+                     required>
+              <mat-error *ngIf="formGroup.get('name').invalid">{{errorMessage}}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12"
+           *ngIf="selectedCountryId">
+        <div class="card-template">
+          <div class="row">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-12">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="companyName"
+                           placeholder="{{isRussia ? 'Название компании' : 'Company name'}}"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('companyName').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row b-row">
+                <div class="col-6">
+                  <b2b-select-region [countryId]="selectedCountryId"
+                                     [placeholder]="isRussia ? 'Область' : 'Region'"
+                                     [limit]="30"
+                                     [isRequired]="true"
+                                     (locationSelected)="onRegionSelected($event)"
+                                     formControlName="companyRegion"></b2b-select-region>
+                </div>
+                <div class="col-6">
+                  <b2b-select-city [regionId]="selectedRegionId"
+                                   [placeholder]="isRussia ? 'Город' : 'City'"
+                                   [isRequired]="true"
+                                   [limit]="30"
+                                   [isRussia]="isRussia"
+                                   formControlName="companyCity"></b2b-select-city>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="companyAddress"
+                           placeholder="{{isRussia ? 'Адрес' : 'Name of street and house number'}}"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('companyAddress').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row b-row"
+                   *ngIf="isRussia">
+                <div class="col-6">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="ogrn"
+                           placeholder="ОГРН"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('ogrn').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-6">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="egryul"
+                           placeholder="Номер ЕГРЮЛ"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('egryul').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row b-row"
+                   *ngIf="isRussia">
+                <div class="col-6">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="inn"
+                           placeholder="ИНН"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('inn').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-6">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="kpp"
+                           placeholder="КПП"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('kpp').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row b-row"
+                   *ngIf="isRussia">
+                <div class="col-6">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="oktmo"
+                           placeholder="Код ОКТМО"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('oktmo').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-6">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="okved"
+                           placeholder="Код ОКВЕД"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('okved').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row"
+                   *ngIf="!isRussia">
+                <div class="col-12">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="businessLicense"
+                           placeholder="Business licensessss"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('businessLicense').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row"
+                   *ngIf="!isRussia">
+                <div class="col-12">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="identityCard"
+                           placeholder="Identification card"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('identityCard').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="row">
+                <div class="col-12">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="bankName"
+                           placeholder="{{isRussia ? 'Название банка' : 'Main Bank'}}"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('bankName').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="bankAddress"
+                           placeholder="{{isRussia ? 'Адрес банка' : 'Main Bank Address'}}"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('bankAddress').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row"
+                   *ngIf="isRussia">
+                <div class="col-12">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="bankAccountNumber"
+                           placeholder="Расчетный счет"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('bankAccountNumber').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row b-row"
+                   *ngIf="isRussia">
+                <div class="col-6">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="bankInn"
+                           placeholder="ИНН банка"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('bankInn').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-6">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="bankKpp"
+                           placeholder="КПП банка"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('bankKpp').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row b-row"
+                   *ngIf="!isRussia">
+                <div class="col-6">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="bankAccountNumber"
+                           placeholder="To Account Number/IBAN"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('bankAccountNumber').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-6">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="bankSwift"
+                           placeholder="Swift"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('bankSwift').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row"
+                   *ngIf="isRussia">
+                <div class="col-12">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="correspondentAccountNumber"
+                           placeholder="Корреспондентский счет банка"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('correspondentAccountNumber').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row"
+                   *ngIf="isRussia">
+                <div class="col-12">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="bik"
+                           placeholder="БИК"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('bik').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row"
+                   *ngIf="!isRussia">
+                <div class="col-12">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="intermediaryBankName"
+                           placeholder="Intermediary Bank"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('intermediaryBankName').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row"
+                   *ngIf="!isRussia">
+                <div class="col-12">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="intermediaryBankAddress"
+                           placeholder="Intermediary Bank address"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('intermediaryBankAddress').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row b-row"
+                   *ngIf="!isRussia">
+                <div class="col-6">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="intermediaryBankAccountNumber"
+                           placeholder="To Account Number/IBAN"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('intermediaryBankAccountNumber').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-6">
+                  <mat-form-field class="w-100">
+                    <input matInput
+                           formControlName="intermediaryBankSwift"
+                           placeholder="Swift"
+                           autocomplete="off"
+                           required>
+                    <mat-error *ngIf="formGroup.get('intermediaryBankSwift').invalid">{{errorMessage}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field class="w-100">
+                <input matInput
+                       formControlName="ceo"
+                       placeholder="{{isRussia ? 'Генеральный директор' : 'CEO'}}"
+                       autocomplete="off"
+                       required>
+                <mat-error *ngIf="formGroup.get('ceo').invalid">{{errorMessage}}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-6">
+              <mat-form-field class="w-100">
+                <input matInput
+                       formControlName="accountant"
+                       placeholder="{{isRussia ? 'Главный бухгалтер' : 'Chief Accountant'}}"
+                       autocomplete="off"
+                       required>
+                <mat-error *ngIf="formGroup.get('accountant').invalid">{{errorMessage}}</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-start">
+            <!--Печать-->
+            <div class="b-drop-container w-100 mr-3">
+              <div class="d-flex align-items-center flex-grow-1 h-100 position-relative">
+                <div class="mr-auto">
+                  Изображение печати
+                  <input class="d-none"
+                         type="file"
+                         #stampUpload
+                         ng2FileSelect
+                         [uploader]="stampUploader"
+                         [accept]="allowedImageTypes">
+                </div>
+
+                <button (click)="stampUpload.click()"
+                        color="primary"
+                        type="button"
+                        mat-raised-button>Обзор
+                </button>
+              </div>
+              <mat-error *ngIf="formGroup.get('imgStamp').invalid">{{errorMessage}}</mat-error>
+
+              <img *ngIf="uploadedStampImage"
+                   [src]="serverUrl + uploadedStampImage.link"
+                   [matTooltip]="uploadedStampImage.name"
+                   class="uploaded-image"
+                   matTooltipPosition="above"
+                   [alt]="uploadedStampImage.name">
+            </div>
+
+            <!--Подпись-->
+            <div class="b-drop-container w-100 ml-3">
+              <div class="d-flex align-items-center flex-grow-1 h-100 position-relative">
+                <div class="mr-auto">
+                  Изображение подписи
+                  <input class="d-none"
+                         type="file"
+                         #signUpload
+                         ng2FileSelect
+                         [uploader]="signUploader"
+                         [accept]="allowedImageTypes">
+                </div>
+
+                <button (click)="signUpload.click()"
+                        color="primary"
+                        type="button"
+                        mat-raised-button>Обзор
+                </button>
+              </div>
+              <mat-error *ngIf="formGroup.get('imgSign').invalid">{{errorMessage}}</mat-error>
+
+              <img *ngIf="uploadedSignImage"
+                   [src]="serverUrl + uploadedSignImage.link"
+                   [matTooltip]="uploadedSignImage.name"
+                   class="uploaded-image"
+                   matTooltipPosition="above"
+                   [alt]="uploadedSignImage.name">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row b-row justify-content-end">
+      <div class="col-sm-auto col-12 mb-2">
+        <button class="btn-border w-100"
+                type="button"
+                mat-raised-button
+                (click)="onCloseClicked()">Отмена
+        </button>
+      </div>
+      <div class="col-sm-auto col-12 mb-2">
+        <button class="fill-btn w-100"
+                color="primary"
+                mat-raised-button
+                [disabled]="isPending">Сохранить
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

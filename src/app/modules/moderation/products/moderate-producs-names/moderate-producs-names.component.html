@@ -1,0 +1,159 @@
+<div class="search-results" infiniteScroll infiniteScrollContainer=".mat-sidenav-content" [fromRoot]="true"
+     (scrolled)="onScroll()" [infiniteScrollDisabled]="loading">
+
+  <div class="container-fluid img-thumbnail py-3">
+    <div class="row">
+      <div class="d-flex">
+        <ng-select
+          class="col w-250"
+          bindLabel="nameRu"
+          bindValue="id"
+          placeholder="Категория"
+          [(ngModel)]="selectedCategory"
+          [items]="categories"
+          [closeOnSelect]="true"
+          [virtualScroll]="true"
+          (change)="onCategoryChange()">
+        </ng-select>
+
+        <mat-form-field class="col-auto" appearance="outline">
+          <mat-label>Id фидов</mat-label>
+          <mat-select [(ngModel)]="selectedFeeds" multiple (selectionChange)="onFeedIdChange($event)">
+            <mat-option *ngFor="let feed of feeds" [value]="feed.id" [disabled]="isDisabled(feed.id)"><b>({{feed.id}})</b> {{feed.url}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-auto" appearance="outline">
+          <mat-label>Статус модерации</mat-label>
+          <mat-select [(ngModel)]="moderateStatus" (selectionChange)="onStatusChanged()">
+            <mat-option [value]="0">Все товары</mat-option>
+            <mat-option [value]="1">Ожидают модерации</mat-option>
+            <mat-option [value]="3">Отмодерированно</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-12">
+        <mat-slide-toggle [(ngModel)]="!!newCategory" (change)="onChangeUpdcateCategory($event.checked)">
+          Переопределить категорию <b *ngIf="newCategory">({{newCategory.nameRu}})</b>
+        </mat-slide-toggle>
+      </div>
+      <div class="col-12 mt-3">
+        <mat-radio-group [(ngModel)]="isByName" (change)="onChangeForName($event.value)">
+          <mat-radio-button class="mr-4" [value]="false">Только характеристики</mat-radio-button>
+          <mat-radio-button [value]="true">Только название товара</mat-radio-button>
+        </mat-radio-group>
+        <mat-form-field *ngIf="!isByName" appearance="outline" class="w-100">
+          <input matInput placeholder="Только характеристики без названия товара!" [(ngModel)]="properties" autocomplete="off">
+        </mat-form-field>
+
+        <mat-form-field *ngIf="isByName" appearance="outline" class="w-100">
+          <input matInput placeholder="Название товара" [(ngModel)]="productName" autocomplete="off">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="properties">
+      <div class="col-12">
+        <h3 [innerHTML]="properties | highlight : regex"></h3>
+      </div>
+    </div>
+    <div class="row" [formGroup]="regexForm" *ngIf="properties">
+      <div class="col-auto" formArrayName="arr" *ngFor="let line of regexForm['controls'].arr.controls; let i = index">
+        <div class="d-flex flex-column separator-group-wrap" [ngClass]="{'pt-4': i > 0}" [formGroupName]="i">
+          <span class="del-icon" *ngIf="i !== 0">
+            <button mat-icon-button (click)="onRemoveRegexClick(i)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </span>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="Характеристика" autocomplete="off">
+          </mat-form-field>
+
+          <mat-checkbox formControlName="isSeparator" (change)="onChangeSep($event.checked, line)">
+            Спецсимвол?
+          </mat-checkbox>
+
+          <mat-form-field *ngIf="regexForm.value.arr[i].isSeparator" appearance="outline" class="w-100">
+            <input matInput placeholder="Спецсимвол" formControlName="separator" autocomplete="off">
+          </mat-form-field>
+
+          <div *ngIf="!regexForm.value.arr[i].isSeparator">
+
+            <section formArrayName="rules" class="broder-bottom px-1"
+                     *ngFor="let rule of regexForm.controls['arr'].controls[i].controls.rules.controls; let j = index">
+              <div [formGroupName]="j">
+                <span class="del-icon" *ngIf="j !== 0">
+                  <button mat-icon-button (click)="onRemoveRuleClick(i, j)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </span>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="rule">
+                    <mat-option value="[0-9]+">Цифры</mat-option>
+                    <mat-option value="[a-zA-Z]+">Буквы английские</mat-option>
+                    <mat-option value="[^\x00-\x7F]+">Буквы другие (не англ)</mat-option>
+                    <mat-option value="symbol">Символ</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="regexForm.value.arr[i].rules[j].rule === 'symbol'" appearance="outline"
+                                class="w-100">
+                  <input matInput placeholder="symbol" formControlName="symbol" autocomplete="off">
+                </mat-form-field>
+              </div>
+            </section>
+          </div>
+
+          <button (click)="onAddNewRuleClick(i)">+</button>
+
+
+          <div *ngIf="!regexForm.controls['arr'].controls[i].value.isSeparator" class="mt-3 d-flex flex-column">
+            <mat-slide-toggle formControlName="skip" (change)="onChangeSkip($event.checked, line)">пропустить
+            </mat-slide-toggle>
+            <h6 *ngIf="regexForm.value.arr[i].property">{{regexForm.value.arr[i].property.nameRu}}</h6>
+            <div *ngIf="!regexForm.controls['arr'].controls[i].value.skip" class="d-flex justify-content between mt-2">
+              <button mat-raised-button color="warn" class="col mr-2" (click)="onNewPropClick(line, i)">
+                <mat-icon>add</mat-icon>
+              </button>
+              <button mat-raised-button color="primary" class="col" (click)="onOverritePropClick(line, i)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <button mat-mini-fab color="primary" (click)="onAddRegexClick()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-auto">
+        <button mat-raised-button (click)="getIdsForModerate()">Отправить</button>
+      </div>
+      <mat-form-field *ngIf="isByName && searchedImportModerateProducts.length" class="col-auto" appearance="outline" placeholder="Действие">
+        <mat-select [(ngModel)]="action">
+          <mat-option value="">Не выбрано</mat-option>
+          <mat-option value="model">Модель</mat-option>
+          <mat-option value="brand">Бренд</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="searchedImportModerateProducts.length" class="col-auto">
+        <button mat-raised-button color="primary" (click)="confirmModerate()">Подтвердить модерацию
+          ({{searchedProductsCount}})</button>
+      </div>
+    </div>
+  </div>
+
+  <mat-selection-list #products [(ngModel)]="selectedProducts" [disabled]="true">
+    <mat-list-option *ngFor="let item of data; trackBy: trackByFn; let i = index" [value]="item"
+                     checkboxPosition="before">
+      <div>
+        <b>{{i + 1}})</b> {{item.id}} - {{item.value}}
+      </div>
+    </mat-list-option>
+  </mat-selection-list>
+</div>

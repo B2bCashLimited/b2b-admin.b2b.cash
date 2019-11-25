@@ -1,0 +1,92 @@
+<mat-card class="d-flex flex-column pt-3" *ngIf="formGroup" [formGroup]="formGroup">
+  <h4 class="m-0 mb-3">
+    {{isNewRole ? 'Создание новой роли для сотрудников' : 'Настройка прав доступа сотрудникам'}}
+  </h4>
+  <div class="d-flex w-100">
+    <div class="d-flex align-items-center w-100 mr-4">
+      <span class="flag flag-ru mr-3"></span>
+      <mat-form-field class="w-100">
+        <input matInput placeholder="Название должности" formControlName="nameRu">
+      </mat-form-field>
+    </div>
+    <div class="d-flex align-items-center w-100 mr-4">
+      <span class="flag flag-us mr-3"></span>
+      <mat-form-field class="w-100">
+        <input matInput placeholder="Название должности" formControlName="nameEn">
+      </mat-form-field>
+    </div>
+    <div class="d-flex align-items-center w-100">
+      <span class="flag flag-cn mr-3"></span>
+      <mat-form-field class="w-100">
+        <input matInput placeholder="Название должности" formControlName="nameCn">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="d-flex w-100 mb-3">
+    <div class="d-flex flex-column w-100 mr-4">
+
+      <ul class="p-0 m-0" style="list-style-type: none;">
+        <li *ngFor="let item of clientRoles">
+          <h5 class="mt-2 mb-2">{{ROLES_LIST_VALUES[item.label]}}</h5>
+
+          <div *ngFor="let role of item.roles" [formGroupName]="item.key">
+            <div>
+              <mat-checkbox [formControlName]="role" [matTooltip]="role" matTooltipPosition="above">
+                {{ROLES_LIST_VALUES[role]}}
+              </mat-checkbox>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="p-0 m-0" style="list-style-type: none;">
+        <li *ngFor="let item of salesRoles">
+          <h5 class="mt-2 mb-2">{{ROLES_LIST_VALUES[item.label]}}</h5>
+
+          <div *ngFor="let role of item.roles" [formGroupName]="item.key">
+            <div>
+              <mat-checkbox [formControlName]="role" [matTooltip]="role" matTooltipPosition="above">
+                <span [class.dashed]="role==='CHAT_CONSULTANT_SELLERS' || role==='CHAT_CONSULTANT_BUYERS'">
+                  {{ROLES_LIST_VALUES[role]}}
+                </span>
+              </mat-checkbox>
+              <button
+                *ngIf="role==='CHAT_CONSULTANT_SELLERS' || role==='CHAT_CONSULTANT_BUYERS'"
+                (click)="onLanguagesClick(role)"
+                mat-icon-button color="primary"
+                matTooltip="Выберите виды деятельности и страны"
+                matTooltipPosition="above">
+                <mat-icon>language</mat-icon>
+              </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+
+    <ul class="p-0 m-0" style="list-style-type: none;">
+      <li *ngFor="let item of adminRoles">
+        <h5 class="mt-2 mb-2">{{ROLES_LIST_VALUES[item.label]}}</h5>
+
+        <div *ngFor="let role of item.roles" [formGroupName]="item.key">
+          <div>
+            <mat-checkbox [formControlName]="role" [matTooltip]="role" matTooltipPosition="above">
+              {{ROLES_LIST_VALUES[role]}}
+            </mat-checkbox>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+  </div>
+
+  <div class="d-flex w-100 justify-content-end">
+    <button
+      mat-raised-button color="primary"
+      [disabled]="formGroup.invalid"
+      (click)="onDoneClick()">
+      {{isNewRole ? 'Добавить' : 'Изменить'}}
+    </button>
+  </div>
+</mat-card>

@@ -1,0 +1,5 @@
+<app-activity-item *ngFor="let activity of activities"
+                    [activity]="activity"
+                    [isSelected]="checkIfSelected(activity)"
+                    (select)="onSelect(activity)">
+</app-activity-item>

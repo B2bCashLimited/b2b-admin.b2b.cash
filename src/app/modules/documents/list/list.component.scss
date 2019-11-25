@@ -1,0 +1,157 @@
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+table {
+  width: 100%;
+}
+
+.section-wrap {
+  background-color: #ffffff;
+  padding: 16px;
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  ::ng-deep .mat-form-field-infix {
+    width: 100%;
+  }
+
+  p {
+    font-size: .875rem;
+  }
+}
+
+button {
+  box-shadow: none !important;
+  font-size: .8125rem;
+}
+
+.table {
+  &--buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .material-icons {
+      cursor: pointer;
+      color: #3f51b5;
+    }
+  }
+
+  .bb {
+    color: #3f51b5;
+    font-size: .875rem;
+
+    &.bb-ship-sea {
+      font-size: 1rem;
+    }
+
+    &.bb-rails-world {
+      font-size: 1rem;
+    }
+
+    &.bb-rails-country {
+      font-size: 1rem;
+    }
+
+    &.bb-lorry-world {
+      font-size: 1rem;
+    }
+
+    &.bb-plane-world {
+      font-size: 1.25rem;
+    }
+
+    &.bb-plane-country {
+      font-size: 1rem;
+    }
+
+    &.bb-provider {
+      font-size: 1rem;
+    }
+
+    &.bb-factory {
+      font-size: 1rem;
+    }
+
+    &.bb-customs {
+      font-size: 1.25rem;
+    }
+
+    &.bb-customs-license {
+      font-size: 1.25rem;
+    }
+  }
+
+  .wrap-bb {
+    width: 35px;
+    display: inline-flex;
+    justify-content: center;
+    margin-right: 4px;
+  }
+}
+
+.table-container {
+  position: relative;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Column Widths */
+.mat-column-number {
+  width: 40px;
+}
+
+.mat-column-send-day {
+  width: 80px;
+}
+
+.mat-column-country {
+  max-width: 250px;
+}
+
+.mat-column-flag, .mat-column-action {
+  width: 50px;
+}
+
+.mat-header-cell {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.data-range {
+  position: relative;
+  border: 1px solid #cecece;
+  cursor: pointer;
+  height: 36px;
+  width: 100%;
+
+  .material-icons {
+    color: #3f51b5;
+  }
+
+  .inner-wrap {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 5px;
+    align-items: center;
+    font-size: 0.875rem;
+  }
+}

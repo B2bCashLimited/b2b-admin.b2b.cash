@@ -1,0 +1,1366 @@
+<h2>Статистика: Площадка</h2>
+<div *ngxPermissionsOnly="['SUPER_ADMIN', 'STATISTICS_AND_ANALYTICS_VIEW']; else elseBlock; then thenBlock"></div>
+<ng-template #elseBlock>
+  <app-access-denied></app-access-denied>
+</ng-template>
+<ng-template #thenBlock>
+  <section class="bg-white">
+    <div class="b-filter-wrap"
+         [formGroup]="formGroup">
+      <div class="row">
+        <div class="col-xl-3 col-md-6 pt-1">
+          <mat-form-field class="w-100">
+            <mat-select floatPlaceholder="never"
+                        placeholder="Заказы/Сделки/Предложения"
+                        formControlName="dealTypes"
+                        multiple>
+              <mat-option *ngFor="let dealType of dealTypes"
+                          [value]="dealType.value">{{dealType.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-xl-3 col-md-6 pt-1">
+          <mat-form-field class="w-100">
+            <input matInput
+                   type="number"
+                   formControlName="orderOfferDealId"
+                   placeholder="№ Заказа/Сделки/Предложения"
+                   autocomplete="off">
+          </mat-form-field>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+          <b2b-select-activity-names
+            [multiple]="true"
+            [selectedActivityName]="selectedActivityName"
+            (selectedActivityNameChange)="onSelectedActivityNameChanged($event)"
+          ></b2b-select-activity-names>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+          <b2b-select-activities
+            [selectedActivityNames]="formGroup.get('selectedActivityNames').value"
+            [reset]="reset || isActivityReset"
+            [multiple]="true"
+            [disabled]="isActivityDisabled"
+            (selectedActivityChange)="onSelectedActivityChanged($event)"
+          ></b2b-select-activities>
+        </div>
+      </div>
+
+      <div class="row align-items-end">
+        <b2b-select-categories
+          class="col-xl-3 col-md-6 mb-3"
+          [selectedCategories]="selectedCategoryId"
+          (selectedCategoryChange)="onSelectedCategory($event)"
+        ></b2b-select-categories>
+
+        <b2b-select-countries
+          class="col-xl-3 col-md-6 mb-3"
+          [multiple]="false"
+          [selectedCountries]="selectedCountries"
+          (countriesChange)="onCountriesChanged($event)"
+        ></b2b-select-countries>
+
+        <b2b-select-region
+          class="col-xl-3 col-md-6 mb-3"
+          formControlName="selectedRegion"
+          [selectedRegion]="selectedRegionName"
+          [countryId]="formGroup.get('selectedCountryId').value"
+          [placeholder]="'Область'"
+          [limit]="30"
+        ></b2b-select-region>
+
+        <b2b-select-city
+          class="col-xl-3 col-md-6 mb-3"
+          formControlName="selectedCity"
+          [selectedCity]="selectedCityName"
+          [regionId]="formGroup.get('selectedRegion').value?.id"
+          [placeholder]="'Город'"
+          [limit]="30"
+        ></b2b-select-city>
+      </div>
+
+      <div class="row align-items-end">
+        <div class="col-xl-3 col-md-6">
+          <b2b-select-city-for-customs-post
+            [reset]="reset"
+            [disabled]="isSelectCityForCustomsPostDisabled"
+            [selectedCityId]="selectedCityIdForCustomsPost"
+            (selectedCityChange)="onSelectedCityForCustomsPostChanged($event)"
+          ></b2b-select-city-for-customs-post>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+          <ng-select
+            bindLabel="nameRu"
+            bindValue="id"
+            placeholder="Таможенный пост"
+            formControlName="selectedCustomsPostId"
+            [items]="customsPosts$ | async"
+            [closeOnSelect]="true"
+            [hideSelected]="true">
+          </ng-select>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+          <b2b-auto-complete
+            [reset]="reset"
+            [type]="pointType"
+            [disabled]="isRoutePointDisabled"
+            [selectedItemName]="selectedLoadingRegion"
+            placeholder="Стартовая точка маршрута"
+            (localityChanged)="onStartPointChanged($event)"
+          ></b2b-auto-complete>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+          <b2b-auto-complete
+            [reset]="reset"
+            [type]="pointType"
+            [disabled]="isRoutePointDisabled"
+            [selectedItemName]="selectedUnloadingRegion"
+            placeholder="Финишная точка маршрута"
+            (localityChanged)="onFinishPointChanged($event)"
+          ></b2b-auto-complete>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+          <b2b-select-companies
+            [reset]="reset"
+            [multiple]="true"
+            [selectedCompanies]="selectedCompaniesIds"
+            (selectedCompaniesChange)="onSelectedCompaniesChanged($event)"
+          ></b2b-select-companies>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+          <b2b-select-products
+            [reset]="reset"
+            [disabled]="isProductDisabled"
+            [selectedProducts]="selectedProductsIds"
+            (selectedProductsChange)="onSelectedProductsChanged($event)"
+          ></b2b-select-products>
+        </div>
+
+        <div class="col-xl-3 col-md-6 pt-1">
+          <div class="d-flex">
+            <mat-form-field class="datepicker mr-3"
+                            floatPlaceholder="never">
+              <input matInput
+                     [matDatepicker]="pickerFrom"
+                     [min]="minDate"
+                     [max]="maxDate"
+                     formControlName="dateFrom"
+                     placeholder="От"
+                     autocomplete="off">
+              <mat-datepicker-toggle matSuffix
+                                     [for]="pickerFrom"></mat-datepicker-toggle>
+              <mat-datepicker #pickerFrom></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="datepicker"
+                            floatPlaceholder="never">
+              <input matInput
+                     [matDatepicker]="pickerTo"
+                     [min]="minDate"
+                     [max]="maxDate"
+                     formControlName="dateTo"
+                     placeholder="До"
+                     autocomplete="off">
+              <mat-datepicker-toggle matSuffix
+                                     [for]="pickerTo"></mat-datepicker-toggle>
+              <mat-datepicker #pickerTo></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-end">
+        <div class="col-auto btn-square-wrap">
+          <button class="color-gray w-37"
+                  mat-raised-button
+                  (click)="resetFilters()">
+            <i class="material-icons">refresh</i>
+          </button>
+
+          <button (click)="onSearch()"
+                  [disabled]="isPending"
+                  class="ml-2"
+                  style="color: #ffffff"
+                  mat-raised-button
+                  color="accent">
+            Поиск <i class="material-icons">search</i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="title-h2 mb-4">{{statisticsHeader}} <span *ngIf="!this.isCompaniesSelected">({{totalCompanies}}
+      компаний)</span>
+    </h2>
+
+    <div class="all-statistics-table-container mat-elevation-z8 mb-4">
+      <div class="loading-shade"
+           *ngIf="statisticsLoading">
+        <mat-spinner *ngIf="statisticsLoading"></mat-spinner>
+      </div>
+
+      <table mat-table
+             [dataSource]="dealTypes | statisticsOrdersOffers: formGroup.get('dealTypes').value"
+             *ngIf="statistics">
+
+        <!-- ActivityNames Column -->
+        <ng-container matColumnDef="activityNames"
+                      sticky>
+          <th mat-header-cell
+              *matHeaderCellDef>
+            {{isCompaniesSelected && selectedCompanies[statisticsPageIndex] &&
+          selectedCompanies[statisticsPageIndex].name || 'Виды деятельности'}}
+          </th>
+          <td mat-cell
+              *matCellDef="let row">{{row.label}}
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>Итого по видам деятельности
+          </td>
+        </ng-container>
+
+        <!-- Supplier Column -->
+        <ng-container matColumnDef="supplier">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-provider"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics[row.value][ACTIVITY_NAMES.Supplier] && statistics[row.value][ACTIVITY_NAMES.Supplier].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics[row.value][selectedCompanies[statisticsPageIndex].id] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.Supplier] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.Supplier].count || 0}}
+            </span>
+
+            <button *ngIf="isProductsActivityNameGroup && row.value === 'receivedOffers'"
+                    mat-raised-button
+                    class="fill-btn ml-2"
+                    (click)="showReceivedOffersEmails(ACTIVITY_NAMES.Supplier)">посмотреть Email-ы</button>
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics.summOrders[ACTIVITY_NAMES.Supplier] && statistics.summOrders[ACTIVITY_NAMES.Supplier].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics.summOrders[selectedCompanies[statisticsPageIndex].id] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.Supplier] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.Supplier].count || 0}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Manufacturer Column -->
+        <ng-container matColumnDef="manufacturer">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-factory"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics[row.value][ACTIVITY_NAMES.Manufacturer] && statistics[row.value][ACTIVITY_NAMES.Manufacturer].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics[row.value][selectedCompanies[statisticsPageIndex].id] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.Manufacturer] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.Manufacturer].count || 0}}
+            </span>
+
+            <button *ngIf="isProductsActivityNameGroup && row.value === 'receivedOffers'"
+                    mat-raised-button
+                    class="fill-btn ml-2"
+                    (click)="showReceivedOffersEmails(ACTIVITY_NAMES.Manufacturer)">посмотреть Email-ы</button>
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics.summOrders[ACTIVITY_NAMES.Manufacturer] && statistics.summOrders[ACTIVITY_NAMES.Manufacturer].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics.summOrders[selectedCompanies[statisticsPageIndex].id] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.Manufacturer] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.Manufacturer].count || 0}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Customs Without License Column -->
+        <ng-container matColumnDef="customsWithoutLicense">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-customs"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics[row.value][ACTIVITY_NAMES.CustomsRepresentativeWithoutLicense] && statistics[row.value][ACTIVITY_NAMES.CustomsRepresentativeWithoutLicense].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics[row.value][selectedCompanies[statisticsPageIndex].id] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.CustomsRepresentativeWithoutLicense] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.CustomsRepresentativeWithoutLicense].count || 0}}
+            </span>
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics.summOrders[ACTIVITY_NAMES.CustomsRepresentativeWithoutLicense] && statistics.summOrders[ACTIVITY_NAMES.CustomsRepresentativeWithoutLicense].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics.summOrders[selectedCompanies[statisticsPageIndex].id] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.CustomsRepresentativeWithoutLicense] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.CustomsRepresentativeWithoutLicense].count || 0}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Customs With License Column -->
+        <ng-container matColumnDef="customsBroker">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-customs-license"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics[row.value][ACTIVITY_NAMES.CustomsRepresentativeWithLicense] && statistics[row.value][ACTIVITY_NAMES.CustomsRepresentativeWithLicense].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics[row.value][selectedCompanies[statisticsPageIndex].id] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.CustomsRepresentativeWithLicense] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.CustomsRepresentativeWithLicense].count || 0}}
+            </span>
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics.summOrders[ACTIVITY_NAMES.CustomsRepresentativeWithLicense] && statistics.summOrders[ACTIVITY_NAMES.CustomsRepresentativeWithLicense].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics.summOrders[selectedCompanies[statisticsPageIndex].id] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.CustomsRepresentativeWithLicense] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.CustomsRepresentativeWithLicense].count || 0}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- International Trucker Column -->
+        <ng-container matColumnDef="internationalTrucker">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-lorry-world"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics[row.value][ACTIVITY_NAMES.InternationalRoadHauler] && statistics[row.value][ACTIVITY_NAMES.InternationalRoadHauler].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics[row.value][selectedCompanies[statisticsPageIndex].id] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.InternationalRoadHauler] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.InternationalRoadHauler].count || 0}}
+            </span>
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics.summOrders[ACTIVITY_NAMES.InternationalRoadHauler] && statistics.summOrders[ACTIVITY_NAMES.InternationalRoadHauler].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics.summOrders[selectedCompanies[statisticsPageIndex].id] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.InternationalRoadHauler] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.InternationalRoadHauler].count || 0}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Domestic Trucker Column -->
+        <ng-container matColumnDef="domesticTrucker">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-lorry-country"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics[row.value][ACTIVITY_NAMES.DomesticRoadHauler] && statistics[row.value][ACTIVITY_NAMES.DomesticRoadHauler].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics[row.value][selectedCompanies[statisticsPageIndex].id] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.DomesticRoadHauler] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.DomesticRoadHauler].count || 0}}
+            </span>
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics.summOrders[ACTIVITY_NAMES.DomesticRoadHauler] && statistics.summOrders[ACTIVITY_NAMES.DomesticRoadHauler].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics.summOrders[selectedCompanies[statisticsPageIndex].id] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.DomesticRoadHauler] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.DomesticRoadHauler].count || 0}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- International Rail Carrier Column -->
+        <ng-container matColumnDef="internationalRailCarrier">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-rails-world"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics[row.value][ACTIVITY_NAMES.InternationalRailCarriers] && statistics[row.value][ACTIVITY_NAMES.InternationalRailCarriers].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics[row.value][selectedCompanies[statisticsPageIndex].id] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.InternationalRailCarriers] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.InternationalRailCarriers].count || 0}}
+            </span>
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics.summOrders[ACTIVITY_NAMES.InternationalRailCarriers] && statistics.summOrders[ACTIVITY_NAMES.InternationalRailCarriers].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics.summOrders[selectedCompanies[statisticsPageIndex].id] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.InternationalRailCarriers] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.InternationalRailCarriers].count || 0}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Domestic Rail Carrier Column -->
+        <ng-container matColumnDef="domesticRailCarrier">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-rails-country"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics[row.value][ACTIVITY_NAMES.DomesticRailCarriers] && statistics[row.value][ACTIVITY_NAMES.DomesticRailCarriers].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics[row.value][selectedCompanies[statisticsPageIndex].id] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.DomesticRailCarriers] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.DomesticRailCarriers].count || 0}}
+            </span>
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics.summOrders[ACTIVITY_NAMES.DomesticRailCarriers] && statistics.summOrders[ACTIVITY_NAMES.DomesticRailCarriers].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics.summOrders[selectedCompanies[statisticsPageIndex].id] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.DomesticRailCarriers] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.DomesticRailCarriers].count || 0}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- International Air Carrier Column -->
+        <ng-container matColumnDef="internationalAirCarrier">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-plane-world"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics[row.value][ACTIVITY_NAMES.InternationalAirCarriers] && statistics[row.value][ACTIVITY_NAMES.InternationalAirCarriers].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics[row.value][selectedCompanies[statisticsPageIndex].id] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.InternationalAirCarriers] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.InternationalAirCarriers].count || 0}}
+            </span>
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics.summOrders[ACTIVITY_NAMES.InternationalAirCarriers] && statistics.summOrders[ACTIVITY_NAMES.InternationalAirCarriers].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics.summOrders[selectedCompanies[statisticsPageIndex].id] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.InternationalAirCarriers] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.InternationalAirCarriers].count || 0}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Domestic Air Carrier Column -->
+        <ng-container matColumnDef="domesticAirCarrier">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-plane-country"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics[row.value][ACTIVITY_NAMES.DomesticAirCarriers] && statistics[row.value][ACTIVITY_NAMES.DomesticAirCarriers].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics[row.value][selectedCompanies[statisticsPageIndex].id] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.DomesticAirCarriers] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.DomesticAirCarriers].count || 0}}
+            </span>
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics.summOrders[ACTIVITY_NAMES.DomesticAirCarriers] && statistics.summOrders[ACTIVITY_NAMES.DomesticAirCarriers].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics.summOrders[selectedCompanies[statisticsPageIndex].id] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.DomesticAirCarriers] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.DomesticAirCarriers].count || 0}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Sea Carrier Column -->
+        <ng-container matColumnDef="seaCarrier">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-ship-sea"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics[row.value][ACTIVITY_NAMES.SeaLines] && statistics[row.value][ACTIVITY_NAMES.SeaLines].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics[row.value][selectedCompanies[statisticsPageIndex].id] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.SeaLines] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.SeaLines].count || 0}}
+            </span>
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics.summOrders[ACTIVITY_NAMES.SeaLines] && statistics.summOrders[ACTIVITY_NAMES.SeaLines].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics.summOrders[selectedCompanies[statisticsPageIndex].id] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.SeaLines] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.SeaLines].count || 0}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- River Carrier Column -->
+        <ng-container
+          matColumnDef="riverCarrier">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-ship-river"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics[row.value][ACTIVITY_NAMES.RiverLines] && statistics[row.value][ACTIVITY_NAMES.RiverLines].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics[row.value][selectedCompanies[statisticsPageIndex].id] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.RiverLines] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.RiverLines].count || 0}}
+            </span>
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>
+            <span *ngIf="!isCompaniesSelected">
+              {{statistics.summOrders[ACTIVITY_NAMES.RiverLines] && statistics.summOrders[ACTIVITY_NAMES.RiverLines].count || 0}}
+            </span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics.summOrders[selectedCompanies[statisticsPageIndex].id] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.RiverLines] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id][ACTIVITY_NAMES.RiverLines].count || 0}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!--TODO: Временно закомментирован пока нет данных-->
+
+        <!-- Warehouse Rent Column -->
+        <!--<ng-container matColumnDef="warehouseRent">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-warehouse-rent"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">1</td>
+        </ng-container>-->
+
+        <!-- Warehouse Column -->
+        <!--<ng-container matColumnDef="warehouse">
+          <th mat-header-cell
+              *matHeaderCellDef>
+            <i class="bb bb-warehouse-security"></i>
+          </th>
+          <td mat-cell
+              *matCellDef="let row">1</td>
+        </ng-container>-->
+
+        <!-- Total Column -->
+        <ng-container matColumnDef="total"
+                      stickyEnd>
+          <th mat-header-cell
+              *matHeaderCellDef>Итого
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span *ngIf="!isCompaniesSelected">{{statistics[row.value].total}}</span>
+            <span *ngIf="isCompaniesSelected">
+              {{statistics[row.value][selectedCompanies[statisticsPageIndex].id] &&
+            statistics[row.value][selectedCompanies[statisticsPageIndex].id].total || 0}}
+            </span>
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>
+            <span *ngIf="!isCompaniesSelected">{{statistics.summOrders.total}}</span>
+            <span *ngIf="isCompaniesSelected">{{statistics.summOrders[selectedCompanies[statisticsPageIndex].id] &&
+            statistics.summOrders[selectedCompanies[statisticsPageIndex].id].total}}</span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row
+            *matHeaderRowDef="displayedStatisticsColumnsCopy; sticky: true"></tr>
+        <tr mat-row
+            *matRowDef="let row; columns: displayedStatisticsColumnsCopy;"></tr>
+        <tr mat-footer-row
+            *matFooterRowDef="displayedStatisticsColumnsCopy; sticky: true"></tr>
+      </table>
+
+      <mat-paginator
+        *ngIf="isCompaniesSelected"
+        [length]="formGroup.get('selectedCompanies').value && formGroup.get('selectedCompanies').value.length || 0"
+        [pageSize]="1"
+        (page)="onCompaniesStatisticsPageChanged($event)">
+      </mat-paginator>
+    </div>
+
+    <!--Статистика по географии компаний-->
+    <h2 class="title-h2 my-5"
+        *ngIf="!isActivityNamesSelected">Статистика по географии компаний</h2>
+
+    <div class="countries-table-container mat-elevation-z8 mb-4"
+         *ngIf="!isActivityNamesSelected">
+      <div class="loading-shade"
+           *ngIf="geoStatisticsLoading">
+        <mat-spinner *ngIf="geoStatisticsLoading"></mat-spinner>
+      </div>
+
+      <table mat-table
+             [dataSource]="countries"
+             *ngIf="geoStatistics">
+
+        <!-- Countries Column -->
+        <ng-container matColumnDef="countries"
+                      sticky>
+          <th mat-header-cell
+              *matHeaderCellDef>Страны
+          </th>
+          <td mat-cell
+              *matCellDef="let row">{{row.nameRu}}
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>Итого:
+          </td>
+        </ng-container>
+
+        <!-- Companies Column -->
+        <ng-container matColumnDef="companies">
+          <th mat-header-cell
+              *matHeaderCellDef>Компаний
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            {{geoStatistics.companies[0][row.id.toString()] && geoStatistics.companies[0][row.id.toString()].count || 0}}
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>{{geoStatistics.companies[1].total}}</td>
+        </ng-container>
+
+        <!-- Regions Column -->
+        <ng-container matColumnDef="regions">
+          <th mat-header-cell
+              *matHeaderCellDef>Регионы
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            {{geoStatistics.regions[0][row.id.toString()] && geoStatistics.regions[0][row.id.toString()].count || 0}}
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>{{geoStatistics.regions[1].total}}</td>
+        </ng-container>
+
+        <!-- Cities Column -->
+        <ng-container matColumnDef="cities">
+          <th mat-header-cell
+              *matHeaderCellDef>Города
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            {{geoStatistics.cities[0][row.id.toString()] && geoStatistics.cities[0][row.id.toString()].count || 0}}
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>{{geoStatistics.cities[1].total}}</td>
+        </ng-container>
+
+        <!-- Categories Column -->
+        <ng-container matColumnDef="categories">
+          <th mat-header-cell
+              *matHeaderCellDef>Категории
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            {{geoStatistics.categories[0][row.id.toString()] && geoStatistics.categories[0][row.id.toString()].count || 0}}
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>{{geoStatistics.categories[1].total}}</td>
+        </ng-container>
+
+        <!-- Products Column -->
+        <ng-container matColumnDef="products">
+          <th mat-header-cell
+              *matHeaderCellDef>Товары
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            {{geoStatistics.products[0][row.id.toString()] && geoStatistics.products[0][row.id.toString()].count || 0}}
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>{{geoStatistics.products[1].total}}</td>
+        </ng-container>
+
+        <!-- Routes Column -->
+        <ng-container matColumnDef="routes">
+          <th mat-header-cell
+              *matHeaderCellDef>Маршруты
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            {{geoStatistics.routes[0][row.id.toString()] && geoStatistics.routes[0][row.id.toString()].count || 0}}
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>{{geoStatistics.routes[1].total}}</td>
+        </ng-container>
+
+        <!-- Customs Clearance Column -->
+        <ng-container matColumnDef="customsClearance">
+          <th mat-header-cell
+              *matHeaderCellDef>Тамож. очистка
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            {{geoStatistics.customsClearance[0][row.id.toString()] && geoStatistics.customsClearance[0][row.id.toString()].count || 0}}
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>{{geoStatistics.customsClearance[1].total}}</td>
+        </ng-container>
+
+        <!-- Customs Clearance And Delivery Column -->
+        <ng-container matColumnDef="customsClearanceAndDelivery">
+          <th mat-header-cell
+              *matHeaderCellDef>Тамож. очистка и доставка
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            {{geoStatistics.customsClearanceAndDelivery[0][row.id.toString()] && geoStatistics.customsClearanceAndDelivery[0][row.id.toString()].count || 0}}
+          </td>
+          <td mat-footer-cell
+              *matFooterCellDef>{{geoStatistics.customsClearanceAndDelivery[1].total}}</td>
+        </ng-container>
+
+        <tr mat-header-row
+            *matHeaderRowDef="displayedGeoStatisticsColumns; sticky: true"></tr>
+        <tr mat-row
+            *matRowDef="let row; columns: displayedGeoStatisticsColumns;"></tr>
+        <tr mat-footer-row
+            *matFooterRowDef="displayedGeoStatisticsColumns; sticky: true"></tr>
+      </table>
+    </div>
+
+    <!-- Предложения -->
+
+  <!--<section class="bg-white">
+    <div class="row b-row-filter">
+      <div class="col-md-6 d-flex align-items-center">
+        <a href="#" class="e-back">
+          <i class="material-icons">keyboard_arrow_left</i>Подтвержденные заказы
+        </a>
+        <span class="">ООО ХОЛОД</span>
+      </div>
+      <div class="col-6 d-flex align-items-center justify-content-end">
+        <div class=" filter-input e-select-find mr-2">
+          <mat-select placeholder="Сортировка" class="search-input-text">
+            <mat-option [value]="">Сортировать по сумме</mat-option>
+            <mat-option [value]="">Сортировать по сумме</mat-option>
+          </mat-select>
+
+        </div>
+        <div class="datepicker-wrap">
+          <div  class="b-text-small-title ">Период:</div>
+          <mat-form-field floatPlaceholder="never"  class="form-control form-control-datepicker">
+            <input matInput [matDatepicker]="picker2" placeholder="">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class=" btn-square-wrap ">
+          <button class="e-btn-fill w-37 " disabled mat-raised-button color="accent" >
+            <i class="material-icons">refresh</i>
+          </button>
+          <button class="e-btn-fill w-37   ml-2" mat-raised-button color="accent" >
+            <i class="material-icons">keyboard_arrow_right</i>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="card-company wrap-list">
+      <div class="card-item ">
+        <div class="image-wrap provider">
+          <div class="e-image">
+            <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+          </div>
+          <div class="e-view"></div>
+        </div>
+        <div class="card-item--title">ООО Кока-кола </div>
+      </div>
+      <div class="card-item ">
+        <div class="image-wrap provider">
+          <div class="e-image">
+            <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+          </div>
+          <div class="e-view"></div>
+        </div>
+        <div class="card-item--title">ООО Кока-кола </div>
+      </div>
+      <div class="card-item ">
+        <div class="image-wrap provider">
+          <div class="e-image">
+            <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+          </div>
+          <div class="e-view"></div>
+        </div>
+        <div class="card-item--title">ООО Кока-кола </div>
+      </div>
+      <div class="card-item ">
+        <div class="image-wrap provider">
+          <div class="e-image">
+            <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+          </div>
+          <div class="e-view"></div>
+        </div>
+        <div class="card-item--title">ООО Кока-кола </div>
+      </div>
+      <div class="card-item ">
+        <div class="image-wrap provider">
+          <div class="e-image">
+            <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+          </div>
+          <div class="e-view"></div>
+        </div>
+        <div class="card-item--title">ООО Кока-кола </div>
+      </div>
+      <div class="card-item ">
+        <div class="image-wrap provider">
+          <div class="e-image">
+            <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+          </div>
+          <div class="e-view"></div>
+        </div>
+        <div class="card-item--title">ООО Кока-кола </div>
+      </div>
+      <div class="card-item ">
+        <div class="image-wrap provider">
+          <div class="e-image">
+            <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+          </div>
+          <div class="e-view"></div>
+        </div>
+        <div class="card-item--title">ООО Кока-кола </div>
+      </div>
+      <div class="card-item ">
+        <div class="image-wrap provider">
+          <div class="e-image">
+            <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+          </div>
+          <div class="e-view"></div>
+        </div>
+        <div class="card-item--title">ООО Кока-кола </div>
+      </div>
+      <div class="card-item ">
+        <div class="image-wrap provider">
+          <div class="e-image">
+            <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+          </div>
+          <div class="e-view"></div>
+        </div>
+        <div class="card-item--title">ООО Кока-кола </div>
+      </div>
+      <div class="card-item ">
+        <div class="image-wrap provider">
+          <div class="e-image">
+            <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+          </div>
+          <div class="e-view"></div>
+        </div>
+        <div class="card-item--title">ООО Кока-кола </div>
+      </div>
+      <div class="card-item ">
+        <div class="image-wrap provider">
+          <div class="e-image">
+            <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+          </div>
+          <div class="e-view"></div>
+        </div>
+        <div class="card-item--title">ООО Кока-кола </div>
+      </div>
+      <div class="card-item ">
+        <div class="image-wrap provider">
+          <div class="e-image">
+            <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+          </div>
+          <div class="e-view"></div>
+        </div>
+        <div class="card-item--title">ООО Кока-кола </div>
+      </div>
+    </div>
+    <div class="product-card coll-four d-flex m-width">
+    <span class="product-card-coll product-icon manufactory">
+      <span class="e-title-small">Вид товара</span>
+      <span class="e-text-bold mb-3">Гексатрон дистиляционный</span>
+      <span class="e-text-normal">
+        <span class="mr-2">95 000 М <sup>2</sup></span>
+        <i class="bb bb-a mr-1"></i>Альтернатива</span>
+    </span>
+      <span class="product-card-coll">
+      <span class="e-title-small">Информация о клиенте</span>
+      <span class="name-rating ">
+        <span class="e-text-bold mb-3">ООО КомпуритосПомпуритос</span>
+        <span class="e-text-normal">Вострухин А.Н.</span>
+      </span>
+    </span>
+      <span class="product-card-coll">
+      <span class="e-title-small">Информация о ставках</span>
+      <span class="d-flex align-items-center mb-3 w-100" >
+        <span class="price-title">Цена клиента</span>
+        <span class="current-price">500 000 000 USD </span>
+      </span>
+      <span class="d-flex align-items-center">
+        <span class="price-title">Цена Поставщика</span>
+        <span class="current-price">5 000 USD </span>
+      </span>
+    </span>
+      <span class="product-card-coll">
+      <span class="e-date">11.01.2018</span>
+      <span class="e-number">№3333333</span>
+    </span>
+    </div>
+    <div class="price-title mb-1">ООО Fanta </div>
+    <div class="product-card coll-four d-flex m-width">
+    <span class="product-card-coll product-icon provider">
+      <span class="e-title-small">Вид товара</span>
+      <span class="e-text-bold mb-3">Гексатрон дистиляционный</span>
+      <span class="e-text-normal">
+        <span class="mr-2">95 000 М <sup>2</sup></span>
+        <i class="bb bb-a mr-1"></i>Альтернатива</span>
+    </span>
+      <span class="product-card-coll">
+      <span class="e-title-small">Информация о клиенте</span>
+      <span class="name-rating ">
+        <span class="e-text-bold mb-3">ООО КомпуритосПомпуритос</span>
+        <span class="e-text-normal">Вострухин А.Н.</span>
+      </span>
+    </span>
+      <span class="product-card-coll">
+      <span class="e-title-small">Информация о ставках</span>
+      <span class="d-flex align-items-center mb-3 w-100" >
+        <span class="price-title">Цена клиента</span>
+        <span class="current-price">500 000 000 USD </span>
+      </span>
+      <span class="d-flex align-items-center">
+        <span class="price-title">Цена Поставщика</span>
+        <span class="current-price">5 000 USD </span>
+      </span>
+    </span>
+      <span class="product-card-coll">
+      <span class="e-date">11.01.2018</span>
+      <span class="e-number">№3333333</span>
+    </span>
+    </div>
+    <div class="product-card coll-four d-flex m-width">
+    <span class="product-card-coll product-icon manufactory">
+      <span class="e-title-small">Вид товара</span>
+      <span class="e-text-bold mb-3">Гексатрон дистиляционный</span>
+      <span class="e-text-normal">
+        <span class="mr-2">95 000 М <sup>2</sup></span>
+      </span>
+    </span>
+      <span class="product-card-coll">
+      <span class="e-title-small">Информация о клиенте</span>
+      <span class="name-rating ">
+        <span class="e-text-bold mb-3">ООО КомпуритосПомпуритос</span>
+        <span class="e-text-normal">Вострухин А.Н.</span>
+      </span>
+    </span>
+      <span class="product-card-coll">
+      <span class="e-title-small">Информация о ставках</span>
+      <span class="d-flex align-items-center mb-3 w-100" >
+        <span class="price-title">Цена клиента</span>
+        <span class="current-price">500 000 000 USD </span>
+      </span>
+      <span class="d-flex align-items-center">
+        <span class="price-title">Цена Поставщика</span>
+        <span class="current-price">5 000 USD </span>
+      </span>
+    </span>
+      <span class="product-card-coll">
+      <span class="e-date">11.01.2018</span>
+      <span class="e-number">№3333333</span>
+    </span>
+    </div>
+    <div class="product-card coll-four d-flex m-width">
+    <span class="product-card-coll product-icon provider">
+      <span class="e-title-small">Вид товара</span>
+      <span class="e-text-bold mb-3">Гексатрон дистиляционный</span>
+      <span class="e-text-normal">
+        <span class="mr-2">95 000 М <sup>2</sup></span>
+        <i class="bb bb-a mr-1"></i>Альтернатива</span>
+    </span>
+      <span class="product-card-coll">
+      <span class="e-title-small">Информация о клиенте</span>
+      <span class="name-rating ">
+        <span class="e-text-bold mb-3">ООО КомпуритосПомпуритос</span>
+        <span class="e-text-normal">Вострухин А.Н.</span>
+      </span>
+    </span>
+      <span class="product-card-coll">
+      <span class="e-title-small">Информация о ставках</span>
+      <span class="d-flex align-items-center mb-3 w-100" >
+        <span class="price-title">Цена клиента</span>
+        <span class="current-price">500 000 000 USD </span>
+      </span>
+      <span class="d-flex align-items-center">
+        <span class="price-title">Цена Поставщика</span>
+        <span class="current-price">5 000 USD </span>
+      </span>
+    </span>
+      <span class="product-card-coll">
+      <span class="e-date">11.01.2018</span>
+      <span class="e-number">№3333333</span>
+    </span>
+    </div>
+  </section>
+
+  <br/>
+  <br/>
+
+  <!- Сделки подробно -->
+
+
+    <!--  <section class="bg-white">
+        <div class="row b-row-filter">
+          <div class="col-md-6 d-flex align-items-center">
+            <a href="#" class="e-back">
+              <i class="material-icons">keyboard_arrow_left</i>Подтвержденные заказы
+            </a>
+            <span class="">ООО ХОЛОД</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-end">
+            <div class=" filter-input e-select-find mr-2">
+              <mat-select placeholder="Сортировка" class="search-input-text">
+                <mat-option [value]="">Сортировать по сумме</mat-option>
+                <mat-option [value]="">Сортировать по сумме</mat-option>
+              </mat-select>
+
+            </div>
+            <div class="datepicker-wrap">
+              <div  class="b-text-small-title ">Период:</div>
+              <mat-form-field floatPlaceholder="never"  class="form-control form-control-datepicker">
+                <input matInput [matDatepicker]="picker3" placeholder="">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker3></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class=" btn-square-wrap ">
+              <button class="e-btn-fill w-37 " disabled mat-raised-button color="accent" >
+                <i class="material-icons">refresh</i>
+              </button>
+              <button class="e-btn-fill w-37   ml-2" mat-raised-button color="accent" >
+                <i class="material-icons">keyboard_arrow_right</i>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="card-company wrap-list">
+          <div class="card-item ">
+            <div class="image-wrap provider">
+              <div class="e-image">
+                <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+              </div>
+              <div class="e-view"></div>
+            </div>
+            <div class="card-item--title">ООО Кока-кола </div>
+          </div>
+          <div class="card-item ">
+            <div class="image-wrap provider">
+              <div class="e-image">
+                <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+              </div>
+              <div class="e-view"></div>
+            </div>
+            <div class="card-item--title">ООО Кока-кола </div>
+          </div>
+          <div class="card-item ">
+            <div class="image-wrap provider">
+              <div class="e-image">
+                <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+              </div>
+              <div class="e-view"></div>
+            </div>
+            <div class="card-item--title">ООО Кока-кола </div>
+          </div>
+          <div class="card-item ">
+            <div class="image-wrap provider">
+              <div class="e-image">
+                <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+              </div>
+              <div class="e-view"></div>
+            </div>
+            <div class="card-item--title">ООО Кока-кола </div>
+          </div>
+          <div class="card-item ">
+            <div class="image-wrap provider">
+              <div class="e-image">
+                <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+              </div>
+              <div class="e-view"></div>
+            </div>
+            <div class="card-item--title">ООО Кока-кола </div>
+          </div>
+          <div class="card-item ">
+            <div class="image-wrap provider">
+              <div class="e-image">
+                <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+              </div>
+              <div class="e-view"></div>
+            </div>
+            <div class="card-item--title">ООО Кока-кола </div>
+          </div>
+          <div class="card-item ">
+            <div class="image-wrap provider">
+              <div class="e-image">
+                <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+              </div>
+              <div class="e-view"></div>
+            </div>
+            <div class="card-item--title">ООО Кока-кола </div>
+          </div>
+          <div class="card-item ">
+            <div class="image-wrap provider">
+              <div class="e-image">
+                <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+              </div>
+              <div class="e-view"></div>
+            </div>
+            <div class="card-item--title">ООО Кока-кола </div>
+          </div>
+          <div class="card-item ">
+            <div class="image-wrap provider">
+              <div class="e-image">
+                <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+              </div>
+              <div class="e-view"></div>
+            </div>
+            <div class="card-item--title">ООО Кока-кола </div>
+          </div>
+          <div class="card-item ">
+            <div class="image-wrap provider">
+              <div class="e-image">
+                <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+              </div>
+              <div class="e-view"></div>
+            </div>
+            <div class="card-item--title">ООО Кока-кола </div>
+          </div>
+          <div class="card-item ">
+            <div class="image-wrap provider">
+              <div class="e-image">
+                <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+              </div>
+              <div class="e-view"></div>
+            </div>
+            <div class="card-item--title">ООО Кока-кола </div>
+          </div>
+          <div class="card-item ">
+            <div class="image-wrap provider">
+              <div class="e-image">
+                <img  alt="" class="" src="http://test.b2b.cash:9900/data/images/d7ad8594618797166cab841e0838cd56sports-car-pkw-auto-vehicle-94272.jpeg">
+              </div>
+              <div class="e-view"></div>
+            </div>
+            <div class="card-item--title">ООО Кока-кола </div>
+          </div>
+        </div>
+        <div class="price-title mb-1">ООО Fanta </div>
+        <div class="route-card coll-four d-flex">
+        <span class="route-card-coll">
+          <span class="e-title-bold">11:45</span>
+          <span class="e-text-bold mb-1 b-route">
+            <span class="place-loading">Пекин</span>
+            <span class="place-unloading"><i class="bb bb-long-arrow"></i>Москва</span>
+          </span>
+          <span class="text-quantity">5 самолетов 20 000$</span>
+        </span>
+          <span class="route-card-coll">
+          <span class="b-title-icon plane-country">Межд. Авиаперевозчик</span>
+          <span class="">
+            <span class="e-text-normal mb-2">ООО Пунка</span>
+            <span class="e-text-normal color-grey">Вострухин Алексей Павлович</span>
+          </span>
+        </span>
+          <span class="route-card-coll">
+          <span class="b-title-icon ic-purchaser">Покупатель</span>
+          <span class="">
+            <span class="e-text-normal mb-2">ООО Пунка</span>
+            <span class="e-text-normal color-grey">Симонов Николай Михайлович</span>
+          </span>
+
+        </span>
+          <span class="route-card-coll justify-content-start">
+          <span class="e-title-small w-100">Договор</span>
+          <span class="e-text-14 color-grey mb-2">русский, английский</span>
+          <a href="#" class="link-border">Скачать договор</a>
+        </span>
+          <span class="route-card-coll">
+          <span class="e-number">№1520</span>
+        </span>
+        </div>
+
+        <div class="price-title mb-1">ООО Fanta </div>
+        <div class="route-card coll-four d-flex">
+        <span class="route-card-coll">
+          <span class="e-title-bold">11:45</span>
+          <span class="e-text-bold mb-1 b-route">
+            <span class="place-loading">Пекин</span>
+            <span class="place-unloading"><i class="bb bb-long-arrow"></i>Москва</span>
+          </span>
+          <span class="text-quantity">5 самолетов 20 000$</span>
+        </span>
+          <span class="route-card-coll">
+          <span class="b-title-icon plane-country">Межд. Авиаперевозчик</span>
+          <span class="">
+            <span class="e-text-normal mb-2">ООО Пунка</span>
+            <span class="e-text-normal color-grey">Вострухин Алексей Павлович</span>
+          </span>
+        </span>
+          <span class="route-card-coll">
+          <span class="b-title-icon ic-purchaser">Покупатель</span>
+          <span class="">
+            <span class="e-text-normal mb-2">ООО Пунка</span>
+            <span class="e-text-normal color-grey">Симонов Николай Михайлович</span>
+          </span>
+
+        </span>
+          <span class="route-card-coll justify-content-start">
+          <span class="e-title-small w-100">Договор</span>
+          <span class="e-text-14 color-grey mb-2">русский, английский</span>
+          <a href="#" class="link-border">Скачать договор</a>
+        </span>
+          <span class="route-card-coll">
+          <span class="e-number">№1520</span>
+        </span>
+        </div>
+        <div class="route-card coll-four d-flex">
+        <span class="route-card-coll">
+          <span class="e-title-bold">11:45</span>
+          <span class="e-text-bold mb-1 b-route">
+            <span class="place-loading">Пекин</span>
+            <span class="place-unloading"><i class="bb bb-long-arrow"></i>Москва</span>
+          </span>
+          <span class="text-quantity">5 самолетов 20 000$</span>
+        </span>
+          <span class="route-card-coll">
+          <span class="b-title-icon plane-country">Межд. Авиаперевозчик</span>
+          <span class="">
+            <span class="e-text-normal mb-2">ООО Пунка</span>
+            <span class="e-text-normal color-grey">Вострухин Алексей Павлович</span>
+          </span>
+        </span>
+          <span class="route-card-coll">
+          <span class="b-title-icon ic-purchaser">Покупатель</span>
+          <span class="">
+            <span class="e-text-normal mb-2">ООО Пунка</span>
+            <span class="e-text-normal color-grey">Симонов Николай Михайлович</span>
+          </span>
+
+        </span>
+          <span class="route-card-coll justify-content-start">
+          <span class="e-title-small w-100">Договор</span>
+          <span class="e-text-14 color-grey mb-2">русский, английский</span>
+          <a href="#" class="link-border">Скачать договор</a>
+        </span>
+          <span class="route-card-coll">
+          <span class="e-number">№1520</span>
+        </span>
+        </div>
+        <div class="route-card coll-four d-flex">
+        <span class="route-card-coll">
+          <span class="e-title-bold">11:45</span>
+          <span class="e-text-bold mb-1 b-route">
+            <span class="place-loading">Пекин</span>
+            <span class="place-unloading"><i class="bb bb-long-arrow"></i>Москва</span>
+          </span>
+          <span class="text-quantity">5 самолетов 20 000$</span>
+        </span>
+          <span class="route-card-coll">
+          <span class="b-title-icon plane-country">Межд. Авиаперевозчик</span>
+          <span class="">
+            <span class="e-text-normal mb-2">ООО Пунка</span>
+            <span class="e-text-normal color-grey">Вострухин Алексей Павлович</span>
+          </span>
+        </span>
+          <span class="route-card-coll">
+          <span class="b-title-icon ic-purchaser">Покупатель</span>
+          <span class="">
+            <span class="e-text-normal mb-2">ООО Пунка</span>
+            <span class="e-text-normal color-grey">Симонов Николай Михайлович</span>
+          </span>
+
+        </span>
+          <span class="route-card-coll justify-content-start">
+          <span class="e-title-small w-100">Договор</span>
+          <span class="e-text-14 color-grey mb-2">русский, английский</span>
+          <a href="#" class="link-border">Скачать договор</a>
+        </span>
+          <span class="route-card-coll">
+          <span class="e-number">№1520</span>
+        </span>
+        </div>-->
+  </section>
+</ng-template>

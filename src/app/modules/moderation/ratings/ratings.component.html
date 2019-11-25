@@ -1,0 +1,48 @@
+<mat-card style="display: flex;flex-direction: column;flex-grow: 1;">
+  <h2>Рейтинги</h2>
+  <mat-accordion>
+    <mat-expansion-panel
+      *ngFor="let activityName of activityNames$ | async"
+      (opened)="onActivityNameClick(activityName)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{activityName.nameRu}}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="addCountry(activityName)">Добавить страну</button>
+      <div style="display: flex;flex-grow: 1; flex-direction: column;">
+
+        <div style="display: flex;flex-grow: 1; justify-content: space-between;"
+             *ngFor="let template of templates; index as idx">
+
+          <div style="display: flex;align-items: center;">
+            <span>{{ idx + 1 }}</span>
+            <span>{{template?._embedded?.country?.nameRu}}</span>
+          </div>
+          <div class="template-buttons">
+            <button
+              *ngxPermissionsOnly="['SUPER_ADMIN', 'MODERATE_RATING_STARS']"
+              mat-icon-button color="primary"
+              (click)="editDealsRate(activityName, template)">
+              <mat-icon>star_half</mat-icon>
+            </button>
+            <button
+              *ngxPermissionsOnly="['SUPER_ADMIN', 'MODERATE_RATING_EDIT']"
+              mat-icon-button color="accent"
+              (click)="editTemplate(activityName, template)">
+              <mat-icon>create</mat-icon>
+            </button>
+            <button
+              *ngxPermissionsOnly="['SUPER_ADMIN', 'MODERATE_RATING_DELETE']"
+              mat-icon-button color="warn"
+              (click)="onDestroyTemplateClick(activityName, template)">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+</mat-card>

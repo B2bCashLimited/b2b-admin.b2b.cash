@@ -1,0 +1,74 @@
+<div class="container" [formGroup]="settingsForm">
+  <div class="row">
+    <div class="col">
+      <h5>Настройки консультантов</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <p>Кол-во обслуженных клиентов одновременно</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-2 e-input">
+      <mat-form-field appearance="outline">
+        <!--<mat-label>Количество одновременно обслуженных клиентов</mat-label>-->
+        <input matInput placeholder="" type="number" [min]="1" formControlName="clientsNumber">
+        <!--<mat-hint>Hint</mat-hint>-->
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col">
+      <p>Аварийное время консультанта</p>
+    </div>
+  </div>
+  <div class="row" formGroupName="specialTime">
+    <div class="col-2 e-input">
+      <mat-form-field appearance="outline">
+        <!--<mat-label>Количество одновременно обслуженных клиентов</mat-label>-->
+        <input matInput placeholder="" type="number" [min]="0" formControlName="mins">
+        <!--<mat-hint>Hint</mat-hint>-->
+      </mat-form-field>
+    </div>
+    <div class="col-1 seconds text-center"><span>:</span></div>
+    <div class="col-2 e-input">
+      <mat-form-field appearance="outline">
+        <!--<mat-label>Количество одновременно обслуженных клиентов</mat-label>-->
+        <input matInput placeholder="" type="number" [min]="0" [max]="59" formControlName="secs">
+        <!--<mat-hint>Hint</mat-hint>-->
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row mt-1">
+    <div class="col">
+      <p>Общее аварийное время</p>
+    </div>
+  </div>
+  <div class="row" formGroupName="megaSpecialTime">
+    <div class="col-2 e-input">
+      <mat-form-field appearance="outline">
+        <!--<mat-label>Количество одновременно обслуженных клиентов</mat-label>-->
+        <input matInput placeholder="" type="number" [min]="0" formControlName="mins">
+        <!--<mat-hint>Hint</mat-hint>-->
+      </mat-form-field>
+    </div>
+    <div class="col-1 seconds text-center"><span>:</span></div>
+    <div class="col-2 e-input">
+      <mat-form-field appearance="outline">
+        <!--<mat-label>Количество одновременно обслуженных клиентов</mat-label>-->
+        <input matInput placeholder="" type="number" [min]="0" [max]="59" formControlName="secs">
+        <!--<mat-hint>Hint</mat-hint>-->
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row justify-content-center mt-4">
+    <div class="col-4">
+      <button class="e-btn fz-16 mb-3" mat-raised-button color="accent" (click)="submit()"
+              [disabled]="settingsForm.invalid">
+        Сохранить
+      </button>
+    </div>
+  </div>
+</div>

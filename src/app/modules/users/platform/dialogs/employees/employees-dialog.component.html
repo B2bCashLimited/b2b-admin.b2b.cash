@@ -1,0 +1,45 @@
+<button *ngxPermissionsOnly="['SUPER_ADMIN', 'USERS_DELETE']" mat-raised-button color="warn" [disabled]="!selection.hasValue()"
+        (click)="onDestroySelectedUsersClick()" class="mb-3">
+        <mat-icon>close</mat-icon> Удалить выбранные
+</button>
+<mat-spinner *ngIf="!employees"></mat-spinner>
+<table *ngIf="employees && employees.length" class="table">
+  <tr>
+    <th>
+      <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </th>
+    <th>ФИО</th>
+    <th>Контакты</th>
+    <th>Компания</th>
+    <th>Виды деятельности</th>
+    <th>Статус</th>
+  </tr>
+
+  <tr *ngFor="let user of employees">
+    <td>
+      <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(user) : null" [checked]="selection.isSelected(user)">
+      </mat-checkbox>
+    </td>
+    <td>{{user._embedded.user.firstName}} {{user._embedded.user.lastName}}</td>
+    <td>
+      {{user._embedded.user.phone}}<br>
+      {{user._embedded.user.email}}
+    </td>
+    <td>{{user._embedded.company.name}}</td>
+    <td>
+      <span *ngIf="user._embedded.position">
+        {{user._embedded.position.nameRu}}
+      </span>
+    </td>
+    <td>
+      <mat-button-toggle-group appearance="legacy" (change)="onStatusChanged($event.value, user._embedded.user)">
+        <mat-button-toggle [value]="true" [checked]="user._embedded.user.status">Активен</mat-button-toggle>
+        <mat-button-toggle [value]="false" [checked]="!user._embedded.user.status">Не активен</mat-button-toggle>
+      </mat-button-toggle-group>
+    </td>
+  </tr>
+</table>
+
+<h3 *ngIf="employees && !employees.length">Нет сотрудников</h3>

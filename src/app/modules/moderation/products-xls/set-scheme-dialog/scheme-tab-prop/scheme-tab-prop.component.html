@@ -1,0 +1,192 @@
+<div class="b-inner">
+  <div>
+    <ng-container *ngFor="let item of dataSource">
+      <div *ngIf="item.isCategory" class="b-scheme-prop-subtitle">{{ item.title }}</div>
+      <div [class.hidden]="item.hidden"
+        class="d-flex b-item-line-group" [ngClass]="{ 'mb-3 b-item-line-group-category': item.isCategory }">
+        <div *ngIf="item.isCategory">
+          <div>
+            <div class="d-flex b-strategy-button-group">
+              <button mat-raised-button class="b-strategy-switch-button" [ngClass]="{ 'mat-primary': formGroup.get(item.ctrlName).value?.type !== 4 }"
+                      (click)="changeStrategyWarning(1, item)">Весь столбец файла</button>
+              <button mat-raised-button class="b-strategy-switch-button" [ngClass]="{ 'mat-primary': formGroup.get(item.ctrlName).value?.type === 4 }"
+                      (click)="changeStrategyWarning(4, item)">Сопоставить категории по строкам файла</button>
+            </div>
+          </div>
+          <div class="d-flex">
+            <div *ngIf="formGroup.get(item.ctrlName).value?.type !== 4" class="b-category-coll-1">
+              <div *ngIf="formGroup.get(item.ctrlName).value?.type === 1" class="b-input with-mat-select d-flex">
+                <mat-form-field>
+                  <ng-container [ngSwitch]="formGroup.get(item.ctrlName).controls.subType.value">
+                    <span *ngSwitchCase="1">
+                      <mat-icon>view_column</mat-icon>
+                    </span>
+                    <span *ngSwitchCase="2">
+                      <mat-icon>text_fields</mat-icon>
+                    </span>
+                  </ng-container>
+
+                  <mat-select [formControl]="formGroup.get(item.ctrlName).controls.subType">
+                    <mat-option value="1">
+                      <mat-icon>view_column</mat-icon> Выбор названия столбца
+                    </mat-option>
+                    <mat-option value="2">
+                      <mat-icon>text_fields</mat-icon> Ввод номера столбца
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <ng-container *ngIf="formGroup.get(item.ctrlName).controls.subType.value == 1">
+                  <select class="form-control width-3" [formControl]="formGroup.get(item.ctrlName).controls.column" [compareWith]="compareFn"
+                          placeholder="Категория">
+                    <option *ngFor="let fld of fieldsStat" [ngValue]="fld">{{ fld.name }}</option>
+                  </select>
+                </ng-container>
+                <ng-container *ngIf="formGroup.get(item.ctrlName).controls.subType.value == 2">
+                  <input (keyup)="changeColumnValue($event, formGroup.get(item.ctrlName).controls.column)"
+                          [value]="formGroup.get(item.ctrlName).controls.column.value.column"
+                          placeholder="Номер столбца категории">
+                </ng-container>
+              </div>
+              <div *ngIf="formGroup.get(item.ctrlName).value?.type === 2" class="b-input">
+                <div class="category-btn" (click)="selectCategory()">{{selectedCategory && selectedCategory.nameRu || 'Выберите категорию'}}</div>
+              </div>
+            </div>
+            <div *ngIf="formGroup.get(item.ctrlName).value?.type !== 4" class="wrap-radio-button b-category-coll-2">
+              <mat-radio-group [formControl]="formGroup.get(item.ctrlName).controls.type" (change)="onRadioChange($event.value, item)">
+                <mat-radio-button class="mr-2" [value]="1" color="primary">Столбец</mat-radio-button>
+                <mat-radio-button [value]="2" color="primary">Фид состоит из одной категории</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <div *ngIf="formGroup.get(item.ctrlName).value?.type === 4">
+              <div class="b-category-by-line-title">
+                Сопоставление диапазона строк с категориями
+              </div>
+              <ng-container *ngFor="let category of categoriesFormArray.controls; let i = index">
+                <div class="d-flex b-category-by-line-wrap">
+                  <div class="d-flex b-category-by-line-input-from">
+                    <div class="b-category-by-line-input-text">
+                      с
+                    </div>
+                    <div class="b-input width-1">
+                      <input [formControl]="category.get('from')">
+                    </div>
+                  </div>
+                  <div class="d-flex b-category-by-line-input-to">
+                    <div class="b-category-by-line-input-text">
+                      по
+                    </div>
+                    <div class="b-input width-1">
+                      <input [formControl]="category.get('to')">
+                    </div>
+                  </div>
+                  <div class="b-category-by-line-arrow">
+                    <div class="b-arrow"><div class="b-arrow--line"></div></div>
+                  </div>
+                  <div class="b-category-by-line-choice">
+                    <div class="b-input">
+                      <div class="category-btn" (click)="selectCategoryForArray(category)">{{category.get('value').value ? category.get('value').value.nameRu : 'Выберите категорию'}}</div>
+                    </div>
+                  </div>
+                  <div class="b-category-by-line-delete">
+                    <div class="btn-delete">
+                      <button mat-icon-button (click)="deleteCategoryForArray(i)" color="warn">
+                        <mat-icon>clear</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <button (click)="addCategoryToArray()" mat-raised-button color="primary">+ Следующая категория</button>
+            </div>
+            <div class="b-category-checkbox-wrap">
+              <mat-checkbox [formControl]="formGroup.get(item.ctrlName).controls.collectStats"
+                            (change)="collectStatsChange($event)" color="primary">
+                  Собрать статистику по категориям
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="!item.isCategory">
+          <div class="b-scheme-prop-coll1 d-flex">
+            <div class="b-scheme-prop-checkbox-wrap">
+              <mat-checkbox [formControl]="formGroup.get(item.ctrlName).controls.collectStats"
+                            (change)="collectStatsChange($event)" color="primary"></mat-checkbox>
+            </div>
+            <div class="text">{{item.title}}</div>
+          </div>
+          <div class="b-scheme-prop-coll2">
+            <div *ngIf="formGroup.get(item.ctrlName).value?.type === 1 || formGroup.get(item.ctrlName).value?.type === 3" class="b-input with-mat-select d-flex">
+              <mat-form-field>
+                <ng-container [ngSwitch]="formGroup.get(item.ctrlName).controls.subType.value">
+                  <span *ngSwitchCase="1">
+                    <mat-icon>view_column</mat-icon>
+                  </span>
+                  <span *ngSwitchCase="2">
+                    <mat-icon>text_fields</mat-icon>
+                  </span>
+                </ng-container>
+
+                <mat-select [formControl]="formGroup.get(item.ctrlName).controls.subType">
+                  <mat-option value="1">
+                    <mat-icon>view_column</mat-icon> Выбор названия столбца
+                  </mat-option>
+                  <mat-option value="2">
+                    <mat-icon>text_fields</mat-icon> Ввод номера столбца
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <ng-container *ngIf="formGroup.get(item.ctrlName).controls.subType.value == 1">
+                <select class="form-control width-3" [formControl]="formGroup.get(item.ctrlName).controls.column" [compareWith]="compareFn"
+                        placeholder="Категория">
+                  <option *ngFor="let fld of fieldsStat" [ngValue]="fld">{{ fld.name }}</option>
+                </select>
+              </ng-container>
+              <ng-container *ngIf="formGroup.get(item.ctrlName).controls.subType.value == 2">
+                <input (keyup)="changeColumnValue($event, formGroup.get(item.ctrlName).controls.column)"
+                        [value]="formGroup.get(item.ctrlName).controls.column.value.column"
+                        placeholder="Номер столбца категории">
+              </ng-container>
+            </div>
+            <div *ngIf="formGroup.get(item.ctrlName).value?.type === 3" class="b-input">
+              <button mat-raised-button color="primary"
+                      (click)="openRegexEdit(formGroup.get(item.ctrlName))">
+                {{ formGroup.get(item.ctrlName).get('regex').value && formGroup.get(item.ctrlName).get('regex').value.length ? 'Изменить' : 'Задать' }} регулярное выражение
+               </button>
+            </div>
+            <div *ngIf="formGroup.get(item.ctrlName).value?.type === 2" class="b-input">
+              <input [formControl]="formGroup.get(item.ctrlName).controls.value" placeholder="Точное значение">
+            </div>
+          </div>
+          <div class="b-scheme-prop-coll3 wrap-radio-button">
+            <mat-radio-group [formControl]="formGroup.get(item.ctrlName).controls.type" (change)="onRadioChange($event.value, item)">
+              <mat-radio-button class="mr-1" [value]="1" color="primary">Столбец</mat-radio-button>
+              <mat-radio-button class="mr-1" [value]="3" color="primary">Столбец + рег. <br/> выражение </mat-radio-button>
+              <mat-radio-button [value]="2" color="primary">Точное <br/> значение</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div *ngIf="!item.required" class="b-scheme-prop-coll4 btn-delete">
+            <button mat-icon-button (click)="deleteRow(item)" color="warn">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+        </ng-container>
+      </div>
+
+      <div *ngIf="item.isCategory">
+        <div class="b-scheme-prop-subtitle">Базовые характеристики</div>
+        <div class="b-scheme-prop-collectall-wrap">
+          <mat-checkbox color="primary" [(ngModel)]="allStatsSelected" class="b-scheme-prop-collectall"
+                        (change)="collectAllStats($event)">Собрать статистику по всем базовым характеристикам</mat-checkbox>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div *ngIf="filteredBase.length" class="mt-3 d-flex align-items-center">
+    <mat-select class="col-3 py-2 form-control" [formControl]="selectedChar">
+      <mat-option *ngFor="let state of filteredBase" [value]="state.pos">{{state.title}}</mat-option>
+    </mat-select>
+    <button class="ml-2" (click)="addRow()" mat-raised-button color="primary">+ Добавить хар-ку</button>
+  </div>
+</div>

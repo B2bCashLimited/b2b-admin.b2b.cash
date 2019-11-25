@@ -1,0 +1,14 @@
+<span class="d-flex align-items-center">
+  <span class="ic-text mr-1" 
+        [ngClass]="{'checked': activity.moderateStatus === 4}"
+        *ngIf="activity.type === 'manufacturer'">
+    <i class="bb bb-manufactory"></i>
+  </span>
+  <span class="ic-text mr-1" 
+        [ngClass]="{'checked': activity.moderateStatus === 4}"
+        *ngIf="activity.type === 'supplier'">
+    <i class="bb bb-provider"></i>
+  </span>
+  {{ activity.name}}
+  <span class="btn-delete" (click)="onDelete()"><i class="material-icons">clear</i></span>
+</span>

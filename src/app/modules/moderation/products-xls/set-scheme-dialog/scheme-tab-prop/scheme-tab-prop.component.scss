@@ -1,0 +1,395 @@
+@mixin rem($size) {
+  font-size: $size/16*1rem;
+}
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+
+  ::ng-deep.demo-tab-content {
+    padding: 15px 0 !important;
+  }
+
+  .d-flex.hidden,
+  .row.hidden {
+    display: none !important;
+  }
+
+  .category-btn {
+    background-color: #3f51b5;
+    border-radius: 3px;
+    text-align: center;
+    height: 34px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    line-height: 1;
+    color: #fff;
+    font-weight: normal;
+    @include rem(14);
+    transition: .2s ease-out;
+
+    &.width-1 {
+      width: 235px;
+    }
+
+    &:hover {
+      background: #2f3c88;
+    }
+  }
+
+  .form-control {
+    height: 30px;
+    background: #FAFAFA;
+    border: 1px solid #C7C7C7;
+    border-radius: 3px;
+    outline: none !important;
+    width: 100%;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 1;
+    color: #383838;
+  }
+
+  h3 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 21px;
+    line-height: 25px;
+    color: #383838;
+    margin-bottom: 20px;
+  }
+}
+
+.b-inner {
+  border: 1px solid #ECECEC;
+  padding: 15px;
+  overflow-y: auto;
+  max-height: calc(65vh - 67px);
+}
+
+.wrap-radio-button {
+  ::ng-deep.mat-radio-group {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  ::ng-deep.mat-radio-label {
+    white-space: normal;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 12px;
+    color: #383838;
+  }
+}
+
+.b-input {
+  width: 100%;
+
+  input {
+    background: #FAFAFA;
+    border: 1px solid #C7C7C7;
+    box-sizing: border-box;
+    border-radius: 3px;
+    padding: 5px 10px;
+    height: 30px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 1;
+    color: #383838;
+    width: 100%;
+  }
+
+  &.width-1 {
+    width: 58px;
+  }
+}
+
+.text {
+  font-style: normal;
+  font-size: 13px;
+  line-height: 13px;
+  color: #383838;
+  margin-left: 15px;
+  margin-top: 9px;
+
+  &.fw-500 {
+    font-weight: 500;
+  }
+}
+
+.b-item-line-group {
+  border: 1px solid #ECECEC;
+  padding: 10px;
+
+  &:nth-child(even) {
+    background: #FAFAFA;
+
+    &.b-item-line-group-category {
+      background: #ffffff;
+    }
+  }
+}
+
+.b-arrow {
+  position: relative;
+  -ms-flex-preferred-size: 0;
+  flex-basis: 0;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  min-width: 40px;
+  width: 40px;
+  height: 19px;
+  margin-left: 10px;
+
+  &--line {
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    margin-top: -1px;
+    left: 0;
+    background-color: #41479B;
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    border-top: 2px solid #41479B;
+    border-right: 2px solid #41479B;
+    transform: rotate(45deg);
+    width: 8px;
+    height: 8px;
+    top: 50%;
+    margin-top: -5px;
+    right: 0;
+  }
+}
+
+.btn-delete {
+  ::ng-deep.mat-icon-button {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+  }
+}
+
+.b-scheme-prop-subtitle {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.b-strategy-button-group {
+  margin-bottom: 10px;
+}
+
+.b-strategy-switch-button {
+  width: 170px;
+  height: 40px;
+  font-size: 11px;
+  border-radius: 0;
+  padding: 0 18px;
+  white-space: initial;
+  line-height: 12px;
+  box-shadow: none;
+}
+
+.b-item-line-group-category {
+  padding-right: 196px;
+  position: relative;
+  .b-input {
+
+  }
+}
+.b-category-checkbox-wrap {
+  position: absolute;
+  top: 63px;
+  right: 20px;
+  font-size: 13px;
+  width: 150px;
+
+  ::ng-deep.mat-checkbox-layout {
+    white-space: normal;
+
+    .mat-checkbox-label {
+      line-height: 12px;
+    }
+  }
+}
+
+.b-category-coll-1 {
+  width: 300px;
+  margin-right: 20px;
+}
+.b-category-coll-2 {
+  width: 218px;
+  margin-top: 3px;
+}
+
+.b-input.with-mat-select {
+  select {
+    border-radius: 0 4px 4px 0;
+    margin-left: -1px;
+  }
+  input {
+    border-radius: 0 4px 4px 0;
+    margin-left: -1px;
+  }
+
+  mat-icon {
+    background: #3f51b5;
+    color: #ffffff;
+    font-size: 20px;
+    text-align: center;
+    height: 20px;
+  }
+
+  ::ng-deep {
+    &.mat-button-toggle-focus-overlay {
+      display: none;
+    }
+    &.mat-button-toggle-group {
+      box-shadow: none;
+    }
+
+    &.mat-button-toggle {
+      margin: 0 4px;
+      span.e-flag {
+        opacity: .5;
+      }
+      &.mat-button-toggle-checked {
+        background-color: transparent;
+        span.e-flag {
+          opacity: 1;
+        }
+      }
+    }
+    &.mat-button-toggle-label {
+      margin-bottom: 0;
+    }
+    &.mat-button-toggle-label-content {
+      padding: 0;
+    }
+  }
+
+  ::ng-deep.mat-select{
+    width: auto;
+  }
+
+  ::ng-deep.mat-form-field-wrapper{
+    height: 20px;
+    border: 1px solid #C7C7C7;
+    border-radius: 4px 0 0 4px;
+    padding: 4px;
+    background: #fafafa;
+  }
+
+  ::ng-deep.mat-form-field-underline,
+  ::ng-deep.mat-select-value{
+    display: none;
+  }
+  ::ng-deep.mat-form-field-infix{
+    padding: 0;
+    border: 0;
+    width: 41px;
+    display: flex;
+    align-items: center;
+  }
+
+  ::ng-deep.mat-select-arrow{
+    position: relative;
+    width: 14px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    border: none;
+    height: 8px;
+    margin: 0 7px;
+
+    &:before{
+      font-family: b2bcash;
+      content: "\e928";
+      position: absolute;
+      position: absolute;
+      color: #CCCCCC;
+      font-size: 15px;
+    }
+  }
+}
+.b-category-by-line-wrap {
+  margin-bottom: 10px;
+}
+.b-category-by-line-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.b-category-by-line-input-from {
+  margin-right: 20px;
+
+  input {
+    height: 34px;
+  }
+}
+.b-category-by-line-input-to {
+  input {
+    height: 34px;
+  }
+}
+.b-category-by-line-input-text {
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 10px;
+  line-height: 32px;
+}
+.b-category-by-line-arrow {
+  margin-top: 7px;
+}
+.b-category-by-line-choice {
+  margin-left: 15px;
+}
+.b-category-by-line-delete {
+  margin-left: 10px;
+  margin-top: 2px;
+}
+
+.b-scheme-prop-collectall {
+  font-size: 14px;
+}
+.b-scheme-prop-collectall-wrap {
+  margin-left: 11px;
+  margin-bottom: 10px;
+}
+.b-scheme-prop-checkbox-wrap {
+  width: 16px;
+  height: 22px;
+  margin-top: 4px;
+}
+
+.b-scheme-prop-coll1 {
+  width: 146px;
+}
+.b-scheme-prop-coll2 {
+  width: 239px;
+  margin-right: 10px;
+
+  button {
+    font-size: 13px;
+    padding: 0 15px;
+    margin-top: 5px;
+    width: 239px;
+  }
+}
+.b-scheme-prop-coll3 {
+  width: 277px;
+  margin-top: 3px;
+}
+.b-scheme-prop-coll4 {
+  margin-left: 6px;
+}

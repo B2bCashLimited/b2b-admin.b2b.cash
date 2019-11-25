@@ -1,0 +1,33 @@
+<div class="dialog-container" [formGroup]="formGroup">
+  <h4>Добавить нового пользователя</h4>
+  <mat-form-field>
+    <input matInput placeholder="Фамилия" formControlName="lastName">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Имя" formControlName="firstName">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Отчество" formControlName="middleName">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Телефон" formControlName="phone">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Email" formControlName="email">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Придумайте пароль" formControlName="password">
+  </mat-form-field>
+
+
+  <div style="display: flex;flex-grow: 1;justify-content: flex-end;">
+    <button style="margin-right: 10px;"
+            mat-raised-button color="primary"
+            (click)="onCloseClick(false)">Закрыть
+    </button>
+    <button mat-raised-button color="primary"
+            [disabled]="formGroup.invalid"
+            (click)="onCloseClick(true)">Добавить
+    </button>
+  </div>
+</div>

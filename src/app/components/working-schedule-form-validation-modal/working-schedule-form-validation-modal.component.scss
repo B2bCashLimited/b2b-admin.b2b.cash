@@ -1,0 +1,23 @@
+.e-list.mat-list {
+  .mat-list-item {
+    color: #f60;
+  }
+}
+
+.actions {
+  width: 100%;
+}
+
+button {
+  display: inline-block;
+  margin: 0 auto;
+  text-transform: uppercase;
+  height: 45px;
+  padding: 0 28px;
+  border-radius: 0;
+  cursor: pointer;
+  transition: .15s;
+  border: 1px solid #ff6f00;
+  background-color: #ff6f00;
+  color: #fff;
+}

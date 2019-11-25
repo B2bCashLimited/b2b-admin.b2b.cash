@@ -1,0 +1,38 @@
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.b-text-small-title{
+  color: #000000;
+  font-size: .9375rem;
+  font-weight: 700;
+  font-family: Roboto;
+}
+
+button{
+  box-shadow: none !important;
+}
+
+.e-select {
+  border-radius: 3px;
+  background-color: #ffffff;
+  border: solid 1px #BDBDBD;
+  height: 36px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

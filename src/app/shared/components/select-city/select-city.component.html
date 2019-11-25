@@ -1,0 +1,18 @@
+<mat-form-field class="w-100"
+                [ngClass]="{'mat-warn mat-form-field-invalid': (validator && locationsCtrl.value === '')}">
+  <input matInput
+         [ngClass]="{'mat-form-field-autofill-control ng-untouched ng-pristine ng-invalid': (validator && locationsCtrl.value === '')}"
+         [matAutocomplete]="auto"
+         [formControl]="locationsCtrl"
+         placeholder="{{placeholder}}"
+         aria-label="State"
+         [required]="isRequired">
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let location of locations"
+                [value]="location"
+                (onSelectionChange)="onSelectionChanged($event, location)">
+      <span>{{location.fullName}}</span>
+    </mat-option>
+  </mat-autocomplete>
+  <mat-error *ngIf="locationsCtrl.invalid">{{errorMessage}}</mat-error>
+</mat-form-field>

@@ -1,0 +1,180 @@
+<div class="sticky-wrap"
+     infiniteScroll
+     [infiniteScrollDistance]="5"
+     [infiniteScrollThrottle]="20"
+     [horizontal]="true"
+     (scrolled)="onScrollDown()"
+     [fromRoot]="true"
+     [scrollWindow]="false">
+  <mat-spinner *ngIf="!products.length && loading" class="mx-auto"></mat-spinner>
+  <table class="table" cellpadding="7" *ngIf="products.length">
+    <tbody>
+    <tr>
+      <th><div class="title">Фото товара</div></th>
+      <td class="td-bg-1" *ngFor="let prod of products">
+        <div class="cell font-weight-bold flex-column justify-content-end">
+          <div class="w-100 d-flex align-items-center img-view-wrap">
+            <div class="img-view" *ngFor="let img of prod.product.photos">
+              <img [src]="config.serverUrl + img.link" alt="">
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th><div class="title">Наименование товара</div></th>
+      <td class="td-bg-1" *ngFor="let prod of products">
+        <div class="cell font-weight-bold flex-column justify-content-end e-border-non">
+          <div class="w-100 d-flex align-items-center justify-content-center">
+            <div class="e-text">{{prod.product[config.name]}}</div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th><div class="title">Производитель</div></th>
+      <td class="td-bg-1" *ngFor="let prod of products">
+        <div class="cell flex-column justify-content-end">
+          <div class="w-100 d-flex align-items-center justify-content-center" [matTooltip]="prod.product.productManufacturerData[config.name]" matTooltipPosition="above">
+            <div class="e-text fz-12 color-gray">{{prod.product.productManufacturerData[config.name]}}</div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th><div class="title">Модель</div></th>
+      <td class="td-bg-1" *ngFor="let prod of products">
+        <div class="cell flex-column justify-content-end">
+          <div class="w-100 d-flex align-items-center justify-content-center" [matTooltip]="prod.product.productManufacturerData[config.name]" matTooltipPosition="above">
+            <div class="e-text fz-12 color-gray">{{prod.product.productModel && prod.product.productModel[config.name]}}</div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th><div class="title">Страна</div></th>
+      <td *ngFor="let prod of products">
+        <div class="cell flex-column justify-content-end">
+          <div class="w-100">{{prod.product.country && prod.product.country[config.name]}}</div>
+        </div>
+      </td>
+    </tr>
+    <tr *ngFor="let prop of categoryProperties">
+      <th><div class="title">{{prop && prop[config.name]}}</div></th>
+      <td *ngFor="let prod of products">
+        <div class="cell flex-column justify-content-end">
+          <div class="w-100">
+            {{getPropValue(prod.freeProductProperties, prop.id).value || '-'}}
+            <span class="color-gray" *ngIf="getPropValue(prod.freeProductProperties, prop.id).value">
+              {{getPropValue(prod.freeProductProperties, prop.id).unit}}
+            </span>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th><div class="title">Нетто</div></th>
+      <td class="td-bg" *ngFor="let prod of products">
+        <div class="cell flex-column justify-content-end">
+          <div class="w-100">
+            {{retPrice(prod.net) | number}}
+            <span class="color-gray">{{prod.product.showcaseUnits.weight[config.name]}}</span>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th><div class="title">Брутто</div></th>
+      <td *ngFor="let prod of products">
+        <div class="cell flex-column justify-content-end">
+          <div class="w-100">
+            {{retPrice(prod.gross) | number}}
+            <span class="color-gray">{{prod.product.showcaseUnits.weight[config.name]}}</span>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr *ngIf="showVolume">
+      <th><div class="title">Объем</div></th>
+      <td class="td-bg" *ngFor="let prod of products">
+        <div class="cell flex-column justify-content-end">
+          <div class="w-100">
+            {{retPrice(prod.volume) | number}}
+            <span class="color-gray">{{prod.product.showcaseUnits.volume[config.name]}}</span>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th><div class="title">Количество клиента</div></th>
+      <td *ngFor="let prod of products">
+        <div class="cell d-flex flex-wrap">
+          <div class="w-100 ">{{retPrice(prod.count) | number}}
+              <span class="color-gray">
+                {{productModel[prod.id] ? ('шт.') : prod.product.showcaseUnits.priceFor[config.name]}}
+              </span>
+          </div>
+          <div class="w-100 mt-2" *ngIf="productModel[prod.id]">
+            ={{retPrice((+prod.count) * productModel[prod.id])}}
+            <span class="color-gray">{{prod.product.showcaseUnits.priceFor[config.name]}}</span>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th><div class="title">Статус торга</div></th>
+      <td class="td-bg-2" *ngFor="let prod of products">
+        <div class="cell">{{prod.paymentOption[config.name]}}</div>
+      </td>
+    </tr>
+    <tr>
+      <th><div class="title">Сумма клиента</div></th>
+      <td class="td-bg-2" *ngFor="let prod of products">
+        <section class="cell d-flex flex-wrap">
+          <div class="w-100 mb-2 fw-500">
+            {{(prod.paymentOption.id === 3) ? ('Жду предложений') : retPrice(prod.price)}}
+            <span class="color-gray">{{(prod.paymentOption.id === 3) ? '' : currency[config.name] + '/' + prod.product.showcaseUnits.priceFor[config.name]}}</span>
+          </div>
+          <div *ngIf="prod.paymentOption.id !== 3" class="w-100 fw-500">
+            = {{retPrice((+prod.price) * (productModel[prod.id] || 1) * (+prod.count))}}
+            <span class="color-gray">{{currency[config.name]}}</span>
+          </div>
+        </section>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<!-- <ng-container [ngTemplateOutlet]="total" [ngTemplateOutletContext]="{order: item}"></ng-container> -->
+
+<ng-template #total let-item="order">
+  <div class="product-cards--item-4">
+    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6">
+      <div class="color-nobel mb-2 w-100">{{(item.isCombined ? 'Количество категорий' : 'Кол-во наименований')}}</div>
+      <div class="color-mondo font-weight-bold">{{item.isCombined ? item.childFreeOrders.length : item.productsCount}}</div>
+    </div>
+    <div *ngIf="!item.isCombined" class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6">
+      <div class="color-nobel mb-2 w-100">Общее количество</div>
+      <div class="color-mondo font-weight-bold">{{item.totalCount}} {{item.countMe && item.countMe[config.name]}}</div>
+    </div>
+    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6">
+      <div class="color-nobel mb-2 w-100">Общая стоимость клиента</div>
+      <div class="color-orange font-weight-bold">
+        {{waitingForOffers ? ('Жду предложений') : item.totalPrice}}
+        <span *ngIf="!waitingForOffers">{{item.currency && item.currency[config.name]}}</span>
+      </div>
+    </div>
+    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6">
+      <div class="color-nobel mb-2 w-100">Общий вес нетто</div>
+      <div class="color-mondo font-weight-bold">{{item.totalNet}} {{item.netMe && item.netMe[config.name]}}</div>
+    </div>
+    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6">
+      <div class="color-nobel mb-2 w-100">Общий вес брутто</div>
+      <div class="color-mondo font-weight-bold">{{item.totalBrut}} {{item.brutMe && item.brutMe[config.name]}}</div>
+    </div>
+    <div *ngIf="showVolume" class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6">
+      <div class="color-nobel mb-2 w-100">Общий объем</div>
+      <div class="color-mondo font-weight-bold">{{item.totalVolume}} {{item.volumeMe && item.volumeMe[config.name]}}</div>
+    </div>
+  </div>
+</ng-template>

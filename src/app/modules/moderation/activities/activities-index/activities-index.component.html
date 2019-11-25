@@ -1,0 +1,135 @@
+<mat-card [formGroup]="formGroup">
+  <h2>Виды деятельности</h2>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 mb-3">
+        <span class="mr-2"
+              *ngIf="!(selectedCountries && selectedCountries.length)">
+          Всего <span class="badge badge-primary">{{totalCounter}}</span>
+        </span>
+        <span *ngIf="selectedCountries && selectedCountries.length">
+          <span *ngFor="let item of selectedCountries"
+                class="mr-2">{{countries[item.id].nameRu}}
+            <span class="badge badge-primary">{{item.count}}</span></span>
+        </span>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field class="w-100">
+          <mat-select placeholder="Фильтр по статусу"
+                      formControlName="status">
+            <mat-option
+              *ngFor="let status of companyStatuses"
+              [value]="status.value">
+              {{status.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <ng-select
+          [items]="activityNames$ | async"
+          (change)="onSelectedActivityChanged($event)"
+          [maxSelectedItems]="1"
+          formControlName="activityName"
+          [multiple]="false"
+          [closeOnSelect]="true"
+          [hideSelected]="true"
+          [virtualScroll]="true"
+          bindLabel="nameRu"
+          placeholder="Выберите вид деятельности">
+        </ng-select>
+      </div>
+      <div class="col-md-3">
+        <ng-select
+          [items]="countries$ | async"
+          (change)="onSelectCountriesChanged($event)"
+          [maxSelectedItems]="3"
+          [multiple]="true"
+          [closeOnSelect]="false"
+          [hideSelected]="true"
+          [virtualScroll]="true"
+          [clearSearchOnAdd]="true"
+          [(ngModel)]="countryIdsArr"
+          [ngModelOptions]="{standalone: true}"
+          bindValue="id"
+          bindLabel="nameRu"
+          placeholder="Выберите страну">
+        </ng-select>
+      </div>
+      <div class="col-md-3"></div>
+      <div class="col-md-3">
+        <mat-form-field class="w-100">
+          <input matInput
+                 placeholder="Название вида деятельности..."
+                 formControlName="nameActivity"
+                 autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field class="w-100">
+          <input matInput
+                 placeholder="Название компании..."
+                 formControlName="nameCompany"
+                 autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <b2b-select-categories *ngIf="selectedActivity === 1 || selectedActivity === 2"
+                               (selectedCategoryChange)="onSelectedCategory($event)"></b2b-select-categories>
+      </div>
+      <div *ngxPermissionsOnly="['SUPER_ADMIN', 'MAKE_A_GIFT']"
+           class="col-md-3">
+        <button mat-raised-button
+                color="primary"
+                [disabled]="companyIdsForBonus.length === 0 || isPending"
+                (click)="setBonus()">Начислить бонус
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive position-relative">
+    <table class="table">
+      <tr *ngFor="let company of companies">
+        <td class="text-nowrap align-middle">{{company.name}}</td>
+        <td class="w-100">
+          <ng-container *ngFor="let activity of company.activities">
+            <a
+              [ngClass]="['activity-link', (activity && activity.statusName || '')]"
+              class="mr-2"
+              [matTooltip]="activity.name"
+              matTooltipPosition="above"
+              [routerLink]="['details']"
+              [queryParams]="{status: formGroup.get('status').value, filterActivityName: selectedActivity, countries: countryIds, nameActivity: formGroup.get('nameActivity').value, nameCompany: formGroup.get('nameCompany').value, page: currentPage, companyId: company.id, activityId: activity.id, activityName: activity.hardData.apiId, activityParentKeyName: activity.parentKey}">
+              <img class="activity-thumb"
+                   *ngIf="activity.logo"
+                   [src]="activity.logo">
+              <i style="position: absolute;bottom: 0;right: 0;font-size: 26px;"
+                 class="bb {{activity.hardData?.fa}}"></i>
+            </a>
+            <span>{{activity.name}}</span>
+            <ng-container *ngxPermissionsOnly="['SUPER_ADMIN', 'MAKE_A_GIFT']">
+              <mat-checkbox *ngIf="!loading && !company.isGiftGotten && formGroup.get('status').value === 1"
+                            class="ml-2"
+                            (change)="addCompanyForBonus($event, company, activity)"></mat-checkbox>
+            </ng-container>
+          </ng-container>
+        </td>
+      </tr>
+    </table>
+    <div class="loader-wrap"
+         *ngIf="loading">
+      <mat-spinner></mat-spinner>
+    </div>
+  </div>
+
+  <mat-paginator
+    [length]="length"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [hidePageSize]="true"
+    [showFirstLastButtons]="true"
+    (page)="getPage($event)">
+  </mat-paginator>
+</mat-card>

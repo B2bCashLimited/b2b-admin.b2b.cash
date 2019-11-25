@@ -1,0 +1,24 @@
+<section class="popup-wrapper">
+  <div class="popup-working-info">
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="popup-title">
+          При изменении графика предыдущий график будет удален
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 justify-content-center d-flex mb-2">
+        <button mat-raised-button class="e-btn-border w-100 m-width" (click)="closePopup(true)">
+          <em>Удалить график</em>
+        </button>
+      </div>
+
+      <div class="col-6 justify-content-center d-flex">
+        <button mat-raised-button color="accent" class="e-btn-fill w-100 m-width" (click)="closePopup(false)">
+          <em>Отмена</em>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,15 @@
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.dialog-container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.add-button {
+  align-self: center;
+}

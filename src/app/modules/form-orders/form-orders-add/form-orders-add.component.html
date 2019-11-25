@@ -1,0 +1,115 @@
+<mat-card style="display: flex;flex-direction: column;flex-grow: 1;">
+  <div *ngIf="isLoading" style="z-index:9999;position: absolute; width: 100% ;height: 100%; background: rgba(0,0,0,0.5) ">
+     <mat-spinner style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%)"></mat-spinner>
+  </div>
+  <div style="display: flex;width: 100%;align-items: center;margin-bottom: 16px;">
+    <h4 style="margin: 0;flex-grow: 1;">Уточните набор бизнес-значений для формы Сформировать заказ</h4>
+    <button mat-raised-button color="primary"
+            (click)="onAddBusinessPropertyDialogClick()">
+      Добавить еще бизнес-значение
+    </button>
+  </div>
+  <div style="display: flex;flex-grow: 1;flex-direction: column;">
+    <div style="display: flex;flex-grow: 1;justify-content: space-between;margin-bottom: 16px;">
+      <div style="display: flex;margin-right: 8px;width: 100%;flex-direction: column;">
+        <div style="display: flex;justify-content: space-between;margin-bottom: 8px;padding: 0 16px;">
+          <span>Наименование характеристик</span>
+          <span>Добавить форму</span>
+        </div>
+        <div
+          style="display: flex;flex-grow: 1; flex-direction: column;border: 1px solid #ccc;min-height: 50px;">
+          <div style="display: flex;align-items: center; border-bottom: 1px solid #ccc;padding: 10px;"
+               *ngFor="let categoryProperty of businessProperties">
+            <span style="margin-right: auto;">
+              {{categoryProperty.nameRu || categoryProperty.nameEn || categoryProperty.nameCn}}
+            </span>
+            <div style="display: flex;">
+              <button mat-icon-button color="warn"
+                      (click)="onDestroyBusinessPropertyClick(categoryProperty)">
+                <mat-icon>clear</mat-icon>
+              </button>
+              <button mat-icon-button color="primary"
+                      (click)="onEditBusinessPropertyClick(categoryProperty)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="primary"
+                      (click)="onAddBusinessPropertyClick(categoryProperty)">
+                <mat-icon>add_box</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex;margin-left: 8px;width: 100%;flex-direction: column;">
+        <div style="display: flex;justify-content: space-between;margin-bottom: 8px;padding: 0 16px;">
+          <span>Наименование характеристик</span>
+          <span>Удалить из формы</span>
+        </div>
+        <div
+          style="display: flex;flex-grow: 1;overflow: hidden; flex-direction: column;border: 1px solid #ccc;min-height: 50px;"
+          cdkDropList (cdkDropListDropped)="dropBusinessProperties($event)">
+          <div class="example-box" *ngFor="let categoryProperty of businessPropertiesToShow" cdkDrag>
+            <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+            <span style="margin-right: auto;">
+              {{categoryProperty.nameRu || categoryProperty.nameEn || categoryProperty.nameCn}}
+            </span>
+
+            <button mat-icon-button color="primary"
+                    (click)="onDisableBusinessPropertyClick(categoryProperty)">
+              <mat-icon>indeterminate_check_box</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display: flex;width: 100%;align-items: center;margin-bottom: 16px;">
+    <h4 style="margin: 0;flex-grow: 1;">Уточните набор характеристик для Витрины</h4>
+  </div>
+  <div style="display: flex;flex-grow: 1;flex-direction: column;">
+    <div style="display: flex;flex-grow: 1;justify-content: space-between;margin-bottom: 16px;">
+      <div style="display: flex;margin-right: 8px;width: 100%;flex-direction: column;">
+        <div style="display: flex;justify-content: space-between;width: 100%;margin-bottom: 8px;padding: 0 16px;">
+          <span>Наименование характеристик</span>
+        </div>
+        <div
+          style="display: flex;flex-grow: 1;flex-direction: column;border: 1px solid #ccc;min-height: 50px;">
+          <div style="display: flex;align-items: center; border-bottom: 1px solid #ccc;padding: 10px;min-height: 61px;"
+               *ngFor="let categoryProperty of defaultProperties">
+            <span style="margin-right: auto;">
+              {{categoryProperty.nameRu || categoryProperty.nameEn || categoryProperty.nameCn}}
+            </span>
+            <button
+              mat-icon-button
+              color="primary" (click)="changeOrderActivity(categoryProperty, true)">
+                <mat-icon>add_box</mat-icon></button>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex;margin-left: 8px;width: 100%;flex-direction: column;">
+        <div style="display: flex;justify-content: space-between;margin-bottom: 8px;padding: 0 16px;">
+          <span>Наименование характеристик</span>
+        </div>
+        <div
+          style="display: flex;flex-grow: 1;overflow: hidden; flex-direction: column;border: 1px solid #ccc;min-height: 50px;"
+          cdkDropList (cdkDropListDropped)="drop($event)">
+          <div class="example-box"
+               style="min-height: 61px;"
+               *ngFor="let categoryProperty of categoryPropertiesToShow" cdkDrag>
+            <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+            <span style="margin-right: auto;">
+              {{categoryProperty.nameRu || categoryProperty.nameEn || categoryProperty.nameCn}}
+            </span>
+            <div style="display: flex;">
+              <button mat-icon-button color="warn"
+                      [disabled]="categoryProperty.default || categoryProperty.isSpecial"
+                      (click)="changeOrderActivity(categoryProperty, false)">
+                    <mat-icon>clear</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card>

@@ -1,0 +1,113 @@
+<section class="section-wrap">
+  <h2 class="mb-3">Реквизиты</h2>
+
+  <div class="row mb-3 justify-content-end">
+    <div class="col-sm-auto col-12">
+      <button class="fill-btn w-100"
+              color="primary"
+              mat-raised-button
+              (click)="openCreateOrEditTemplateDialog()">Новый шаблон
+      </button>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+      <b2b-select-countries [multiple]="false"
+                            (countriesChange)="onCountriesChanged($event)"></b2b-select-countries>
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-6 pt-2">
+      <mat-form-field class="w-100 mat-form-search">
+        <input matInput
+               [formControl]="requisiteTemplateName"
+               placeholder="Название шаблона документа"
+               autocomplete="off">
+        <i class="bb bb-new-search e-search-btn"
+           (click)="getRequisiteTemplates()"></i>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="position-relative mat-elevation-z8">
+    <div class="loading-shade"
+         *ngIf="isLoading">
+      <mat-spinner *ngIf="isLoading"></mat-spinner>
+    </div>
+
+    <div>
+      <table mat-table
+             [dataSource]="requisiteTemplates">
+        <!-- Number Column -->
+        <ng-container matColumnDef="number">
+          <th mat-header-cell
+              *matHeaderCellDef>№
+          </th>
+          <td mat-cell
+              *matCellDef="let row; index as i;">{{i + 1}}</td>
+        </ng-container>
+
+        <!-- Title Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell
+              *matHeaderCellDef>Название шаблона
+          </th>
+          <td mat-cell
+              *matCellDef="let row">{{row.name}}</td>
+        </ng-container>
+
+        <!-- Country Column -->
+        <ng-container matColumnDef="country">
+          <th mat-header-cell
+              *matHeaderCellDef>Страна
+          </th>
+          <td mat-cell
+              *matCellDef="let row">{{row.country.nameRu}}</td>
+        </ng-container>
+
+        <!-- Flag Column -->
+        <ng-container matColumnDef="flag">
+          <th mat-header-cell
+              *matHeaderCellDef>Флаг
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <span class="flag flag-{{row.country.countryCode}}"
+                  matTooltip="{{row.country.countryCode}}"
+                  matTooltipPosition="above"></span>
+          </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell
+              *matHeaderCellDef>Действие
+          </th>
+          <td mat-cell
+              *matCellDef="let row">
+            <div class="table-buttons">
+              <i class="material-icons mr-1"
+                 (click)="openCreateOrEditTemplateDialog(row)"
+                 matTooltip="Редактировать">edit</i>
+              <i class="material-icons"
+                 (click)="openDeleteRequisiteConfirmDialog(row.id)"
+                 matTooltip="Удалить">&#xE5CD;</i>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row
+            *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row
+            *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <mat-paginator [length]="length"
+                   [pageSize]="pageSize"
+                   [pageIndex]="pageIndex"
+                   (page)="onPageChanged($event)"></mat-paginator>
+  </div>
+</section>
+
+
+

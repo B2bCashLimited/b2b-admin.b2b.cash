@@ -1,0 +1,10 @@
+<mat-form-field class="h-100 w-100" [floatLabel]="_floatPlaceholder">
+  <input matInput placeholder="{{_placeholder}}" [matAutocomplete]="auto"
+         [formControl]="locationsCtrl" (focusout)="onFocusout()">
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let location of locations; let i = index" [value]="location"
+                (onSelectionChange)="onSelect($event, location, i)">
+      <span>{{location}}</span>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

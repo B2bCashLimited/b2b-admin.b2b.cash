@@ -1,0 +1,454 @@
+<ng-content></ng-content>
+
+<div *ngIf="selectedCountryId && requisiteTemplate && isAct"
+     class="b-act mb-4 b-act--edit"
+     [formGroup]="formGroup">
+  <button *ngIf="isViewDocument && !isEditDocument"
+          class="btn-edit mb-3"
+          (click)="enableEdit()"
+          mat-raised-button>
+    <i class="bb bb-pencil"></i>
+  </button>
+
+  <div class="b-act--title pt-2">АКТ № от</div>
+  <div class="b-act--title mb-3">на выполнение работ-услуг</div>
+
+  <div class="b-act--subtitle">
+    <div class="e-textarea height-1">
+      <textarea class="w-100"
+                disabled
+                readonly>
+        Мы, нижеподписавшиеся, ### ИСПОЛНИТЕЛЬ с одной стороны и ### ЗАКАЗЧИК с другой стороны, составили настоящий акт о том, что
+      ИСПОЛНИТЕЛЬ выполнил, а ЗАКАЗЧИК принял следующие работы:
+      </textarea>
+    </div>
+  </div>
+
+  <table class="b-act--table w-100 mb-3">
+    <tr>
+      <th>Наименование</th>
+      <th>Ед. изм.</th>
+      <th>Кол-во</th>
+      <th>Цена</th>
+      <th>Сумма</th>
+    </tr>
+    <tr>
+      <td class="font-weight-bold">1</td>
+      <td class="font-weight-bold">2</td>
+      <td class="font-weight-bold">3</td>
+      <td class="font-weight-bold">4</td>
+      <td class="font-weight-bold">5</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>месяц</td>
+      <td>1</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-left"
+          colspan="4">Итого:
+      </td>
+      <td></td>
+    </tr>
+  </table>
+
+  <div class="b-act--text mb-3">
+    <div class="e-textarea height-1">
+      <textarea class="w-100"
+                disabled
+                readonly>
+      Сумма прописью:
+
+      Работы выполнены в полном объеме, в установленные сроки и с надлежащим качеством. Стороны предензий друг
+      к другу не имеют.
+      </textarea>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-6">
+      <div class="b-act--text mb-1">Исполнитель:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('companyName').value}}</span>
+      </div>
+      <div class="b-act--text mb-1">Адрес:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('companyAddress').value}}</span>
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">ИНН:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('inn').value}}</span>
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">КПП:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('kpp').value}}</span>
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">ОГРН:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('ogrn').value}}</span>
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">ЕГРЮЛ:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('egryul').value}}</span>
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">Код ОКТМО:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('oktmo').value}}</span>
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">Код ОКВЕД:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('okved').value}}</span>
+      </div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">Номер бизнес лицензии:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('businessLicense').value}}</span>
+      </div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">Номер карты юридического лица:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('identityCard').value}}</span>
+      </div>
+      <div class="b-act--text mb-1">{{isRussia ? 'Банк' : 'Главный банк'}}:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('bankName').value}}</span>
+      </div>
+      <div class="b-act--text mb-1">Адрес банка:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('bankAddress').value}}</span>
+      </div>
+      <div class="b-act--text mb-1">{{isRussia ? 'Расчетный счет' : 'Номер счёта'}}:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('bankAccountNumber').value}}</span>
+      </div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">SWIFT:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('bankSwift').value}}</span>
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">ИНН/КПП банка:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('bankInn').value}}/{{formGroup.get('bankKpp').value}}</span>
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">Корр.счет:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('correspondentAccountNumber').value}}</span>
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-4">БИК:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('bik').value}}</span>
+      </div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">Банк корреспондент:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('intermediaryBankName').value}}</span>
+      </div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">Адрес банка:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('intermediaryBankAddress').value}}</span>
+      </div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">Номер счёта:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('intermediaryBankAccountNumber').value}}</span>
+      </div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">SWIFT:&nbsp;
+        <span class="pl-1 font-weight-bold">{{formGroup.get('intermediaryBankSwift').value}}</span>
+      </div>
+      <div class="d-flex b-act--text align-items-end b-signature mb-2">
+        Сдал
+        <div class="bottom-line ml-2">
+          <img alt=""
+               [src]="serverUrl + formGroup.get('imgSign').value">
+        </div>
+      </div>
+
+      <div class="b-stamp d-flex justify-content-end">
+        <img alt=""
+             [src]="serverUrl + formGroup.get('imgStamp').value">
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="b-act--text mb-1">Заказчик:</div>
+      <div class="b-act--text mb-1">Адрес:</div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">ИНН:
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">КПП:
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">ОГРН:
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">ЕГРЮЛ:
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">Код ОКТМО:
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">Код ОКВЕД:
+      </div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">Номер бизнес лицензии:
+      </div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">Номер карты юридического лица:
+      </div>
+      <div class="b-act--text mb-1">{{isRussia ? 'Банк' : 'Главный банк'}}:</div>
+      <div class="b-act--text mb-1">Адрес банка:</div>
+      <div class="b-act--text mb-1">{{isRussia ? 'Расчетный счет' : 'Номер счёта'}}:</div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">SWIFT:
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">ИНН/КПП банка:
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-1">Корр.счет:
+      </div>
+      <div *ngIf="isRussia"
+           class="b-act--text mb-4">БИК:
+      </div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">Банк корреспондент:
+      </div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">Адрес банка:
+      </div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">Номер счёта:
+      </div>
+      <div *ngIf="!isRussia"
+           class="b-act--text mb-1">SWIFT:
+      </div>
+      <div class="d-flex b-act--text align-items-end b-signature mb-2">Сдал</div>
+    </div>
+  </div>
+</div>
+
+<!-- Счёт/Инвойс -->
+<div *ngIf="selectedCountryId && requisiteTemplate && isInvoice"
+     class="b-act mb-4 b-act--edit"
+     [formGroup]="formGroup">
+  <button *ngIf="isViewDocument && !isEditDocument"
+          class="btn-edit mb-3"
+          mat-raised-button
+          (click)="enableEdit()">
+    <i class="bb bb-pencil"
+       matTooltip="Редактировать"></i>
+  </button>
+
+  <table *ngIf="isRussia"
+         class="b-act--table w-100 mb-3 table-score">
+    <tr>
+      <td rowspan="2"
+          colspan="2"
+          style="border-bottom: 0;">{{formGroup.get('bankName').value || 'Название банка'}}</td>
+      <td style="width: 10%">БИК</td>
+      <td style="width: 40%; border-bottom: 0;">{{formGroup.get('bik').value}}</td>
+    </tr>
+    <tr>
+      <td>Расч. счёт</td>
+      <td style="border-top: 0; border-bottom: 0;">{{formGroup.get('bankAccountNumber').value}}</td>
+    </tr>
+    <tr>
+      <td colspan="2"
+          style="border-top: 0;">Банк получателя
+      </td>
+      <td>Корр. счёт</td>
+      <td style="border-top: 0;">{{formGroup.get('correspondentAccountNumber').value}}</td>
+    </tr>
+    <tr>
+      <td>ИНН {{formGroup.get('bankInn').value}}</td>
+      <td>КПП {{formGroup.get('bankKpp').value}}</td>
+      <td style="border: 0;"></td>
+      <td rowspan="3"
+          style="border: 0;"></td>
+    </tr>
+    <tr>
+      <td colspan="2"
+          style="border-bottom: 0;">{{formGroup.get('companyName').value || 'Название компании'}}</td>
+      <td style="border: 0;"></td>
+    </tr>
+    <tr>
+      <td colspan="2"
+          style="border-top: 0;">Получатель
+      </td>
+      <td style="border: 0;"></td>
+    </tr>
+  </table>
+
+  <table *ngIf="!isRussia"
+         class="b-act--table w-100 mb-3 table-score">
+    <tr>
+      <td rowspan="2"
+          colspan="2"
+          style="border: 0; width: 45%;">{{formGroup.get('bankName').value || 'Name'}}</td>
+      <td style="width: 15%;">IBAN</td>
+      <td style="border: 0;">{{formGroup.get('bankAccountNumber').value}}</td>
+    </tr>
+    <tr>
+      <td>SWIFT</td>
+      <td style="border: 0;">{{formGroup.get('bankSwift').value}}</td>
+    </tr>
+    <tr>
+      <td colspan="2"
+          style="border: 0;">Main Bank
+      </td>
+      <td>Bank address</td>
+      <td>{{formGroup.get('bankAddress').value}}</td>
+    </tr>
+    <tr>
+      <td rowspan="2"
+          colspan="2"
+          style="border-bottom: 0;">{{formGroup.get('intermediaryBankName').value || 'Name'}}</td>
+      <td>IBAN</td>
+      <td style="border: 0;">{{formGroup.get('intermediaryBankAccountNumber').value}}</td>
+    </tr>
+    <tr>
+      <td>SWIFT</td>
+      <td style="border: 0;">{{formGroup.get('intermediaryBankSwift').value}}</td>
+    </tr>
+    <tr>
+      <td colspan="2"
+          style="border: 0;">Intermediary Bank
+      </td>
+      <td>Bank address</td>
+      <td>{{formGroup.get('intermediaryBankAddress').value}}</td>
+    </tr>
+    <tr>
+      <td>Business License {{formGroup.get('businessLicense').value}}</td>
+      <td>Identification card {{formGroup.get('identityCard').value}}</td>
+      <td colspan="2"
+          style="border-bottom: 0;"></td>
+    </tr>
+    <tr>
+      <td colspan="2"
+          style="border-bottom: 0;">{{formGroup.get('companyName').value || 'Company name'}}</td>
+      <td rowspan="2"
+          colspan="2"
+          style="border: 0;"></td>
+    </tr>
+    <tr>
+      <td colspan="2"
+          style="border-top: 0;">Recipient
+      </td>
+    </tr>
+  </table>
+
+  <div class="fz-15 py-3 mb-4 font-weight-bold bottom-2">
+    <span>{{isRussia ? 'Счет на оплату' : 'Invoice'}} №</span>
+    <span>{{isRussia ? ' от ' : ' from '}}</span>
+  </div>
+
+  <table class="fz-12 w-100 mb-3">
+    <tr>
+      <td class="pb-3">{{isRussia ? 'Поставщик' : 'Supplier'}}</td>
+      <td>
+        <div class="e-textarea height-1">
+          <textarea class="w-100 font-weight-bold"
+                    disabled
+                    readonly>
+            ООО "Б2Б.КЕШ ЛИМИТЕД", ИНН 7726432476, КПП 772601001, 117519, г.Москва, Варшавское шоссе, дом №133,
+            офис 2-380, тел.: 8 (958) 756 87 77
+          </textarea>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="pb-3">{{isRussia ? 'Получатель' : 'Customer'}}</td>
+      <td class="font-weight-bold pb-3">
+        {{formGroup.get('companyName').value || (isRussia ? 'Название компании ' : 'Company name ')}},
+        {{isRussia ? 'ИНН ' : 'Business License '}}
+        {{isRussia ? formGroup.get('inn').value : formGroup.get('businessLicense').value}},
+        {{isRussia ? ' КПП ' : ' Identification card '}}
+        {{isRussia ? formGroup.get('kpp').value : formGroup.get('identityCard').value}},
+        {{formGroup.get('companyAddress').value || (isRussia ? ' Адрес компании ' : ' Company address ')}},
+        {{isRussia ? 'тел.' : 'phone'}}: 8 (999) 999 99 99
+      </td>
+    </tr>
+
+    <tr>
+      <td class="pb-3">{{isRussia ? 'Договор' : 'Contract'}}:</td>
+      <td class="font-weight-bold pb-3">{{isRussia ? ' от ' : ' from '}}</td>
+    </tr>
+
+    <tr>
+      <td class="pb-3">{{isRussia ? 'Отчетный период' : 'Reporting period'}}:</td>
+      <td class="font-weight-bold pb-3"></td>
+    </tr>
+  </table>
+
+  <table class="b-act--table w-100 mb-3">
+    <tr>
+      <th>№</th>
+      <th>{{isRussia ? 'Наименование' : 'Name'}}</th>
+      <th>{{isRussia ? 'Кол-во' : 'Amount'}}</th>
+      <th>{{isRussia ? 'Ед.' : 'Unit'}}</th>
+      <th>{{isRussia ? 'Цена' : 'Price'}}</th>
+      <th>{{isRussia ? 'Сумма' : 'Total sum'}}</th>
+    </tr>
+
+    <tr>
+      <td>1</td>
+      <td></td>
+      <td>1</td>
+      <td>{{isRussia ? 'услуга' : 'service'}}</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+
+  <table class="fz-12 font-weight-bold ml-auto mb-4">
+    <tr>
+      <td>{{isRussia ? 'Итого' : 'Sum'}}:</td>
+      <td class="pl-3"></td>
+    </tr>
+    <tr>
+      <td>{{isRussia ? 'Всего к оплате' : 'Total sum'}}:</td>
+      <td class="pl-3"></td>
+    </tr>
+  </table>
+
+  <div class="fz-12 mb-2">{{isRussia ? 'Всего наименований 1, на сумму ' : 'Total items 1, in the amount of '}}</div>
+
+  <div class="e-textarea height-3 pb-2 mb-5 bottom-2">
+    <textarea class="w-100 fz-12 font-weight-bold"
+              disabled
+              readonly>Сумма прописью: </textarea>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-6 mb-3">
+      <div class="d-flex b-act--text d-flex align-items-end b-signature mb-2 ">
+        <div>{{isRussia ? 'Генеральный директор' : 'CEO'}}</div>
+
+        <div class="bottom-line ml-2 mr-2">
+          <img alt=""
+               [src]="serverUrl + formGroup.get('imgSign').value">
+        </div>
+
+        <div>{{isRussia ? 'Ф.И.О' : 'Full name'}}</div>
+      </div>
+
+      <div class="b-stamp d-flex justify-content-end">
+        <img alt=""
+             [src]="serverUrl + formGroup.get('imgStamp').value">
+      </div>
+    </div>
+
+    <div class="col-6 mb-3">
+      <div class="d-flex b-act--text d-flex align-items-end b-signature mb-2 ">
+        <div>{{isRussia ? 'Главный бухгалтер' : 'Chief Accountant'}}</div>
+        <div class="bottom-line ml-2 mr-2"></div>
+        <div>{{isRussia ? 'Ф.И.О' : 'Full name'}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="e-textarea height-1 mb-2">
+      <textarea class="w-100 fz-12 font-weight-bold"
+                disabled
+                readonly>
+        Внимание!
+        1. Оплата должна производиться до 13 (Тринадцатого) числа месяца, предшествующего отчётному периоду.
+        2. Если в платёжном поручении не будет указан договор и счёт, оплата может быть отнесена в нераспознанные платежи.
+      </textarea>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="dialog-container">
+  <h3 class="mt-0">Задачи</h3>
+
+  <div class="position-relative">
+    <div class="loading-shade"
+         *ngIf="isLoading">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-table [dataSource]="dataSource" class="table-1">
+      <!-- Task Column -->
+      <ng-container matColumnDef="task">
+        <mat-header-cell *matHeaderCellDef>Задача</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.type}}</mat-cell>
+      </ng-container>
+
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef>Дата</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.dateCreated.date | date: 'dd.MM.yyyy HH:mm'}}</mat-cell>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef>Статус</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <div class="d-flex align-items-center">
+            <i [class]="row.status.icon"></i>
+            <div class="text-left">{{row.status.text}}</div>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator [length]="pager.length"
+                   [pageSize]="pager.pageSize"
+                   [pageIndex]="pager.pageIndex"
+                   [showFirstLastButtons]="true"
+                   (page)="onPageChanged($event)"></mat-paginator>
+  </div>
+
+  <div class="d-flex align-items-center justify-content-end mt-3">
+    <button class="btn-border" mat-dialog-close mat-button color="primary">Отмена</button>
+<!--    <button class="" (click)="onSubmit()" mat-raised-button color="primary">Сырой парсинг продуктов</button>-->
+  </div>
+</div>
+
+

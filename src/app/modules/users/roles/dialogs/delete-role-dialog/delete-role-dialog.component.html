@@ -1,0 +1,18 @@
+<div class="dialog-container">
+  <h4 style="margin: 0 0 16px;">Подтверждение удаления</h4>
+  <p>Выберите другую должность, куда будут перенесены сотрудники:</p>
+  <mat-form-field style="width: 100%;">
+    <mat-select placeholder="Роль" [(ngModel)]="selectedRole">
+      <mat-option *ngFor="let role of roles" [value]="role.id">{{role.nameRu}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div style="display: flex;flex-grow: 1;justify-content: flex-end;">
+    <button style="margin-right: 10px;"
+            mat-raised-button color="primary"
+            (click)="onCloseClick(false)">Отмена
+    </button>
+    <button mat-raised-button color="warn"
+            (click)="onCloseClick(true)">Удалить и перенести
+    </button>
+  </div>
+</div>

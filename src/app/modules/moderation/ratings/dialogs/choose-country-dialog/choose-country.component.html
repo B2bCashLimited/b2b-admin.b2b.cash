@@ -1,0 +1,20 @@
+<div>
+  <h6>Добавить страну</h6>
+  <select
+      [(ngModel)]="selectedCountryID"
+      class="e-input country-select"
+  >
+    <option *ngFor="let country of countries" [value]="country.id">{{country.nameRu}}</option>
+  </select>
+  <div class="buttons">
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!selectedCountryID"
+    (click)="save()">ОК</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="cancel()">Отмена</button>
+  </div>
+</div>

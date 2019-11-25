@@ -1,0 +1,144 @@
+<div class="search-results" infiniteScroll infiniteScrollContainer=".mat-sidenav-content" [fromRoot]="true"
+     (scrolled)="onScroll()" [infiniteScrollDisabled]="loading">
+  <form autocomplete="off" [formGroup]="formRange">
+    <mat-form-field>
+      <input matInput placeholder="От" formControlName="from" type="number" [readOnly]="disableSelect">
+    </mat-form-field>
+    <mat-form-field class="mr-3">
+      <input matInput placeholder="До" formControlName="to" type="number" [readOnly]="disableSelect">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="makeRule()" [disabled]="!selectedProducts.length">
+      Определить правило
+    </button>
+  </form>
+
+  <div *ngIf="disableSelect" [@slideInOut] class="container-fluid overflow-hidden img-thumbnail py-3">
+    <form class="row" [formGroup]="formRules">
+      <div class="col-auto d-flex flex-column">
+        <label>Начать парсинг:</label>
+        <mat-radio-group formControlName="order" class="d-flex flex-column" (change)="onOrderChange()">
+          <mat-radio-button value="asc" class="mb-1">
+            <mat-icon>arrow_forward</mat-icon> С начала
+          </mat-radio-button>
+          <mat-radio-button value="desc">С конца <mat-icon>arrow_back</mat-icon>
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="col-auto">
+        <h6 *ngIf="formRules.value.order === 'asc' && nameExample.length" class="m-0">
+          <span *ngFor="let item of nameExample; let i = index" [ngStyle]="{'background': getColor(i)}">
+            {{item}}
+          </span>
+        </h6>
+        <h6 *ngIf="formRules.value.order === 'desc' && nameExampleReversed.length" class="m-0">
+          <span *ngFor="let item of nameExampleReversed | reverseArray; let i = index"
+                [ngStyle]="{'background': getColor(i)}">
+            {{item}}
+          </span>
+        </h6>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Разделитель</th>
+              <th>Характеристика</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody [@filterAnimation]="formRules['controls'].properties.controls.length">
+            <tr formArrayName="properties"
+                *ngFor="let line of formRules['controls'].properties.controls; let i = index">
+              <td class="align-middle">
+                <b *ngIf="formRules.value.order === 'asc' && nameExample[i]">{{nameExample[i]}}</b>
+                <b *ngIf="formRules.value.order === 'desc' && nameExampleReversed[i]">{{nameExampleReversed[i]}}</b>
+              </td>
+              <td [formGroupName]="i">
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput placeholder="Разделитель" formControlName="separator" autocomplete="off">
+                </mat-form-field>
+              </td>
+              <td class="align-middle">
+                <div class="pl-3 d-flex" *ngIf="!line.value.property">
+                  <button mat-raised-button color="primary" class="mr-2" (click)="onNewPropClick(line, i)">
+                    <mat-icon>add</mat-icon>Создать
+                  </button>
+                  <button mat-raised-button color="primary" (click)="onOverritePropClick(line, i)">
+                    <mat-icon>edit</mat-icon>Переопределить
+                  </button>
+                </div>
+                <div class="pl-3" *ngIf="line.value.property">
+                  {{line.value.property.nameRu}}
+                  <button mat-icon-button color="primary" (click)="onOverritePropClick(line, i)" class="ml-auto">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </div>
+              </td>
+              <td>
+                <button mat-icon-button (click)="onDeleteRowClick(i)" *ngIf="i > 0">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button mat-mini-fab color="primary" class="mx-auto d-block" (click)="addNewRule()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-12">
+        <button mat-raised-button color="primary" (click)="onSaveClick()">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid img-thumbnail py-3">
+    <div class="row">
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput placeholder="Только характеристики без названия товара!" [(ngModel)]="properties" autocomplete="off">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="properties">
+      <div class="col-12">
+        <b [innerHTML]="properties | highlight : regex"></b>
+      </div>
+    </div>
+    <div class="row" [formGroup]="regexForm" *ngIf="properties">
+      <div class="col-auto" formArrayName="arr" *ngFor="let line of regexForm['controls'].arr.controls; let i = index">
+        <div [formGroupName]="i">
+          <mat-form-field appearance="outline" style="width: 160px">
+            <input matInput placeholder="разделитель" formControlName="separator" autocomplete="off">
+            <span matSuffix *ngIf="i !== 0">
+              <button mat-icon-button (click)="onRemoveRegexClick()"><mat-icon>close</mat-icon></button>
+            </span>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-auto">
+        <button mat-icon-button (click)="onAddRegexClick()"><mat-icon>add</mat-icon></button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-auto">
+        <button mat-raised-button (click)="getIdsForModerate()">Отправить</button>
+      </div>
+    </div>
+  </div>
+
+  <mat-selection-list #products [(ngModel)]="selectedProducts" (selectionChange)="selectionListChange($event)"
+                      [disabled]="disableSelect">
+    <mat-list-option *ngFor="let item of data; trackBy: trackByFn; let i = index" [value]="item">
+      <div>
+        <b>{{i + 1}})</b> {{item.value}}
+      </div>
+    </mat-list-option>
+  </mat-selection-list>
+</div>

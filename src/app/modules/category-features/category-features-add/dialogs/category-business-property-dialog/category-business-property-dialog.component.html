@@ -1,0 +1,57 @@
+<div class="dialog-container" [formGroup]="formGroup">
+  <h4 style="margin: 0 0 16px;">Добавьте бизнес-значение</h4>
+  <mat-form-field>
+    <input matInput placeholder="Английское наименование" formControlName="nameEn">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Русское наименование" formControlName="nameRu">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Китайское наименование" formControlName="nameCn">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Тип поля" formControlName="valueType">
+      <mat-option [value]="1">Цифровое значение</mat-option>
+      <mat-option [value]="2">Текстовое значение</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-chip-list #unitsList>
+      <mat-chip *ngFor="let item of formGroup.value.unitsList"
+                [removable]="true" (removed)="remove(item, 'unitsList')">
+        {{item.value}}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="Варианты единиц измерения"
+             [matChipInputFor]="unitsList"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             [matChipInputAddOnBlur]="true"
+             (matChipInputTokenEnd)="add($event, 'unitsList')">
+    </mat-chip-list>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-chip-list #valuesList>
+      <mat-chip *ngFor="let item of formGroup.value.valuesList"
+                [removable]="true" (removed)="remove(item, 'valuesList')">
+        {{item.value}}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="Варианты значений"
+             [matChipInputFor]="valuesList"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             [matChipInputAddOnBlur]="true"
+             (matChipInputTokenEnd)="add($event, 'valuesList')">
+    </mat-chip-list>
+  </mat-form-field>
+
+
+  <div style="display: flex;flex-grow: 1;justify-content: flex-end;">
+    <button style="margin-right: 10px;" mat-raised-button color="primary"
+            (click)="onCloseClick(true)">Добавить
+    </button>
+    <button mat-raised-button color="primary"
+            (click)="onCloseClick(false)">Закрыть
+    </button>
+  </div>
+</div>

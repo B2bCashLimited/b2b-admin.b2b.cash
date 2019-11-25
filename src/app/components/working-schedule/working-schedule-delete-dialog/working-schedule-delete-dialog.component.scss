@@ -1,0 +1,204 @@
+::ng-deep b2b-working-schedule-delete-dialog {
+  .popup-wrapper{
+    position: relative;
+  }
+}
+
+//popup
+.popup-working-info{
+  max-width: 390px;
+
+  .popup-title {
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    font-size:  1.5rem;
+    color: #000000;
+    margin-bottom: 10px;
+  }
+
+  .e-btn-fill{
+    height: 30px;
+    box-shadow: none !important;
+    min-width: 165px;
+    font-weight: normal;
+
+    &::ng-deep.mat-button-wrapper{
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 30px;
+      font-size: .875rem;
+    }
+
+    em{
+      font-style: normal;
+    }
+
+    i{
+      margin-left: 1rem;
+      font-size: 1rem;
+    }
+
+    &:focus{
+      outline: none;
+    }
+
+    &.m-width{
+      min-width: 88px;
+    }
+  }
+
+  .e-btn-border{
+    height: 30px;
+    box-shadow: none !important;
+    min-width: 165px;
+    background: #FFFFFF;
+    border: 1px solid #FA7600;
+    color: #FA7600;
+    font-weight: normal;
+
+    &::ng-deep.mat-button-wrapper{
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 30px;
+      font-size: .875rem;
+    }
+
+    em{
+      font-style: normal;
+    }
+
+    i{
+      margin-left: 1rem;
+      font-size: 1rem;
+      color: #FA7600;
+    }
+
+    &:focus{
+      outline: none;
+    }
+
+    &.m-width{
+      min-width: 88px;
+    }
+  }
+
+  .row{
+    margin-left: -10px;
+    margin-right: -10px;
+
+    .col-auto,
+    .col-12,
+    .col-6{
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+}
+
+.e-btn-fill{
+  height: 30px;
+  box-shadow: none !important;
+  min-width: 165px;
+  font-weight: normal;
+
+  &::ng-deep.mat-button-wrapper{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  em{
+    font-style: normal;
+    line-height: 1;
+  }
+
+  i{
+    margin-left: 1rem;
+    font-size: 1rem;
+  }
+
+  .e-badge{
+    position: absolute;
+    left: -30px;
+    bottom: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4F4F4F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    font-size: .75rem;
+    color: #FFFFFF;
+  }
+
+  &:focus{
+    outline: none;
+  }
+
+  &.m-width-1{
+    width: 184px;
+    font-size: .75rem;
+    padding: 0 4px;
+  }
+
+  &.m-small{
+    min-width: 30px;
+    width: 30px;
+    padding: 0 4px;
+  }
+
+  .ic-settings{
+    color: #ffffff;
+    font-size: 1.25rem;
+    margin: 0;
+  }
+}
+
+.e-btn-border{
+  height: 30px;
+  box-shadow: none !important;
+  min-width: 165px;
+  background: #FFFFFF;
+  border: 1px solid #FA7600;
+  color: #FA7600;
+  font-weight: normal;
+
+  &::ng-deep.mat-button-wrapper{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 30px;
+    font-size: .875rem;
+  }
+
+  em{
+    font-style: normal;
+  }
+
+  i{
+    margin-left: 1rem;
+    font-size: 1rem;
+    color: #FA7600;
+  }
+
+  &:focus{
+    outline: none;
+  }
+
+  &.m-width{
+    min-width: 88px;
+  }
+}

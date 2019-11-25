@@ -1,0 +1,50 @@
+<div class="d-flex flex-column w-100 pt-3">
+  <div class="d-flex flex-column w-100 mb-3" [formGroup]="formGroup">
+    <div class="d-flex w-100 align-items-center mb-3">
+      <h4 class="m-0 mr-auto">Группы рассылок</h4>
+      <button
+        mat-raised-button color="primary"
+        [disabled]="disableAddGroup"
+        (click)="onAddGroupClick()">Добавить группу
+      </button>
+    </div>
+    <div class="d-flex w-100 mb-3">
+      <div class="d-flex flex-column w-100 mr-4">
+        <span class="font-weight-bold mb-1">Тип пользователя</span>
+        <mat-radio-group formControlName="userType">
+          <mat-radio-button class="mr-3" [value]="1">Текущие пользователи</mat-radio-button>
+          <mat-radio-button [value]="2">Будущие пользователи</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="d-flex flex-column w-100">
+        <span class="font-weight-bold mb-1">Тип клиента</span>
+        <div class="d-flex" formGroupName="clientType">
+          <mat-checkbox class="mr-3" formControlName="buyer">Покупатели</mat-checkbox>
+          <mat-checkbox formControlName="seller">Продавцы</mat-checkbox>
+        </div>
+      </div>
+    </div>
+
+    <ng-select
+      *ngIf="showActivities"
+      formControlName="activityNamesId"
+      [items]="activityNames$ | async"
+      [loading]="loading"
+      [multiple]="true"
+      [closeOnSelect]="true"
+      [hideSelected]="true"
+      [virtualScroll]="true"
+      bindValue="id"
+      bindLabel="nameRu"
+      placeholder="Выберите вид деятельности">
+    </ng-select>
+
+  </div>
+
+  <mat-accordion>
+    <b2b-send-group-item
+      *ngFor="let group of sendGroups"
+      [group]="group" (destroyGroup)="onDestroyGroupChanged($event)">
+    </b2b-send-group-item>
+  </mat-accordion>
+</div>

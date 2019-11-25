@@ -1,0 +1,25 @@
+<mat-card class="d-flex flex-column" *ngIf="!seletedMarket">
+  <h4>Управление маркетплейсами</h4>
+  <div class="d-flex flex-column">
+    <b2b-list-market-item
+      *ngFor="let market of marketList; let ind = index"
+      [market]="market"
+      [index]="ind"
+      (selectMarket)="openCategories($event)"
+      (deletedMarket)="deleteMarket($event)">
+    </b2b-list-market-item>
+  </div>
+</mat-card>
+<mat-card class="d-flex flex-column" *ngIf="seletedMarket">
+  <div style="display: flex;">
+    <button mat-icon-button
+              color="primary"
+              *ngxPermissionsOnly="['SUPER_ADMIN', 'EDIT_MARKETPLACES']"
+              (click)="backSelect()"
+              >
+        <mat-icon style="line-height: 3;">arrow_back</mat-icon>
+      </button>
+    <h4 (click)="closeCategories()">Категории маркетплейса {{seletedMarket.name}}</h4>
+  </div>
+  <b2b-list-market-categories [market]="seletedMarket"></b2b-list-market-categories>
+</mat-card>

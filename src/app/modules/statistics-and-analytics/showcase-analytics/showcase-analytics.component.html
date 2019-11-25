@@ -1,0 +1,133 @@
+<h2>Статистика: Аналитика витрин</h2>
+<div *ngxPermissionsOnly="['SUPER_ADMIN', 'STATISTICS_AND_SHOWCASES_VIEW']; else elseBlock; then thenBlock"></div>
+<ng-template #elseBlock>
+  <app-access-denied></app-access-denied>
+</ng-template>
+<ng-template #thenBlock>
+  <div class="container-fluid">
+    <div class="row b-border">
+      <div class="col-md-8 b-row">
+        <div class="row align-items-center">
+          <div class="col-auto d-flex align-items-center">
+            <span>Фильтр по</span>
+          </div>
+          <div class="col my-2">
+            <input type="text" class="form-control"
+                   (keyup)="searchForCompany($event)" placeholder="Введите название компании">
+          </div>
+          <div class="col my-2">
+            <select class="form-control" #avtivityValue (change)="searchForActivity(avtivityValue.value)">
+              <option value="" disabled selected hidden>Вид деятельности</option>
+              <option value="">Все</option>
+              <option *ngFor="let activity of activitiesList" [value]="activity.key">{{activity.value}}</option>
+            </select>
+          </div>
+          <div class="col my-2">
+            <select class="form-control" #statusValue (change)="searchForStatus(statusValue.value)">
+              <option value="" disabled selected hidden>Статус</option>
+              <option value="">Все</option>
+              <option *ngFor="let item of stsus" value="{{item.key}}">{{item.value}}</option>
+            </select>
+          </div>
+          <div class="col my-2">
+            <select class="form-control" #adminStatusValue (change)="searchApproved(adminStatusValue.value)">
+              <option value="" disabled selected hidden>Подтверждённые</option>
+              <option value="">Все</option>
+              <option *ngFor="let item of adminStatus" value="{{item.key}}">{{item.value}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 my-sm-auto my-2 ml-auto">
+        <div class="input-group">
+          <input class="form-control" placeholder="Поиск" type="text"
+                 [(ngModel)]="windowsFilter.nameEn">
+          <div class="input-group-addon">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-1" *ngIf="data && !notFound">
+    <h1 class="title-h1 mb-1">Модерация витрин</h1>
+
+    <div class="row align-items-end mb-3">
+      <div class="col-auto">
+        <div class="category-btn width-1" >Категория</div>
+      </div>
+      <div class="col b-input">
+        <div class="title-small">Наименование вида деятельности</div>
+        <mat-form-field floatPlaceholder="never">
+          <input matInput placeholder="" >
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row b-checkbox-wrap mb-4">
+      <div class="col-auto">
+        <mat-checkbox class="" >Ожидают модерации <i class="bb bb-timer-sand ml-2"></i></mat-checkbox>
+      </div>
+      <div class="col-auto mr-100">
+        <mat-checkbox class="" >Отмодерированно <i class="material-icons ml-2 check-circle">check_circle</i></mat-checkbox>
+      </div>
+
+      <div class="col-auto">
+        <mat-checkbox class="" >Поставщики</mat-checkbox>
+      </div>
+
+      <div class="col-auto">
+        <mat-checkbox class="" >Заводы-Изготовители</mat-checkbox>
+      </div>
+    </div>
+    <div *ngFor="let item of data; let i = index">
+      <div *ngIf="!item.isTemplate" class="b-showcase-item" [ngClass]="{'provider' : !!(item.supplier), 'manufactory' : !!(item.manufacturer)}">
+        <a [routerLink]="['moder/', item.id]">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <div class="image-wrap">
+                    <div class="e-image">
+                      <img  alt="" class="" [src]="serverUrl + item.logo[0].link">
+                    </div>
+                    <div class="e-view"></div>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="e-text font-weight-bold mb-1">{{item.category.nameRu}}</div>
+                  <div class="e-text">{{item.nameEn}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="e-text font-weight-bold mb-1">Отличительные характеристики</div>
+              <div class="e-text">
+            <span *ngFor="let specialProp of item.properties">
+              <span *ngIf="specialProp.categoryProperty.special === 2 || specialProp.categoryProperty.special === 3">{{specialProp.categoryProperty.nameRu}}</span>
+            </span>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="row align-items-center">
+                <div class="col">
+                  <div class="e-text font-weight-bold mb-1">Промодерированных товаров</div>
+                  <div class="e-text"> <span class="font-weight-bold">145 / 145</span> товаров</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="pagination-wrapper" *ngIf="noPage">
+      <mat-paginator [length]="length"
+                     [pageSize]="pageSize"
+                     (page)="pageEvent = $event; getPage(pageEvent)">
+      </mat-paginator>
+    </div>
+  </div>
+  <div class="notFound" *ngIf="notFound">
+    <h2>Не обнаружена</h2>
+  </div>
+</ng-template>

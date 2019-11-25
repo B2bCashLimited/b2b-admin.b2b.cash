@@ -1,0 +1,25 @@
+table {
+  width: 100%;
+}
+
+.table-container {
+  position: relative;
+  max-height: 400px;
+  overflow: auto;
+}
+
+th {
+  font-weight: bold;
+}
+
+.add-button {
+  color: #3f51b5;
+}
+
+.error {
+  border-color: #ff0000;
+}
+
+.mat-column-order-sum {
+  width: 260px;
+}

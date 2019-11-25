@@ -1,0 +1,60 @@
+<div mat-dialog-title>
+  <div class="mb-2 d-flex justify-content-between">
+    <input class="form-control search-control"
+           [formControl]="searchCtrl"
+           cdkFocusInitial
+           placeholder="Наименование вида деятельности"
+           [readOnly]="isLoading" />
+    <div class="b-select-border country-select">
+      <mat-select [(ngModel)]="selectedCountryId" (change)="onSelectionChanged()">
+        <mat-option [value]="'none'">Все страны</mat-option>
+        <mat-option *ngFor="let country of countries" [value]="country.id">{{ country.nameRu }}</mat-option>
+      </mat-select>
+    </div>
+  </div>
+  <mat-checkbox [(ngModel)]="isSuppliersSearching" 
+                (change)="onCheckBoxChanged()">
+      <span class="ic-text">
+        <i class="bb bb-provider"></i>
+      </span>
+  </mat-checkbox>
+  <mat-checkbox [(ngModel)]="isManufacturersSearching" 
+                (change)="onCheckBoxChanged()">
+      <span class="ic-text">
+        <i class="bb bb-manufactory"></i>
+      </span>
+  </mat-checkbox>
+</div>
+<!--<mat-dialog-content infinite-scroll
+                    [infiniteScrollDistance]="1"
+                    (scrolled)="onScroll()"
+                    [scrollWindow]="false">-->
+<mat-dialog-content>
+  <div class="loading-view" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="loading-view" *ngIf="!isLoading && showActivitiesNotSelectedMsg">
+    <span class="color-gray">Выберите тип деятельности</span>
+  </div>
+  <div class="loading-view" *ngIf="!isLoading && isNotFound">
+    <span class="color-gray">Не найдено видов деятельности</span>
+  </div>
+  
+  <app-activities-list [activities]="activities"
+                       [(selectedActivities)]="selectedActivities">
+  </app-activities-list>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoadingByInfiniteScroll"></mat-progress-bar>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="w-100">
+    <div class="d-flex mb-3">
+      <app-activity-chip *ngFor="let activity of selectedActivities" 
+                         [activity]="activity" 
+                         (delete)="deleteActivity(activity)">
+      </app-activity-chip>
+    </div>
+    <div class="text-center">
+      <button mat-raised-button class="btn-fill" (click)="onSubmit()">Подтвердить</button>
+    </div>
+  </div>
+</mat-dialog-actions>

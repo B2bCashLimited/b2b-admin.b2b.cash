@@ -1,0 +1,104 @@
+@mixin rem($size) {
+    font-size: $size/16*1rem;
+}
+
+.d-flex{
+    flex-wrap: wrap;
+}
+
+.loading-view{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    background-color: #eee;
+}
+
+.ic-text{
+    display: flex;
+    align-items: center;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    color: #828282;
+    margin-left: 10px;
+    font-size: large;
+}
+
+.color-gray{
+    color: #9B9B9B
+}
+
+.search-control{
+    width: 65%;
+}
+
+.country-select{
+    width: 30%;
+}
+
+.btn-fill{
+    background: #FD6F22;
+    box-shadow: none !important;
+    outline: none !important;
+    height: 40px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    @include rem(14);
+    color: #FFFFFF;
+  
+    ::ng-deep.mat-button-wrapper{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: normal;
+    }
+  
+    i{
+      color: #ffffff;
+      margin-left: 4px;
+      @include rem(18);
+    }
+  
+    &.width-120{
+      width: 120px;
+    }
+}
+
+.b-select-border {
+    font-size: medium;
+    ::ng-deep.mat-select {
+      border-radius: 3px;
+      background-color: #ffffff;
+      border: solid 1px #BDBDBD;
+      height: 40px;
+    }
+  
+    ::ng-deep.mat-select-trigger{
+      height: 40px;
+    }
+    ::ng-deep.mat-select-value-text{
+    //   font-size: .875rem;
+      color: #2c2c2b;
+    }
+    ::ng-deep.mat-select-value{
+      padding: 2px 5px 5px 13px;
+    }
+    ::ng-deep.mat-select-arrow{
+      color: #fa7600;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 7px solid;
+      margin: 0 14px 0 10px;
+    }
+  
+}
+
+.mat-checkbox+.mat-checkbox{
+    margin-left: 20px;
+}
+
+.mat-dialog-content{
+    max-height: 65vh;
+}

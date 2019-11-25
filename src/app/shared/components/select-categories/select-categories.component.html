@@ -1,0 +1,17 @@
+<ng-select
+  placeholder="Категории"
+  bindLabel="nameRu"
+  bindValue="id"
+  [addTag]="false"
+  [hideSelected]="true"
+  [loading]="loading"
+  [multiple]="multiple"
+  [virtualScroll]="true"
+  [markFirst]="true"
+  [items]="categories"
+  [(ngModel)]="selectedCategories"
+  [typeahead]="categoriesInput"
+  [disabled]="disabled"
+  (scrollToEnd)="onCategoriesScrollToEnd()"
+  (change)="onSelectedCategoryChanged($event)">
+</ng-select>

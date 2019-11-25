@@ -1,0 +1,32 @@
+<div class="dialog-container">
+  <h3 class="mt-0">Сгенерировать превью</h3>
+  <div class="b-inner mb-4">
+
+    <mat-table [dataSource]="dataSource" class="table-1">
+      <!-- Field Column -->
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef>No</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.position}}</mat-cell>
+      </ng-container>
+      <!-- Field Column -->
+      <ng-container matColumnDef="prop">
+        <mat-header-cell *matHeaderCellDef>Характеристика</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.prop}}</mat-cell>
+      </ng-container>
+
+      <!-- Count Column -->
+      <ng-container matColumnDef="value">
+        <mat-header-cell *matHeaderCellDef>Значение</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.value}}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+
+  <div class="d-flex align-items-center justify-content-end">
+    <button class="btn-border" mat-dialog-close mat-button color="primary">Отмена</button>
+    <button (click)="onSubmit()" mat-raised-button color="primary">Сгенерировать превью</button>
+  </div>
+</div>

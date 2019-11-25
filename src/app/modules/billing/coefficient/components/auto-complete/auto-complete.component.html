@@ -1,0 +1,33 @@
+<div class="d-flex flex-column align-items-center b2b-autocomplete">
+  <ng-template [ngIf]="!selectedItem || !subType">
+    <mat-form-field class="b2b-autocomplete__field" floatPlaceholder="never">
+      <input type="text" matInput [placeholder]="placeholder"
+             [formControl]="autoCompleteControl" [matAutocomplete]="autocomplete">
+      <mat-autocomplete #autocomplete="matAutocomplete">
+        <mat-option *ngFor="let item of items$ | async" [value]="item.name"
+                    (onSelectionChange)="onOptionSelectedChanged(item)">
+          {{item.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </ng-template>
+
+  <ng-template [ngIf]="selectedItem && subType">
+    <div class="b2b-autocomplete__location">
+      <span>{{selectedItem.name}}</span>
+      <i class="material-icons" (click)="onClearClick()">clear</i>
+    </div>
+    <mat-form-field class="b2b-autocomplete__field b2b-autocomplete__field--airport" floatPlaceholder="never">
+      <input type="text" matInput [placeholder]="subPlaceholder"
+             [formControl]="subAutoCompleteControl" [matAutocomplete]="subAutocomplete">
+      <mat-autocomplete #subAutocomplete="matAutocomplete">
+        <mat-option *ngFor="let item of subItems$ | async" [value]="item.name"
+                    (onSelectionChange)="onSubOptionSelectedChanged(item)">
+          {{item.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </ng-template>
+</div>
+
+

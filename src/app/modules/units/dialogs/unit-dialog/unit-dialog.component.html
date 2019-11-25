@@ -1,0 +1,36 @@
+<div class="dialog-container" [formGroup]="formGroup">
+  <h4 style="margin-top: 0;">
+    {{isEditMode ? 'Изменить Ед. изм.' : 'Добавить Ед. изм.'}}
+  </h4>
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Наименование Русское"
+      formControlName="nameRu">
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Наименование Английское"
+      formControlName="nameEn">
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Наименование Китайское"
+      formControlName="nameCn">
+  </mat-form-field>
+
+  <div style="display: flex;flex-grow: 1;justify-content: flex-end;">
+    <button
+      style="margin-right: 10px;"
+      mat-raised-button color="primary"
+      (click)="onCloseClick(false)">Закрыть
+    </button>
+    <button
+      mat-raised-button color="primary"
+      (click)="onCloseClick(true)">
+      {{isEditMode ? 'Изменить' : 'Добавить'}}
+    </button>
+  </div>
+</div>

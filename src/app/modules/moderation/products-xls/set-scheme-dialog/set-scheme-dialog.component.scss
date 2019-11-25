@@ -1,0 +1,141 @@
+@mixin rem($size) {
+  font-size: $size/16*1rem;
+}
+
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+
+  ::ng-deep.demo-tab-content {
+    padding: 15px 0 !important;
+  }
+
+  ::ng-deep.mat-tab-label-content {
+    font-size: 16px;
+  }
+
+  ::ng-deep.mat-tab-label {
+    color: #3f51b5;
+    opacity: 1;
+    &.mat-tab-label-active {
+      color: #383838;
+    }
+  }
+
+  ::ng-deep.mat-tab-label-active {
+    color: #383838;
+  }
+
+  .d-flex.hidden,
+  .row.hidden {
+    display: none !important;
+  }
+
+  h3 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 21px;
+    line-height: 25px;
+    color: #383838;
+    margin-bottom: 20px;
+  }
+}
+
+i {
+  width: 12px;
+  min-width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: block;
+  margin-right: 10px;
+  margin-top: 10px;
+
+  &.scheme-none {
+    background: #FF4B55;
+  }
+
+  &.scheme-base {
+    background: #FF6F00;
+  }
+
+  &.scheme-installed {
+    background: #00AB07;
+  }
+}
+.b-scheme-status-wrap {
+  width: 100px;
+  padding-right: 30px;
+  font-size: 14px;
+}
+
+.dialog-container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.add-button {
+  align-self: center;
+}
+
+.b-inner {
+  overflow-y: auto;
+  max-height: calc(65vh - 76px);
+  margin-top: 13px;
+  margin-bottom: 20px;
+}
+
+.b-table-header {
+  padding: 10px 0px;
+  font-weight: bold;
+}
+
+.b-statistics-header {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+::ng-deep.mat-table {
+  background: #fafafa;
+}
+::ng-deep.mat-header-cell {
+  color: #383838;
+  font-size: 14px;
+}
+::ng-deep.mat-cell:first-of-type,
+::ng-deep.mat-footer-cell:first-of-type,
+::ng-deep.mat-header-cell:first-of-type {
+  padding-left: 20px;
+}
+::ng-deep.mat-cell:last-of-type,
+::ng-deep.mat-footer-cell:last-of-type,
+::ng-deep.mat-header-cell:last-of-type {
+  padding-right: 20px;
+}
+.b-statistics-table-wrap {
+  border: 1px solid #ECECEC;
+}
+
+.btn-border {
+  border: 1px solid #41479B;
+  border-radius: 3px;
+  min-width: 140px;
+  margin-right: 20px;
+
+  +button {
+    min-width: 140px;
+    border-radius: 3px;
+    box-shadow: none !important;
+  }
+}
+
+.coll-1 {
+  width: 780px;
+}
+.coll-2 {
+  width: 360px;
+  margin-left: 12px;
+}

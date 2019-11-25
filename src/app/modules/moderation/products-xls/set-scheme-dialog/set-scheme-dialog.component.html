@@ -1,0 +1,84 @@
+<div class="dialog-container">
+  <div class="d-flex justify-content-between">
+    <h3 class="mt-0">
+      <span class="mr-3">Задать схему</span>
+    </h3>
+    <div class="b-scheme-status-wrap d-flex">
+      <i [class]="data.feed.statusObject.icon"></i>
+      <div>{{data.feed.statusObject.text}}</div>
+    </div>
+  </div>
+
+  <div class="d-flex">
+    <div class="coll-1">
+      <div class="d-flex" [formGroup]="formGroup">
+        <mat-tab-group class="w-100" [(selectedIndex)]="selectedIndex">
+          <mat-tab label="Характеристики">
+            <div class="demo-tab-content">
+              <b2b-scheme-tab-prop
+                [formGroup]="formGroup.get('structure.fields')"
+                [categoriesFormArray]="formGroup.get('structure.categories.data')"
+                [fields]="fieldsValue(formGroup.get('structure.element').value)"
+                [valuesStat]="valuesStat"
+                [fieldsStat]="fieldsStat"></b2b-scheme-tab-prop>
+            </div>
+          </mat-tab>
+          <mat-tab label="Доп. характеристики">
+            <div class="demo-tab-content">
+              <b2b-scheme-tab-ext-prop
+                [categoryArray]="formGroup.get('structure.extCategories')"
+                [valuesStat]="valuesStat"
+                [fieldsStat]="fieldsStat"
+                [categoriesValues]="categoriesValues"></b2b-scheme-tab-ext-prop>
+            </div>
+          </mat-tab>
+          <mat-tab label="Словарь">
+            <div class="demo-tab-content">
+              <b2b-scheme-tab-dictionary
+                [fields]="fieldsStat"
+                [valuesStat]="valuesStat"
+                [formGroup]="formGroup.get('structure.dictionaries')"></b2b-scheme-tab-dictionary>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+    <div class="coll-2">
+      <div class="b-statistics-header">Статистика по значениям</div>
+
+      <ng-container *ngIf="dataSourceForValue && dataSourceForValue.length">
+        <div class="b-inner">
+          <div *ngFor="let valueSource of dataSourceForValue">
+            <div class="b-table-header">{{ valueSource.header }}</div>
+            <div class="b-statistics-table-wrap">
+              <mat-table [dataSource]="valueSource.dataSource" class="table-1 w-100">
+                <!-- Value Column -->
+                <ng-container matColumnDef="value">
+                  <mat-header-cell *matHeaderCellDef>Значение</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{row.value}}</mat-cell>
+                </ng-container>
+
+                <!-- Count Column -->
+                <ng-container matColumnDef="count">
+                  <mat-header-cell *matHeaderCellDef>Количество</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{row.count}}</mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumnsByValue"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsByValue;"></mat-row>
+              </mat-table>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div class="d-flex">
+        <button (click)="statisticsByValue()" mat-raised-button color="primary">Собрать статистику по значениям</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex mt-3 align-items-center justify-content-end">
+    <button class="btn-border" mat-dialog-close mat-button color="primary">Отмена</button>
+    <button (click)="onSubmit()" mat-raised-button color="primary">Сохранить</button>
+  </div>
+</div>

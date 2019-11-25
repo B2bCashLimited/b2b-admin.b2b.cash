@@ -1,0 +1,266 @@
+<div [attr.data-id]="item.id" class="product-cards b-checkbox-wrap">
+  <div class="product-cards--head">
+    <mat-checkbox class="item-check" (change)="onChecked()"></mat-checkbox>
+
+    <div class="product-cards--item-1">
+      <section>
+        <div class="row m-0">
+          <div class="product-card-coll coll-1 col-xl-6 col-lg-5 d-flex flex-wrap align-items-start align-content-start">
+            <div class="coll-product">
+              <div class="b-coll">
+                <div class="product-img">
+                  <img [src]="item.company | partnerLogo" [alt]="item.company?.name">
+                </div>
+              </div>
+              <div class="b-coll">
+                <div class="e-title-normal d-flex align-items-center">
+                  {{item.company?.shortName}}
+                </div>
+                <div class="e-text-normal color-nobel mb-2">
+                  {{(item.company && item.company.individual) ? ('Физическое лицо') : 'Компания'}}
+                </div>
+
+                <div class="name-rating" *ngIf="item.company && !item.company.individual">
+                  <span class="list-rating">
+                    <b2b-rating-stars [rating]="item.company?.rating" [companyId]="item.company?.id" [activityId]="15"
+                      details="true"></b2b-rating-stars>
+                  </span>
+                </div>
+              </div>
+              <div class="b-coll">
+                <div class="d-flex flex-column">
+                  <span>Номер нелефона: <b>{{item.company.userPhone}}</b></span>
+                  <span>Е-майл: <b>{{item.company.userEmail}}</b></span>
+                </div>
+              </div>
+            </div>
+            <!--адрес доставки (для физ лиц)-->
+            <div class="b-delivery-address" *ngIf="item.company && item.company.individual && item.deliveryAddress">
+              <div class="row">
+                <div class="col-12 d-flex align-items-center flex-wrap mb-1">
+                  Адрес доставки :
+                  {{item.deliveryAddress?.country[config.name]}},
+                  {{item.deliveryAddress?.locality[config.name]}}, {{item.deliveryAddress.address}}
+                </div>
+                <div class="col-12 d-flex align-items-center flex-wrap">
+                  <span class="pr-1">Цена доставки:</span>
+                  <span *ngIf="item.deliveryPrice">{{item.deliveryPrice | number:'1.0-2'}}
+                    {{item.currency[config.name]}}</span>
+                  <span *ngIf="!item.deliveryPrice">Бесплатно</span>
+                </div>
+              </div>
+            </div>
+            <!--город самовывоза (для физ лиц)-->
+            <div class="b-delivery-address" *ngIf="item.company && item.company.individual && item.pickupCity">
+              <div class="row">
+                <div class="col-md col-12 d-flex align-items-center flex-wrap mb-1">
+                  Город пункта выдачи:
+                  {{item.pickupCity?.region?.country[config.name]}}, {{item.pickupCity?.region[config.name]}},
+                  {{item.pickupCity[config.name]}}
+                </div>
+              </div>
+            </div>
+            <!-- виды оплаты -->
+            <div class="product-cards--item-2" [hidden]="!isPaymentMethod">
+              <div *ngIf="isCashlessPaymentsOnCard" class="e-text-normal color-gray payment-state d-flex mr-2">
+                <i class="material-icons">credit_card</i>на карту
+              </div>
+              <div *ngIf="isCashlessPaymentsVATIncluded" class="e-text-normal color-gray vat-state d-flex mr-2">
+                <img src="../assets/img/svg-icons/vat.svg"> безнал. с НДС
+              </div>
+              <div *ngIf="isCashlessPaymentsWithoutVAT" class="e-text-normal color-gray vat-state d-flex mr-2">
+                <img src="../assets/img/svg-icons/not-vat.svg"> безнал. без НДС
+              </div>
+              <div *ngIf="isCashPayments" class="e-text-normal color-gray payment-state d-flex mr-2">
+                <i class="fa fa-usd" aria-hidden="true"></i> наличные
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card-coll coll-2 col-xl-6 col-lg-7">
+            <div *ngIf="item.category" class="e-text-category w-100 mb-1">{{item.category[config.name]}}</div>
+            <div *ngIf="!item.category" class="e-text-category w-100 mb-1">
+              <span class="combined-order mr-2">Сборный заказ</span>
+              <span class="combined-order-item mr-1"
+                *ngFor="let order of item.childFreeOrders">{{order.category[config.name]}}</span>
+            </div>
+            <div class="e-text-medium color-gray w100">
+              Заказ на <span class="color-orange">товар</span> для
+              <span [ngSwitch]="item.supplierOrManufacturer">
+                <span class="color-orange" *ngSwitchCase="1">поставщика</span>
+                <span class="color-orange" *ngSwitchCase="2">завода</span>
+                <span *ngSwitchCase="3">
+                  <span class="color-orange">завода</span> или <span class="color-orange">поставщика</span>
+                </span>
+              </span>
+            </div>
+
+            <div class="product-preview">
+              <div class="product-preview--products" *ngIf="!show">
+                <div class="row">
+                  <div class="col-auto" *ngFor="let prev of item.previewProducts">
+                    <div class="product-preview--item">
+                      <div class="product-preview--img">
+                        <img alt="" [src]="prev | image">
+                      </div>
+                      <div class="product-preview--title">{{prev[config.name]}}</div>
+                      <div class="product-preview--text" *ngIf="prev.paymentOptionId == 1">Торг возможен</div>
+                      <div class="product-preview--text" *ngIf="prev.paymentOptionId == 2">Торг невозможен</div>
+                      <div class="product-preview--text" *ngIf="prev.paymentOptionId == 3">Жду предложений</div>
+                      <div class="product-preview--text mb-0" *ngIf="prev.paymentOptionId != 3">{{prev.price}}
+                        {{prev.currency[config.name]}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="product-preview--btn" (click)="onToggleButtonClick()" [ngClass]="{'full':show}">
+                <span>{{(show ? 'Скрыть' : 'Все товары')}}
+                  <i class="{{(show ? 'up' : 'down')}}"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-cards--position">
+          <div class="e-date" *ngIf="item.paymentStatus">e_PaymentStatuses[item.paymentStatus].label</div>
+          <div class="e-date">{{item.dateCreated.date | date: 'dd.MM.yyyy HH:mm'}}</div>
+          <div class="e-number">№{{item.id}}</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="product-cards--body" *ngIf="show" [ngClass]="{'animated':show}">
+    <b2b-product-category-item *ngIf="!item.isCombined" [orderId]="item.id" [item]="item"
+      [categoryId]="item.category && item.category.id"></b2b-product-category-item>
+
+    <mat-tab-group *ngIf="item.isCombined && show" class="b-tab-group" [(selectedIndex)]="selectedIndex"
+      (selectedTabChange)="onTabGroupChange($event)">
+      <mat-tab #rla *ngFor="let order of item.childFreeOrders; let i = index">
+        <ng-template mat-tab-label>
+          <mat-icon *ngIf="rla.position < 0" class="filled">done</mat-icon>
+          <mat-icon *ngIf="rla.isActive">cached</mat-icon>
+          <span matTooltip="{{order.category[config.name]}}"
+            matTooltipPosition="below">{{order.category[config.name]}}</span>
+        </ng-template>
+        <div class="demo-tab-content">
+          <b2b-product-category-item [combined]="true" [orderId]="order.orderId" [item]="item"
+            [categoryId]="order.category.id"></b2b-product-category-item>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <ng-container [ngTemplateOutlet]="total" [ngTemplateOutletContext]="{order: item}"></ng-container>
+
+  <div class="product-cards--footer pt-2 d-flex justify-content-between">
+    <div class="d-flex justify-content-start col p-0" [formGroup]="adminCheckboxes">
+      <div class="col-sm-auto">
+        <div class="d-flex flex-column">
+          <mat-checkbox class="mb-3" formControlName="validModel">Модель верная</mat-checkbox>
+          <mat-checkbox formControlName="validAmount">Количество верное</mat-checkbox>
+        </div>
+      </div>
+      <div class="col-sm-auto">
+        <div class="d-flex flex-column">
+          <mat-checkbox class="mb-2" formControlName="validPrice">Цена верная</mat-checkbox>
+          <div class="d-inline-flex p-0 align-items-center" [ngClass]="{'pt-2':!adminCheckboxes.get('isExpired').value}">
+            <mat-checkbox class="mr-2" formControlName="isExpired">{{!adminCheckboxes.get('isExpired').value ? 'Крайный срок ожидания' : ''}}</mat-checkbox>
+            <div class="b-input-border e-input-164px" *ngIf="adminCheckboxes.get('isExpired').value">
+              <mat-form-field floatPlaceholder="never" floatLabel="never">
+                <input matInput
+                       [owlDateTime]="dateTimePickerTo"
+                       [owlDateTimeTrigger]="dateTimePickerTo"
+                       formControlName="expired"
+                       placeholder="Время"
+                       autocomplete="off">
+                <i class="bb bb-calendar" matSuffix [owlDateTimeTrigger]="dateTimePickerTo"></i>
+                <owl-date-time #dateTimePickerTo></owl-date-time>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="">
+          <div *ngIf="!isDelivery" class="d-flex p-0 b-input-border mb-3">
+            <mat-checkbox class="mr-2" (change)="onCheckboxChange($event.checked, 'pickup')" formControlName="isPickup">{{!adminCheckboxes.get('isPickup').value ? 'Самовывоз' : ''}}</mat-checkbox>
+            <mat-form-field *ngIf="adminCheckboxes.get('isPickup').value" floatPlaceholder="never" floatLabel="never">
+              <input matInput placeholder="Опишите район" formControlName="pickupAddress">
+            </mat-form-field>
+          </div>
+          <div class="d-flex align-items-center p-0 ">
+            <mat-checkbox class="mr-2" (change)="onCheckboxChange($event.checked, 'delivery')" formControlName="isDeliveryAddress">{{!adminCheckboxes.get('isDeliveryAddress').value ? 'Адрес доставки' : ''}}</mat-checkbox>
+            <div class="d-flex mr-2" *ngIf="adminCheckboxes.get('isDeliveryAddress').value">
+              <div class="b-input-border e-input-120px">
+                <b2b-city-area
+                  placeholder="Введите город"
+                  [disabled]="!isEdit"
+                  [value]="deliveryAddress"
+                  (getFullSelectLocation)="setCityId($event)"
+                ></b2b-city-area>
+              </div>
+              <div class="b-input-border e-input-330px">
+                <mat-form-field class="w-100" floatPlaceholder="never" floatLabel="never">
+                  <input matInput placeholder="Укажите адрес" formControlName="location" [disabled]="!isEdit">
+                </mat-form-field>
+              </div>
+            </div>
+            <ng-container *ngIf="adminCheckboxes.get('isDeliveryAddress').value">
+              <i class="bb edit-icon" (click)="toggleAddress()" [ngClass]="{'bb-pencil': !isEdit, 'bb-clear-black': isEdit}"></i>
+              <mat-icon *ngIf="isEdit" class="edit-icon ic-save" (click)="save()">save</mat-icon>
+            </ng-container>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer-bnt d-flex justify-content-end flex-wrap">
+      <div class="col-auto">
+        <button mat-raised-button color="accent" (click)="onDelete()" class="e-btn">
+          <em>Удалить</em>
+        </button>
+      </div>
+      <div class="col-auto">
+        <button mat-raised-button color="accent"
+          (click)="onSubmit()"
+          [disabled]="adminCheckboxes.invalid"
+          class="e-btn-fill">
+          <em>Актуализировать</em>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #total let-item="order">
+  <div class="product-cards--item-4">
+    <div class="col-xl-auto col-lg-4 col-md-4 col-sm-6 col-6">
+      <div class="color-nobel mb-2 w-100">{{(item.isCombined ? 'Количество категорий' : 'Кол-во наименований')}}</div>
+      <div class="color-mondo font-weight-bold">{{item.isCombined ? item.childFreeOrders.length : item.productsCount}}</div>
+    </div>
+    <div *ngIf="!item.isCombined" class="col-xl-auto col-lg-4 col-md-4 col-sm-6 col-6">
+      <div class="color-nobel mb-2 w-100">Общее количество</div>
+      <div class="color-mondo font-weight-bold">{{item.totalCount}} {{item.countMe && item.countMe[config.name]}}</div>
+    </div>
+    <div class="col-xl-auto col-lg-4 col-md-4 col-sm-6 col-6">
+      <div class="color-nobel mb-2 w-100">Общая стоимость клиента</div>
+      <div class="color-orange font-weight-bold">
+        {{waitingForOffers ? ('Жду предложений') : item.totalPrice}}
+        <span *ngIf="!waitingForOffers">{{item.currency && item.currency[config.name]}}</span>
+      </div>
+    </div>
+    <div class="col-xl-auto col-lg-4 col-md-4 col-sm-6 col-6">
+      <div class="color-nobel mb-2 w-100">Общий вес нетто</div>
+      <div class="color-mondo font-weight-bold">{{item.totalNet}} {{item.netMe && item.netMe[config.name]}}</div>
+    </div>
+    <div class="col-xl-auto col-lg-4 col-md-4 col-sm-6 col-6">
+      <div class="color-nobel mb-2 w-100">Общий вес брутто</div>
+      <div class="color-mondo font-weight-bold">{{item.totalBrut}} {{item.brutMe && item.brutMe[config.name]}}</div>
+    </div>
+    <div *ngIf="showVolume" class="col-xl-auto col-lg-4 col-md-4 col-sm-6 col-6">
+      <div class="color-nobel mb-2 w-100">Общий объем</div>
+      <div class="color-mondo font-weight-bold">{{item.totalVolume}} {{item.volumeMe && item.volumeMe[config.name]}}</div>
+    </div>
+  </div>
+</ng-template>

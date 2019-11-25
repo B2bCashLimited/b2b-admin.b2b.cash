@@ -1,0 +1,155 @@
+@import "../../../../../node_modules/bootstrap/scss/bootstrap.scss";
+
+.chats-header{
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  position: relative;
+
+  &--name{
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 1.25rem;
+    color: #202020;
+    margin-bottom: 4px;
+  }
+
+  &--position{
+    display: flex;
+    align-items: center;
+    font-size: .875rem;
+    font-family: Arimo;
+    font-style: normal;
+    color: #828282;
+    line-height: 1;
+
+    i{
+      color: #BDBDBD;
+      font-size: 1.125rem;
+      margin-right: 5px;
+    }
+  }
+
+  &--button{
+    margin-right: 10px;
+  }
+
+  .power-btn{
+    background: #E0E0E0;
+    border: 1px solid #828282;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 1000ms linear;
+
+    i{
+      font-size: 1.75rem;
+      color: #828282;
+    }
+
+    &.active{
+      background: #6FCF97;
+      border: 1px solid #6FCF97;
+
+      i{
+        color: #ffffff;
+      }
+    }
+  }
+
+  .e-text{
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1.2;
+    font-size: .875rem;
+    color: #828282;
+
+    i{
+      color: #BDBDBD;
+      font-size: 1.125rem;
+    }
+  }
+
+  .color-green {
+    color: #6FCF97;
+  }
+
+  .color-red {
+    color: #EB5757;
+  }
+
+  .color-dark-grey {
+    color: #4F4F4F;
+  }
+
+  .working-schedule {
+    p {
+      margin-bottom: 5px;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    border: #cbcbcb 1px solid;
+    font-size: 1rem;
+  }
+}
+
+.chat__container {
+  position: relative;
+  display: flex;
+
+  &:after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+}
+
+.chat-contacts-wrap {
+  width: 30%;
+}
+
+.chat-contacts-window {
+  width: 70%;
+}
+@media only screen and (max-width: 991px) {
+  .chat-contacts-wrap {
+    width: 265px;
+  }
+
+  .chat-contacts-window {
+    width: 70%;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .chat__container {
+    display: block;
+    height: auto;
+  }
+
+  .chat-contacts-wrap {
+    width: 100%;
+  }
+
+  .chat-contacts-window {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 479px) {
+  .container {
+    &.container-mobile {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+

@@ -1,0 +1,16 @@
+<ng-select
+  bindLabel="nameRu"
+  bindValue="id"
+  placeholder="Товар"
+  [ngModel]="selectedProducts"
+  [disabled]="disabled"
+  [items]="products"
+  [loading]="productsLoading"
+  [multiple]="true"
+  [closeOnSelect]="true"
+  [hideSelected]="true"
+  [virtualScroll]="true"
+  [typeahead]="productsInput$"
+  (change)="onSelectedProductsChanged($event)"
+  (scrollToEnd)="onProductsScrollToEnd()">
+</ng-select>

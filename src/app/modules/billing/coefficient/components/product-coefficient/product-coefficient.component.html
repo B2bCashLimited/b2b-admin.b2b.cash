@@ -1,0 +1,204 @@
+<div [formGroup]="formGroup">
+  <div class="coefficient-container">
+    <span class="mr-auto">{{item.category.nameRu}}</span>
+
+    <mat-radio-group formControlName="isPrepayment">
+      <mat-radio-button class="mr-2"
+                        [value]="1">Цена заказа
+      </mat-radio-button>
+      <mat-radio-button class="mr-2"
+                        [value]="0">Коэффициент
+      </mat-radio-button>
+    </mat-radio-group>
+
+    <ng-container *ngIf="isEdit">
+      <ng-template [ngIf]="!formGroup.get('isFixed').value">
+        <mat-form-field class="w-80 w-auto mr-2"
+                        floatLabel="never">
+          <input matInput
+                 placeholder="Коэффициент"
+                 formControlName="coefficient"
+                 type="number"
+                 autocomplete="off">
+          <span matSuffix>%</span>
+        </mat-form-field>
+      </ng-template>
+
+      <ng-template [ngIf]="formGroup.get('isFixed').value">
+        <mat-form-field class="w-80 w-auto mr-2"
+                        floatLabel="never">
+          <input matInput
+                 placeholder="Стоимость"
+                 autocomplete="off"
+                 autocorrect="off"
+                 formControlName="priceExtra"
+                 type="number">
+        </mat-form-field>
+
+        <mat-form-field class="w-80 w-auto mr-2"
+                        floatLabel="never">
+          <mat-select placeholder="Валюта"
+                      formControlName="currency">
+            <mat-option
+              *ngFor="let cur of currencies"
+              [value]="cur.id">{{cur.nameRu}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-template>
+    </ng-container>
+
+    <span class="e-price"
+          *ngIf="!isEdit">
+    <span *ngIf="!item.isFixed">{{item.coefficient}}%</span>
+    <span *ngIf="item.isFixed">{{item.priceExtra}} {{item.currency?.nameRu}}</span>
+  </span>
+
+    <button *ngIf="isEdit"
+            mat-icon-button
+            color="primary"
+            [disabled]="!!formGroup.get('isPrepayment').value"
+            (click)="onChangePriceClick()">
+      <mat-icon>sync</mat-icon>
+    </button>
+
+    <button mat-icon-button
+            color="primary"
+            [disabled]="!!formGroup.get('isPrepayment').value"
+            (click)="onSaveClick()">
+      <mat-icon>{{isEdit ? 'save' : 'create'}}</mat-icon>
+    </button>
+
+    <button mat-icon-button
+            color="warn"
+            [disabled]="!!formGroup.get('isPrepayment').value"
+            (click)="onDeleteClick()">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </div>
+
+  <!--Таблица для цены заказов-->
+  <div *ngIf="!!formGroup.get('isPrepayment').value"
+       class="table-container">
+    <table mat-table
+           [dataSource]="formGroup.get('rates').value"
+           [trackBy]="trackByFn"
+           formArrayName="rates">
+      <!-- Order sum Column -->
+      <ng-container matColumnDef="order-sum">
+        <th mat-header-cell
+            *matHeaderCellDef>
+          <div class="d-flex">
+            <span class="mr-4">Сумма заказа, </span>
+            <b2b-select-currency class="w-25"
+                                 [selectedItem]="item.currency && item.currency.id || null"
+                                 (selectedCurrency)="onSelectedCurrencyChanged($event)"
+            ></b2b-select-currency>
+          </div>
+        </th>
+        <td mat-cell
+            *matCellDef="let row; index as i;"
+            [formGroupName]="i">
+          <ng-container *ngIf="!row.edit">{{row.min}} - {{row.max}}</ng-container>
+
+          <ng-container *ngIf="row.edit"
+               class="d-flex">
+            <input type="number"
+                   min="0"
+                   class="w-25 p-2"
+                   [class.error]="formGroup.get('rates')['controls'][i]['controls']['min'].invalid"
+                   formControlName="min">
+            <span class="mx-2 py-2"> — </span>
+            <input type="number"
+                   min="1"
+                   class="w-25 p-2"
+                   [class.error]="formGroup.get('rates')['controls'][i]['controls']['max'].invalid"
+                   formControlName="max">
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <!-- Tariff Column -->
+      <ng-container matColumnDef="tariff">
+        <th mat-header-cell
+            *matHeaderCellDef>Тариф, %
+        </th>
+        <td mat-cell
+            *matCellDef="let row; index as i"
+            [formGroupName]="i">
+          <ng-container *ngIf="!row.edit">{{row.rate}}</ng-container>
+
+          <ng-container *ngIf="row.edit">
+            <input type="number"
+                   min="0.1"
+                   max="100"
+                   class="p-2"
+                   [class.error]="formGroup.get('rates')['controls'][i]['controls']['rate'].invalid"
+                   formControlName="rate">
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell
+            *matHeaderCellDef></th>
+        <td mat-cell
+            *matCellDef="let row; index as i">
+          <div class="table-buttons">
+            <button *ngIf="row.edit"
+                    mat-icon-button
+                    color="primary"
+                    matTooltip="Сохранить"
+                    [disabled]="formGroup.get('rates')['controls'][i]['controls']['min'].invalid
+                    || formGroup.get('rates')['controls'][i]['controls']['max'].invalid
+                    ||formGroup.get('rates')['controls'][i]['controls']['rate'].invalid"
+                    (click)="saveOrEditRate(i, false)">
+              <mat-icon>check_box</mat-icon>
+            </button>
+
+            <button *ngIf="!row.edit"
+                    mat-icon-button
+                    color="primary"
+                    matTooltip="Редактировать"
+                    (click)="saveOrEditRate(i, true)">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button
+                    color="warn"
+                    matTooltip="Удалить"
+                    (click)="removeRate(i)">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row
+          *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row
+          *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <ng-container *ngIf="!!formGroup.get('isPrepayment').value">
+    <button mat-raised-button
+            class="mt-3"
+            (click)="addRate()">
+      <span class="add-button">+ Добавить</span>
+    </button>
+
+    <div class="d-flex my-4">
+      <button mat-raised-button
+              class="mr-2"
+              (click)="cancelAddedRates()">Отмена
+      </button>
+      <button mat-raised-button
+              [disabled]="formGroup.invalid"
+              (click)="onSubmit()"
+              color="primary">Сохранить
+      </button>
+    </div>
+  </ng-container>
+  <!--Таблица для цены заказов-->
+</div>

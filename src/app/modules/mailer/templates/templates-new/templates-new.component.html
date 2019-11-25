@@ -1,0 +1,62 @@
+<div style="display:flex;flex-grow: 1;flex-direction: column;">
+  <h2>Шаблон "{{formGroup.get('name').value}}"</h2>
+
+  <div style="display: flex;flex-grow: 1;align-items: flex-start;margin-bottom: 16px;">
+    <mat-card style="margin-right: 16px;display: flex;flex-grow: 1;flex-direction: column;width: 100%;" [formGroup]="formGroup">
+      <mat-card>
+        <h5>Тип пользователя</h5>
+        <mat-card-content>
+          <div class="d-flex align-items-center mb-3">
+            <div class="d-flex" formGroupName="clientType">
+              <mat-checkbox class="mr-3" formControlName="buyer">Покупатели</mat-checkbox>
+              <mat-checkbox formControlName="seller">Продавцы</mat-checkbox>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-form-field style="width: 100%;">
+        <input matInput placeholder="Название" formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field style="width: 100%;">
+        <input matInput placeholder="Тема" formControlName="subject">
+      </mat-form-field>
+
+      <mat-form-field style="width: 100%;">
+        <textarea matInput rows="10" placeholder="Шаблон" formControlName="template"></textarea>
+      </mat-form-field>
+    </mat-card>
+    <div style="display: flex;flex-grow: 1;flex-direction: column;width: 100%;">
+      <mat-card style="display: flex;flex-grow: 1;flex-direction: column;margin-bottom: 16px;">
+        <div class="drop-container" ngFileDrop [options]="options" (uploadOutput)="onUploadOutput($event)"
+             [uploadInput]="uploadInput">
+          <label style="display: flex;align-items: center;flex-grow: 1;height: 100%;justify-content: center;">
+            <span>Перетащите файлы сюда или <span style="font-weight: bold;">выберите файл</span></span>
+            <input style="display: none;" type="file" ngFileSelect [options]="options" (uploadOutput)="onUploadOutput($event)"
+                   [uploadInput]="uploadInput" multiple>
+          </label>
+        </div>
+        <ul style="list-style-type: none;padding: 0;margin: 16px 0 0;">
+          <li style="display: flex;flex-grow: 1;align-items: center;" *ngFor="let file of htmlTemplateFiles;">
+            <a style="display:flex;align-items: center;text-decoration: none;margin-right: 8px;" [href]="file.url"
+               [download]="file.url">
+              <mat-icon>list_alt</mat-icon>
+              <span style="margin-left: 4px;">{{ file.filename}}</span>
+            </a>
+            <button mat-icon-button color="warn" (click)="onDestroyFileClick(file.id)">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </li>
+        </ul>
+      </mat-card>
+      <button style="align-self: flex-end;" mat-raised-button color="primary" (click)="onSaveTemplateClick()" [disabled]="formGroup.invalid">Сохранить
+        шаблон
+      </button>
+    </div>
+  </div>
+  <mat-card style="display: flex;flex-grow: 1;flex-direction: column;">
+    <div [innerHTML]="safeTemplate"></div>
+  </mat-card>
+
+</div>

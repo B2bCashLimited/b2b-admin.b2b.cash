@@ -1,0 +1,140 @@
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.section-wrap {
+  background-color: #ffffff;
+  padding: 16px;
+  color: #000000;
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h5 {
+    font-size: 1.125rem;
+  }
+
+  ::ng-deep .mat-form-field-infix {
+    width: 100%;
+  }
+
+  p {
+    font-size: .875rem;
+  }
+
+  .row {
+    &.b-row {
+      margin-left: -8px;
+      margin-right: -8px;
+
+      [class*="col-"] {
+        padding: 0 8px;
+      }
+    }
+
+    &.row-btn {
+      margin-left: -5px;
+      margin-right: -5px;
+
+      [class*="col-"] {
+        padding: 0 5px;
+      }
+    }
+  }
+}
+
+button {
+  box-shadow: none !important;
+  font-size: .8125rem;
+}
+
+.fill-btn {
+  color: #ffffff;
+  background: #3f51b5;
+  box-shadow: none !important;
+  border: 1px solid #3f51b5;
+  box-sizing: border-box;
+  border-radius: 3px;
+  transition: .2s ease-out;
+  height: 36px;
+  min-width: 150px;
+
+  ::ng-deep.mat-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    line-height: 1;
+    white-space: normal;
+  }
+
+  &:hover {
+    background: #2f3c88;
+  }
+}
+
+table {
+  width: 100%;
+}
+
+.table-container {
+  position: relative;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Column Widths */
+.mat-column-country {
+  max-width: 250px;
+}
+
+.mat-column-number,
+.mat-column-action,
+.mat-column-flag {
+  width: 50px;
+}
+
+.mat-column-action {
+  text-align: center;
+}
+
+.mat-column-id {
+  width: 100px;
+}
+
+.mat-header-cell {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.table-buttons {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  .material-icons {
+    color: #3f51b5;
+    cursor: pointer;
+  }
+
+  >.material-icons:last-child {
+    color: #FF3501;
+  }
+}

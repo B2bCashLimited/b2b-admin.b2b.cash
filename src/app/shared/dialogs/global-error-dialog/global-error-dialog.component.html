@@ -1,0 +1,9 @@
+<div class="dialog-container" *ngIf="errorData">
+  <h3 style="margin-top: 0;">{{errorData.title}}</h3>
+  <div *ngIf="errorData.detail" style="display: flex;flex-direction: column;margin-bottom: 16px;">
+    <span style="word-wrap: break-word;" *ngFor="let item of errorData.detail">{{item}}</span>
+  </div>
+  <button style="align-self: flex-end;" mat-raised-button color="warn"
+          (click)="onCloseClick()">Close
+  </button>
+</div>

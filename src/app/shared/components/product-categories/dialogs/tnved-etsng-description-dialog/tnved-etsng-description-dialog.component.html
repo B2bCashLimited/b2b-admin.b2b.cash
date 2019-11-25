@@ -1,0 +1,78 @@
+<div class="popup">
+  <div class="popup__header">Описание</div>
+  <div style="display: flex; flex-direction: column; margin-bottom: 1.5rem;"
+       [formGroup]="formGroup">
+    <mat-form-field style="width: 100%;">
+      <input formControlName="nameRu"
+             matInput
+             placeholder="Наименование кода Русский"
+             autocomplete="off">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <input formControlName="nameEn"
+             matInput
+             placeholder="Наименование кода Английский"
+             autocomplete="off">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <input formControlName="nameCn"
+             matInput
+             placeholder="Наименование кода Китайский"
+             autocomplete="off">
+    </mat-form-field>
+
+    <ng-container *ngIf="formGroup.get('isNew').value && formGroup.controls.parentSearchType">
+      <mat-radio-group formControlName="parentSearchType"
+                       style="display: flex; flex-direction: column; margin-top: 1.5rem; margin-bottom: 1.5rem;">
+        <mat-radio-button *ngFor="let searchType of searchTypes"
+                          [value]="searchType.value"
+                          style="margin-bottom: .5rem;">
+          {{searchType.label}}
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <div style="width: 50%;">
+        <ng-select placeholder="Код ТНВД"
+                   bindLabel="{{formGroup.value.parentSearchType === 1 ? 'tnved' : 'descRu'}}"
+                   [clearSearchOnAdd]="true"
+                   [addTag]="false"
+                   [notFoundText]="'Ничего не найдено'"
+                   [typeToSearchText]="'Введите ' + searchType + ' для поиска'"
+                   [hideSelected]="true"
+                   [loading]="isTnvedCodesLoading"
+                   [virtualScroll]="true"
+                   [markFirst]="true"
+                   [items]="autoCompleteTnvedData"
+                   [typeahead]="codesInputTnved"
+                   [dropdownPosition]="'bottom'"
+                   formControlName="parent"
+
+                   (scrollToEnd)="onCategoriesScrollToEndTnved()">
+          <ng-template ng-option-tmp
+                       let-item="item">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div>{{item.tnvedStr}}</div>
+              <button mat-button
+                      matSuffix
+                      mat-icon-button
+                      aria-label="Clear"
+                      matTooltip="{{item.descRu}}"
+                      (click)="onDescriptionClicked($event)">
+                <mat-icon style="color: #ff761c">info</mat-icon>
+              </button>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+    </ng-container>
+
+  </div>
+  <div style="display: flex; justify-content: flex-end;">
+    <button class="b2b-btn b2b-btn--medium b2b-btn--transparent"
+            mat-raised-button
+            color="primary"
+            [disabled]="formGroup.invalid"
+            (click)="onCloseDialogButtonClick()">{{formGroup.get('isNew').value ? 'Продолжить' : 'Закрыть'}}
+    </button>
+  </div>
+</div>

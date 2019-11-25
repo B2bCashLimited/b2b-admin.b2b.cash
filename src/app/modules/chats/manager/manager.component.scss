@@ -1,0 +1,587 @@
+@import "../../../../../node_modules/bootstrap/scss/bootstrap.scss";
+
+
+@mixin rem($size) {
+  font-size: $size/16*1rem;
+}
+
+.color-grey {
+  color: #828282;
+}
+
+.color-dark-grey {
+  color: #4F4F4F;
+}
+
+.color-silver {
+  color: #BDBDBD;
+}
+
+.color-red {
+  color: #EB5757;
+}
+
+.fz-10 {
+  @include rem(10);
+}
+
+.fz-12 {
+  @include rem(12);
+}
+
+.fz-13 {
+  @include rem(13);
+}
+
+.fz-14 {
+  @include rem(14);
+}
+
+.fz-16 {
+  @include rem(16);
+}
+
+.fz-18 {
+  @include rem(18);
+}
+
+.fz-20 {
+  @include rem(20);
+}
+
+.fz-22 {
+  @include rem(22);
+}
+
+.wrapper {
+  min-width: 1000px;
+  width: 100%;
+  @include rem(14);
+}
+
+.title-h1 {
+  font-family: Arimo;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  @include rem(20);
+  color: #202020;
+  margin-bottom: 0;
+}
+
+.statistics-icons {
+
+  > div {
+    display: flex;
+    flex-flow: wrap;
+    align-items: flex-end;
+    justify-content: center;
+
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 5px;
+
+      + div {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.saturn-date {
+  font-size: 0.9rem;
+  &::ng-deep.mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+  &::ng-deep.mat-form-field-flex {
+
+  }
+  &::ng-deep.mat-form-field-infix {
+    // width: 160px;
+  }
+  &::ng-deep.mat-form-field-suffix {
+    background-color: #EE6D06;
+    // height: 40px;
+  }
+  &::ng-deep.mat-icon-button {
+    height: 30px;
+    width: 30px;
+  }
+  &::ng-deep.mat-datepicker-toggle {
+    color: white;
+  }
+  &::ng-deep.mat-form-field-underline {
+    bottom: 0;
+  }
+}
+
+.e-input {
+  height: 30px;
+  flex-grow: 1;
+  background-color: #ffffff;
+  border: 1px solid #ECECEC;
+  position: relative;
+
+  &::ng-deep.mat-form-field-wrapper {
+    padding: 0;
+    height: 100%;
+  }
+
+  &::ng-deep.mat-form-field-flex {
+    height: 100%;
+  }
+
+  &::ng-deep.mat-form-field-infix {
+    border: 0;
+    height: 100%;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    position: relative;
+    //top: -9px;
+  }
+
+  &::ng-deep.mat-input-element {
+    padding-left: 8px;
+    padding-right: 4px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    @include rem(12);
+    color: #000000;
+  }
+
+  &::ng-deep.mat-form-field-placeholder-wrapper {
+    top: 0;
+    padding-top: 0;
+  }
+
+  &::ng-deep.mat-form-field-placeholder {
+    height: 100%;
+    top: 0;
+    margin: 0;
+    padding: 5px 31px 0 10px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    @include rem(12);
+    color: #000000;
+  }
+
+  &::ng-deep.mat-form-field-suffix {
+    right: 10px;
+    position: relative;
+    top: 7px;
+  }
+
+  &::ng-deep.mat-form-field-underline {
+    display: none;
+  }
+
+  &.input-last {
+    padding-right: 31px;
+  }
+}
+
+.e-input-btn {
+  position: absolute;
+  top: -1px; // top: 0px
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: #EE6D06;
+  border: 1px solid #EE6D06;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    color: #ffffff;
+    position: relative;
+    @include rem(18);
+  }
+}
+
+.mx-160 {
+  max-width: 160px;
+}
+
+.e-btn {
+  width: 30px;
+  height: 30px;
+  background: #EE6D06;
+  border: 1px solid #EE6D06;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+
+  ::ng-deep .mat-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  i {
+    color: #ffffff;
+    position: relative;
+    @include rem(18);
+  }
+}
+
+.chat-card {
+  background: #FFFFFF;
+  border: 1px solid #828282;
+  padding: 7px;
+  margin-bottom: 10px;
+
+  &--wrap {
+  }
+
+  &--item {
+
+    &:nth-child(2) {
+      max-width: 230px;
+      border-left: 1px solid #BDBDBD;
+    }
+
+    &:nth-child(3) {
+      max-width: 155px;
+      border-left: 1px solid #BDBDBD;
+    }
+
+    &:last-child {
+      max-width: 64px;
+      border-left: 1px solid #BDBDBD;
+    }
+  }
+
+  &.m-red {
+    border: 1px solid #EB5757;
+  }
+}
+
+.btn-edit {
+  padding: 0 8px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  outline: none;
+  background: #FFFFFF;
+
+  ::ng-deep .mat-button-focus-overlay {
+    display: none;
+  }
+
+  ::ng-deep .mat-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.e-text {
+  font-family: Arimo;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+}
+
+.e-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 10px;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.consultant-info {
+  .name {
+    color: #202020;
+  }
+
+  .e-phone,
+  .e-email {
+    color: #2D9CDB;
+  }
+}
+
+.b-attention {
+  display: flex;
+  cursor: pointer;
+  i {
+    color: #EB5757;
+    margin-right: 10px;
+    @include rem(34);
+  }
+}
+
+//стили для кнопки консультация
+.b-cons-label {
+  cursor: pointer;
+  width: 90px;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+
+  .ic-btn {
+    width: 80px;
+    height: 80px;
+    background: #FF8F00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+    i {
+      font-size: 2.5rem;
+      color: #ffffff;
+    }
+  }
+
+  .e-text {
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: .8125rem;
+    color: #FF8F00;
+  }
+}
+
+//end стили для кнопки консультация
+
+//стили для модалка Вы действительно хотите закрыть вопрос?
+.popup-inner-1 {
+  max-width: 250px;
+  background-color: #ffffff;
+
+  .e-star {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    i {
+      color: #EE6D06;
+      font-size: 2.125rem;
+    }
+  }
+
+  .e-text {
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: .875rem;
+    text-align: center;
+    color: #4F4F4F;
+    margin-bottom: 12px;
+  }
+
+  .btn-full {
+    background: #EE6D06;
+    border: 1px solid #EE6D06;
+    height: 38px;
+    margin: 0 5px;
+    color: #ffffff;
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: .875rem;
+    box-shadow: none !important;
+    text-align: center;
+
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .btn-border {
+    border: 1px solid #EE6D06;
+    background-color: #ffffff;
+    height: 38px;
+    margin: 0 5px;
+    color: #EE6D06;
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: .875rem;
+    text-align: center;
+    box-shadow: none !important;
+
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+//стили для модалка Вы действительно хотете заблокировать пользователя?
+.popup-inner-2 {
+  max-width: 425px;
+  background-color: #ffffff;
+
+  .e-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    i {
+      color: #EB5757;
+      font-size: 3.125rem;
+    }
+  }
+
+  .e-text {
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: .875rem;
+    text-align: center;
+    color: #000000;
+    letter-spacing: 0.0156297px;
+    margin-bottom: 12px;
+  }
+
+  .btn-full {
+    background: #EE6D06;
+    border: 1px solid #EE6D06;
+    height: 38px;
+    margin: 0 5px;
+    color: #ffffff;
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: .875rem;
+    box-shadow: none !important;
+    text-align: center;
+    padding: 0 8px;
+
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .btn-border {
+    border: 1px solid #EE6D06;
+    background-color: #ffffff;
+    height: 38px;
+    margin: 0 5px;
+    color: #EE6D06;
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: .875rem;
+    text-align: center;
+    box-shadow: none !important;
+    padding: 0 8px;
+
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+//стили для модалка Нехватка консультантов!
+.popup-inner-3 {
+  max-width: 260px;
+  background-color: #ffffff;
+
+  .e-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    i {
+      color: #EB5757;
+      font-size: 2.25rem;
+    }
+  }
+
+  .color-red {
+    color: #EB5757;
+  }
+
+  .e-text {
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: .875rem;
+    text-align: center;
+    color: #000000;
+    letter-spacing: 0.0156297px;
+  }
+
+  .btn-full {
+    background: #EE6D06;
+    border: 1px solid #EE6D06;
+    height: 38px;
+    margin: 0 5px;
+    color: #ffffff;
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    font-size: .875rem;
+    box-shadow: none !important;
+    text-align: center;
+    padding: 0 8px;
+    max-width: 100px;
+
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: normal;
+      line-height: 1;
+    }
+  }
+
+  .btn-border {
+    border: 1px solid #EE6D06;
+    background-color: #ffffff;
+    height: 38px;
+    margin: 0 5px;
+    color: #EE6D06;
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    font-size: .875rem;
+    text-align: center;
+    box-shadow: none !important;
+    padding: 0 8px;
+    max-width: 100px;
+
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+

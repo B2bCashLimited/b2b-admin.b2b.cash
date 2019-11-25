@@ -1,0 +1,98 @@
+<div class="d-flex flex-column pt-3" [formGroup]="formGroup">
+  <div class="d-flex w-100 mb-3">
+    <mat-card class="d-flex flex-column w-100 mr-3">
+      <h5>Тип пользователя</h5>
+      <mat-card-content>
+        <div class="d-flex align-items-center mb-3">
+          <mat-radio-group class="d-flex mr-4" formControlName="userType">
+            <mat-radio-button class="mr-3" [value]="1">Текущие</mat-radio-button>
+            <mat-radio-button [value]="2">Будущее</mat-radio-button>
+          </mat-radio-group>
+          <div class="d-flex" formGroupName="clientType">
+            <mat-checkbox class="mr-3" formControlName="buyer">Покупатели</mat-checkbox>
+            <mat-checkbox formControlName="seller">Продавцы</mat-checkbox>
+          </div>
+        </div>
+        <ng-select
+          [(ngModel)]="selectedSendGroups"
+          [ngModelOptions]="{standalone: true}"
+          placeholder="Группы"
+          bindLabel="name"
+          [addTag]="false"
+          [hideSelected]="true"
+          [loading]="sendGroupsLoading"
+          [virtualScroll]="true"
+          [markFirst]="true"
+          [items]="sendGroups"
+          [typeahead]="sendGroupsInput$"
+          [multiple]="true"
+          (scrollToEnd)="onSendGroupsScrollToEnd()"
+          (change)="onSendGroupsChanged($event)">
+        </ng-select>
+        <ng-select
+          [(ngModel)]="selectedSendLists"
+          [ngModelOptions]="{standalone: true}"
+          placeholder="Списки"
+          bindLabel="name"
+          [addTag]="false"
+          [hideSelected]="true"
+          [virtualScroll]="true"
+          [markFirst]="true"
+          [items]="sendLists"
+          [multiple]="true"
+          (change)="onSendListsChanged($event)">
+        </ng-select>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="d-flex flex-column w-100">
+      <h5>Шаблон</h5>
+      <ng-select
+        class="w-100"
+        placeholder="Шаблон"
+        bindLabel="name"
+        [addTag]="false"
+        [hideSelected]="true"
+        [loading]="templatesLoading"
+        [virtualScroll]="true"
+        [markFirst]="true"
+        [items]="templates"
+        formControlName="template"
+        [typeahead]="templatesInput$"
+        (scrollToEnd)="onTemplatesScrollToEnd()">
+      </ng-select>
+
+      <ng-select
+        class="w-100"
+        formControlName="sender"
+        placeholder="Отправитель"
+        bindLabel="nameEmail"
+        [addTag]="false"
+        [hideSelected]="true"
+        [loading]="sendersLoading"
+        [virtualScroll]="true"
+        [markFirst]="true"
+        [items]="senders"
+        [typeahead]="sendersInput$"
+        (scrollToEnd)="onSendersScrollToEnd()">
+      </ng-select>
+      <mat-form-field>
+        <input
+          matInput placeholder="Тема письма"
+          formControlName="subject">
+      </mat-form-field>
+      <div class="d-flex justify-content-between">
+        <mat-checkbox formControlName="verificationEmails">Проверить письма</mat-checkbox>
+        <button
+          mat-raised-button color="primary"
+          [disabled]="formGroup.invalid"
+          (click)="onSubmitClick()">Отправить
+        </button>
+      </div>
+    </mat-card>
+  </div>
+  <div class="d-flex flex-column">
+    <div [innerHTML]="safeTemplate"></div>
+  </div>
+
+</div>

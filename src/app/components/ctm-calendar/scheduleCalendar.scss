@@ -1,0 +1,382 @@
+.cal-cell-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 5px;
+}
+
+.cal-cell-top {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.cal-days {
+  padding-bottom: 1px;
+}
+
+.schedule {
+  background-color: #fa7500 !important;
+  position: relative;
+
+  .cal-day-number {
+    color: #ffffff !important;
+    position: relative;
+    z-index: 1;
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    right: -14px;
+    width: 15px;
+    height: 24px;
+    background-color: #fa7500;
+    top: 0;
+  }
+}
+
+.noschedule {
+  background-color: #7b3a00 !important;
+  position: relative;
+
+  .cal-day-number {
+    color: #ffffff !important;
+    position: relative;
+    z-index: 1;
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    right: -14px;
+    width: 15px;
+    height: 24px;
+    background-color: #7b3a00;
+    top: 0;
+  }
+}
+
+.period-single {
+  border-radius: 50%;
+
+  &.noschedule,
+  &.schedule {
+    &:before {
+      display: none;
+    }
+  }
+}
+
+.period-start {
+  border-radius: 50% 0 0 50%;
+
+  &.noschedule {
+    &:after {
+      content: "";
+      border-radius: 50% 0 0 50%;
+      position: absolute;
+      left: -3px;
+      width: 20px;
+      height: 24px;
+      background-color: #7b3a00;
+      top: 0;
+    }
+  }
+
+  &.schedule {
+    &:after {
+      content: "";
+      border-radius: 50% 0 0 50%;
+      position: absolute;
+      left: -3px;
+      width: 20px;
+      height: 24px;
+      background-color: #fa7500;
+      top: 0;
+    }
+  }
+}
+
+.period-end {
+  border-radius: 0 50% 50% 0;
+
+  &.noschedule {
+    &:before {
+      content: "";
+      border-radius: 0 50% 50% 0;
+      position: absolute;
+      right: -3px;
+      width: 20px;
+      height: 24px;
+      background-color: #7b3a00;
+      top: 0;
+    }
+  }
+
+  &.schedule {
+    &:before {
+      content: "";
+      border-radius: 0 50% 50% 0;
+      position: absolute;
+      right: -3px;
+      width: 20px;
+      height: 24px;
+      background-color: #fa7500;
+      top: 0;
+    }
+  }
+}
+
+.cal-cell {
+  &:first-child {
+    .noschedule {
+      &:after {
+        content: "";
+        position: absolute;
+        left: -21px;
+        width: 21px;
+        height: 24px;
+        background-color: #7b3a00;
+        top: 0;
+      }
+    }
+
+    .schedule {
+      &:after {
+        content: "";
+        position: absolute;
+        left: -21px;
+        width: 21px;
+        height: 24px;
+        background-color: #fa7500;
+        top: 0;
+      }
+    }
+
+    .period-single {
+      &.noschedule,
+      &.schedule {
+        &:before,
+        &:after {
+          display: none;
+        }
+      }
+    }
+
+    .period-start {
+      &.schedule,
+      &.noschedule {
+        &:after {
+          border-radius: 50% 0 0 50%;
+          left: -3px;
+          width: 20px;
+          height: 24px;
+        }
+      }
+    }
+  }
+
+  &:last-child {
+    .noschedule,
+    .schedule {
+      &:before {
+        width: 21px;
+        right: -21px;
+      }
+    }
+
+    .period-end {
+      &.noschedule,
+      &.schedule {
+        &:before {
+          border-radius: 0 50% 50% 0;
+          right: -3px;
+          width: 20px;
+          height: 24px;
+        }
+      }
+    }
+
+    .period-single {
+      &.noschedule,
+      &.schedule {
+        &:before,
+        &:after {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.e-btn {
+  height: 2.5rem;
+  color: #ffffff;
+  position: relative;
+  box-shadow: none !important;
+  margin-bottom: .625rem;
+  background-color: #ff6f00;
+  user-select: none;
+  cursor: pointer;
+  outline: 0;
+  border: none;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: baseline;
+  text-align: center;
+
+  font-family: Roboto;
+  font-size: .875rem;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1;
+
+  ::ng-deep.mat-button-wrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+  }
+}
+
+.b-calendar-wrap {
+  background-color: #fbfbfb;
+  margin-bottom: .875rem;
+}
+
+.calendar-header {
+  h3 {
+    font-family: Roboto;
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1;
+    text-align: justify;
+    color: #3c4858;
+    margin: 0 10px 0;
+    text-transform: capitalize;
+  }
+
+  .btn {
+    cursor: pointer;
+    color: #a4abb3;
+    padding: 0;
+    height: 24px;
+
+    &:hover {
+      color: #fa7500
+    }
+  }
+}
+
+.cal-header {
+  border-bottom: 1px solid #a4abb3;
+  padding-bottom: 5px !important;
+
+  .cal-cell {
+    font-family: Roboto;
+    font-size: .875rem;
+    font-weight: normal;
+    line-height: 1;
+    color: #a4abb3;
+  }
+}
+
+.cal-day-number {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  color: #a4abb3;
+}
+
+.cal-cell-row {
+  padding: 0 20px;
+  justify-content: space-between;
+}
+
+.b-calendar-wrap {
+  .cal-month-view {
+    .cal-days {
+      border: none;
+
+      .cal-cell-row {
+        border: none;
+      }
+    }
+
+    .cal-day-cell {
+      border: none !important;
+      min-height: 0;
+      float: none;
+      flex: none;
+      display: inline;
+      flex-direction: inherit;
+
+      .cal-cell-top {
+        min-height: 24px;
+        flex: 1;
+      }
+
+      &.cal-out-month .cal-day-number {
+        opacity: 1;
+        cursor: default;
+      }
+
+      &.cal-weekend .cal-day-number {
+        color: #a4abb3;
+      }
+
+      &.cal-today {
+        background-color: transparent;
+
+        .cal-day-number {
+          font-size: 14px;
+        }
+      }
+
+      &.schedule {
+
+        &:hover {
+          background-color: #fa7500 !important;
+        }
+
+        .cal-day-number {
+          color: #ffffff;
+        }
+      }
+    }
+
+    .cal-day-number {
+      font-family: Roboto;
+      font-size: 14px;
+      font-weight: normal;
+      line-height: 1;
+      color: #a4abb3;
+      opacity: 1;
+      margin-top: 0;
+      margin-right: 0;
+      float: none;
+      margin-bottom: 0;
+    }
+  }
+
+  .cal-month-view .cal-cell-row .cal-cell:hover,
+  .cal-month-view .cal-cell.cal-has-events.cal-open {
+    background-color: transparent;
+  }
+}

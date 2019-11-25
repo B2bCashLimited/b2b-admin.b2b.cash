@@ -1,0 +1,90 @@
+<mat-card style="display:flex;flex-grow: 1;flex-direction: column;">
+  <h4 style="margin: 0 auto 16px 0;">Сотрудники B2B.CASH</h4>
+  <div style="display: flex;width: 100%; align-items: flex-start;" [formGroup]="formGroup">
+    <mat-form-field style="margin-right: 16px;flex-grow: 1">
+      <input matInput placeholder="Поиск по Ф.И.О" formControlName="searchName">
+    </mat-form-field>
+    <mat-form-field style="margin-right: 16px;">
+      <mat-select placeholder="Роль" formControlName="adminLevel">
+        <mat-option value="1,2">Все</mat-option>
+        <mat-option [value]="1">Администратор</mat-option>
+        <mat-option [value]="2">Сотрудник</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field style="margin-right: 16px;">
+      <mat-select placeholder="Должность" formControlName="adminPosition">
+        <mat-option value="">Все сотрудники</mat-option>
+        <mat-option [value]="role.id" *ngFor="let role of roles">{{role.nameRu}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button
+      *ngxPermissionsOnly="['SUPER_ADMIN', 'EMPLOYEES_CREATE']"
+      mat-raised-button color="primary"
+      (click)="onAddNewEmployeeClick()">Добавить сотрудника
+    </button>
+  </div>
+
+  <mat-spinner *ngIf="loading"></mat-spinner>
+
+  <table *ngIf="!loading" mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Имя</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.firstName}} {{element.lastName}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="roles">
+      <th style="width: 200px;" mat-header-cell *matHeaderCellDef>Роль</th>
+      <td style="padding: 0 8px;" mat-cell *matCellDef="let element">
+        <div [ngSwitch]="element.adminLevel">
+          <span *ngSwitchCase="0">Пользователь</span>
+          <span *ngSwitchCase="1">Администратор</span>
+          <span *ngSwitchCase="2">Сотрудник</span>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="positions">
+      <th style="width: 200px;" mat-header-cell *matHeaderCellDef>Должность</th>
+      <td style="padding: 0 8px;" mat-cell *matCellDef="let element">
+        <mat-form-field *ngIf="element.adminLevel===2" floatLabel="never">
+          <mat-select
+            (selectionChange)="onSelectedRoleChanged($event.value, element.id)"
+            placeholder="Должность" floatLabel="never"
+            [value]="element.adminPosition">
+            <mat-option *ngFor="let role of roles"
+                        [value]="role.id">{{role.nameRu}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th style="width: 80px" mat-header-cell *matHeaderCellDef>Действия</th>
+      <td mat-cell *matCellDef="let element">
+        <button
+          *ngxPermissionsOnly="['SUPER_ADMIN', 'EMPLOYEES_EDIT']"
+          mat-icon-button color="primary"
+          (click)="onEditUserClick(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          *ngxPermissionsOnly="['SUPER_ADMIN', 'EMPLOYEES_DELETE']"
+          mat-icon-button color="warn"
+          (click)="onDestroyUserClick(element)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[25, 50, 100]"
+    [length]="length"
+    [pageSize]="pageSize"
+    [hidePageSize]="true"
+    showFirstLastButtons
+    (page)="getPage($event)">
+  </mat-paginator>
+</mat-card>

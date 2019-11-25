@@ -1,0 +1,17 @@
+<div class="dialog-container">
+  <h4>{{data.header || 'Удаление шаблона'}}</h4>
+
+  <div style="display: flex;flex-grow: 1;margin-bottom: 16px;">
+    {{data.question || 'Вы действительно хотите удалить шаблон?'}}
+  </div>
+
+
+  <div style="display: flex;flex-grow: 1;justify-content: flex-end;">
+    <button style="margin-right: 10px;" mat-raised-button color="warn"
+            (click)="onCloseClick(true)">Удалить
+    </button>
+    <button mat-raised-button color="primary"
+            (click)="onCloseClick(false)">Закрыть
+    </button>
+  </div>
+</div>

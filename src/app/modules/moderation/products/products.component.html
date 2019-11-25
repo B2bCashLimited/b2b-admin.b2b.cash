@@ -1,0 +1,451 @@
+<div class="row mb-5">
+  <div class="col-auto">
+    <h1 class="title-h1 ">Модерирование: Товары</h1>
+  </div>
+  <div class="col d-flex justify-content-end">
+    <div class="e-text d-flex align-items-center mr-4">
+      Категории
+      <div class="e-text--counter">{{countersData.categoriesCount}}</div>
+    </div>
+    <div class="e-text d-flex align-items-center ">
+      Товары
+      <div class="e-text--counter">{{countersData.productsCount}}</div>
+    </div>
+  </div>
+</div>
+
+<div *ngxPermissionsOnly="['SUPER_ADMIN', 'MODERATE_PRODUCTS_VIEW']; else elseBlock; then thenBlock"></div>
+<ng-template #elseBlock>
+  <app-access-denied></app-access-denied>
+</ng-template>
+<ng-template #thenBlock>
+  <div class="row">
+    <div class="col-9">
+      <div>
+        <section class="section-wrap">
+          <h2 class="title-h2 mb-3">Модерация витрин</h2>
+          <div class="row align-items-end">
+            <div class="col-xl-4  mb-2">
+              <div class="title-small">Категория</div>
+              <div class="category-btn" (click)="openCategory()">{{category && category.nameRu ? category.nameRu :
+                'Выберите Категорию'}}
+              </div>
+            </div>
+            <div class="col-4 b-input-border mb-2">
+              <div class="title-small">Наименование товара</div>
+              <mat-form-field floatPlaceholder="never">
+                <input matInput placeholder="" [(ngModel)]="filter.name">
+              </mat-form-field>
+            </div>
+            <div class="col-4 b-input-border mb-2">
+              <div class="title-small">Производитель</div>
+              <mat-form-field floatPlaceholder="never">
+                <input matInput placeholder="" [(ngModel)]="filter.manufacturer">
+              </mat-form-field>
+            </div>
+            <div class="col-4 b-select-border mb-2">
+              <div class="title-small">Страна производитель</div>
+              <mat-select [(ngModel)]="filter.country">
+                <mat-option *ngFor="let country of countries" [value]="country.id">{{ country.nameRu }}</mat-option>
+              </mat-select>
+            </div>
+            <div class="col-4 b-select-border mb-2">
+              <div class="row">
+                <div class="col-6">
+                  <div class="title-small">Цена за</div>
+                  <mat-select [(ngModel)]="filter.priceFor">
+                    <mat-option *ngFor="let unit of priceFor" [value]="unit.id">{{unit.nameRu}}</mat-option>
+                  </mat-select>
+                </div>
+                <div class="col-6">
+                  <div class="title-small">Валюта</div>
+                  <mat-select [(ngModel)]="filter.currency">
+                    <mat-option *ngFor="let unit of priceUnits" [value]="unit.id">{{unit.nameRu}}</mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 mb-2 b-input-border ">
+              <div class="title-small">Минимальный заказ</div>
+              <div class="row">
+                <div class="col-6 d-flex align-items-center">
+                  <span class="e-prefix">От</span>
+                  <div class="col p-0 ">
+                    <mat-form-field class="e-input-145px" floatPlaceholder="never">
+                      <input matInput placeholder="" type="number" [(ngModel)]="filter.minAmountFrom">
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-6 d-flex align-items-center">
+                  <span class="e-prefix">До</span>
+                  <div class="col p-0 ">
+                    <mat-form-field class="e-input-145px"  floatPlaceholder="never">
+                      <input matInput placeholder="" type="number" [(ngModel)]="filter.minAmountTo">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 mb-2 b-input-border">
+              <div class="title-small">Нетто</div>
+              <div class="row">
+                <div class="col-6 d-flex align-items-center">
+                  <span class="e-prefix">От</span>
+                  <div class="col p-0 ">
+                    <mat-form-field class="e-input-145px"  floatPlaceholder="never">
+                      <input matInput placeholder="" type="number" [(ngModel)]="filter.netFrom">
+                      <span matSuffix>кг.</span>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-6 d-flex align-items-center">
+                  <span class="e-prefix">До</span>
+                  <div class="col p-0 ">
+                    <mat-form-field class="e-input-145px"  floatPlaceholder="never">
+                      <input matInput placeholder="" type="number" [(ngModel)]="filter.netTo">
+                      <span matSuffix>кг.</span>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 mb-2 b-input-border">
+              <div class="title-small">Брутто</div>
+              <div class="row">
+                <div class="col-6 d-flex align-items-center">
+                  <span class="e-prefix">От</span>
+                  <div class="col p-0 ">
+                    <mat-form-field class="e-input-145px" floatPlaceholder="never">
+                      <input matInput placeholder="" type="number" [(ngModel)]="filter.grossFrom">
+                      <span matSuffix>кг.</span>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-6 d-flex align-items-center">
+                  <span class="e-prefix">До</span>
+                  <div class="col p-0 ">
+                    <mat-form-field class="e-input-145px" floatPlaceholder="never">
+                      <input matInput placeholder="" type="number" [(ngModel)]="filter.grossTo">
+                      <span matSuffix>кг.</span>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 mb-2 b-input-border">
+              <div class="title-small">Объем/Площадь</div>
+              <div class="row">
+                <div class="col-6 d-flex align-items-center">
+                  <span class="e-prefix">От</span>
+                  <div class="col p-0">
+                    <mat-form-field class="e-input-145px" floatPlaceholder="never">
+                      <input matInput placeholder="" type="number" [(ngModel)]="filter.volumeFrom">
+                      <span matSuffix>м³.</span>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-6 d-flex align-items-center">
+                  <span class="e-prefix">До</span>
+                  <div class="col p-0">
+                    <mat-form-field class="e-input-145px" floatPlaceholder="never">
+                      <input matInput placeholder="" type="number" [(ngModel)]="filter.volumeTo">
+                      <span matSuffix>м³.</span>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="e-line" *ngIf="selectedPropItems[0]"></div>
+          <div class="row align-items-end mb-2" *ngIf="selectedPropItems[0]">
+            <div class="col-3 mb-2" *ngFor="let prop of selectedPropItems">
+              <div class="title-small d-flex align-items-center mb-0">
+                {{prop.nameRu}}
+                <span class="btn-delete" (click)="deleteProp(prop)"><i class="material-icons">clear</i></span>
+              </div>
+              <div class="b-select-border" *ngIf="prop.valueType === 3">
+                <mat-select [(ngModel)]="propertiesFilter[prop.id]">
+                  <mat-option *ngFor="let elem of prop.possibleValuesRu" [value]="elem.display">{{elem.display}}
+                  </mat-option>
+                </mat-select>
+              </div>
+              <div class="b-input-border" *ngIf="prop.valueType !== 3">
+                <mat-form-field floatPlaceholder="never" *ngIf="prop.valueType !== 3">
+                  <input matInput placeholder="" [(ngModel)]="propertiesFilter[prop.id]">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between mb-3">
+            <div class="d-flex">
+              <span class="text-btn" (click)="addProperties()">
+                <i class="material-icons">add</i>Добавить дополнительную характеристику
+              </span>
+              <div class="d-flex">
+                <app-activity-chip *ngFor="let activity of selectedActivities"
+                                   [activity]="activity"
+                                   (delete)="deleteActivity(activity)">
+                </app-activity-chip>
+              </div>
+              <span class="text-btn ml-2" (click)="openActivitiesModal()">
+                  <i class="material-icons">add</i> Добавить вид деятельности
+              </span>
+            </div>
+            <div class="d-flex">
+              <span (click)="clearFilter()" class="text-btn color-red">
+              <i class="material-icons">clear</i>
+              Сбросить фильтр
+            </span>
+            </div>
+          </div>
+
+          <div class="row b-checkbox-wrap mb-4 align-items-center justify-content-between">
+            <div class="col">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <mat-checkbox [(ngModel)]="activityTypeFilter.manufactories">
+                <span class="ic-text mr-1">
+                  <i class="bb bb-manufactory"></i>
+                </span>
+                  </mat-checkbox>
+                </div>
+                <div class="col-auto">
+                  <mat-checkbox [(ngModel)]="activityTypeFilter.suppliers">
+                <span class="ic-text mr-1">
+                  <i class="bb bb-provider"></i>
+                </span>
+                  </mat-checkbox>
+                </div>
+                <div class="col-auto">
+                  <mat-checkbox class="" [(ngModel)]="moderateFilter.status1">Ожидают модерации <i
+                    class="bb bb-timer-sand ml-2"></i></mat-checkbox>
+                </div>
+                <div class="col-auto">
+                  <mat-checkbox class="" [(ngModel)]="moderateFilter.status4">Отмодерированно <i
+                    class="material-icons ml-2 check-circle">check_circle</i></mat-checkbox>
+                </div>
+                <div class="col-auto ">
+                  <mat-checkbox class="" [(ngModel)]="moderateFilter.status3">Отклонено <i
+                    class="bb bb-cancel-circle ml-2 "></i></mat-checkbox>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-auto d-flex justify-content-end align-items-center">
+              <button class="btn-fill" mat-raised-button (click)="search()">
+                Поиск <i class="bb bb-new-search"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+        <div>
+          <a mat-raised-button color="primary" [routerLink]="['/moderation/products/products-names']" routerLinkActive="router-link-active" >
+            Предпросмотр файла в новой структуре
+          </a>
+        </div>
+
+        <div class="b-showcase-wrap" *ngIf="data && data.length > 0">
+          <section>
+            <div class="summary-info-body  ">
+              <div class="d-flex">
+                <div class="col title">
+                  <div class="cell cell-title ">
+                    МОДЕРИРОВАНИЕ ТОВАРА
+                  </div>
+                  <div class="cell font-weight-bold">Наим. вида деятельности</div>
+                  <div class="cell font-weight-bold">Наименование товара</div>
+                  <div class="cell font-weight-bold">Производитель</div>
+                  <div class="cell font-weight-bold">Компания</div>
+                  <div class="cell font-weight-bold">Страна</div>
+                  <div class="cell font-weight-bold" *ngFor="let prop of data[0].productProperties">
+                    {{prop.categoryProperty?.nameRu}}
+                  </div>
+                  <div class="cell font-weight-bold">Мин. заказ</div>
+                  <div class="cell font-weight-bold">Нетто</div>
+                  <div class="cell font-weight-bold">Бурутто</div>
+                  <div class="cell font-weight-bold">Объем</div>
+                </div>
+
+                <div class=" col-tex-wrap
+                " *ngIf="data">
+                  <div class="col text" *ngFor="let product of data">
+                    <div class="cell cell-title ">
+                      <button class="ic-btn"
+                              mat-raised-button
+                              [ngClass]="{'checked' : product.moderateStatus === 4}"
+                              (click)="changeModeratorStatus(4, product)">
+                        <i class="material-icons check-circle">check_circle</i>
+                      </button>
+                      <button class="ic-btn"
+                              mat-raised-button
+                              (click)="product.moderateStatus = 3; product.moderateCommentEditing = true">
+                        <i class="bb bb-cancel-circle"></i>
+                      </button>
+                      <div class="cell cell-title comment-container" *ngIf="product.moderateStatus === 3">
+                  <textarea *ngIf="product.moderateCommentEditing"
+                            class="comment-textarea"
+                            [(ngModel)]="product.moderateComment"
+                            placeholder="Напишите комментарий (необязательно)"
+                            autofocus>
+                  </textarea>
+                        <span *ngIf="!product.moderateCommentEditing"
+                              class="comment-textarea">
+                    {{ product.moderateComment }}
+                  </span>
+                        <span class="actions">
+                    <button class="ic-btn"
+                            mat-raised-button
+                            *ngIf="!product.moderateCommentEditing"
+                            (click)="product.moderateCommentEditing = true"
+                            matTooltip="Изменить комментарий">
+                      <i class="bb bb-mat-edit"></i>
+                    </button>
+                    <button class="ic-btn"
+                            mat-raised-button
+                            *ngIf="product.moderateCommentEditing"
+                            (click)="changeModeratorStatus(3, product)"
+                            matTooltip="Сохранить комментарий">
+                      <i class="material-icons check-circle">check_circle</i>
+                    </button>
+                    <button class="ic-btn"
+                            mat-raised-button
+                            (click)="changeModeratorStatus(1, product)">
+                      <i class="bb bb-union"></i>
+                    </button>
+                  </span>
+                      </div>
+                    </div>
+
+                    <!-- наим вида деятель -->
+                    <div class="cell font-weight-bold">
+                      <span class="d-flex cursor-pointer" (click)="product.activity.isModerateModeChanging = true">
+                        <span class="ic-text mr-1"
+                              [ngClass]="{'checked': product.activity.moderateStatus === 4}"
+                              *ngIf="product.showcase?.manufacturer">
+                          <i class="bb bb-manufactory"></i>
+                        </span>
+                        <span class="ic-text mr-1"
+                              [ngClass]="{'checked': product.activity.moderateStatus === 4}"
+                              *ngIf="product.showcase?.supplier">
+                          <i class="bb bb-provider"></i>
+                        </span>
+                        <span *ngIf="product.showcase?.manufacturer">
+                          {{product.showcase.manufacturer.name}}
+                        </span>
+                        <span *ngIf="product.showcase?.supplier">
+                          {{product.showcase.supplier.name}}
+                        </span>
+                      </span>
+
+                      <app-moderate-mode-popover class="mat-elevation-z6"
+                                                 *ngIf="product.activity.isModerateModeChanging"
+                                                 [product]="product"
+                                                 [activity]="product.activity"
+                                                 (close)="product.activity.isModerateModeChanging = false"
+                                                 (save)="product.activity.isModerateModeChanging = false; onModerateModeChanged($event, product)">
+                      </app-moderate-mode-popover>
+                    </div>
+
+                    <!-- наименование товара -->
+                    <div class="cell font-weight-bold">
+                      {{product.nameRu}} <span class="e-icon" (click)="openPhotoViewer(product.photos)"><i
+                      class="material-icons">insert_photo</i></span>
+                    </div>
+
+                    <!-- производитель -->
+                    <div class="cell">{{product.productManufacturerData?.nameRu}}</div>
+
+                    <!-- компания -->
+                    <div class="cell">{{product.showcase.company.name}}</div>
+
+                    <!-- страна -->
+                    <div class="cell">{{product.countryData?.nameRu}}</div>
+
+                    <!-- properties -->
+                    <div class="cell" *ngFor="let prop of product.productProperties">
+                      {{prop.valueRu}}
+                    </div>
+
+                    <!-- мин заказ -->
+                    <div class="cell">
+                      {{product.minimal_amount}}
+                      <span class="color-gray ml-1" *ngIf="product.showcaseUnits && product.showcaseUnits[2]">
+                  {{product.showcaseUnits[2].nameRu}}
+                </span>
+                    </div>
+
+                    <!-- нетто -->
+                    <div class="cell">
+                      {{+product.net}} <span class="color-gray ml-1">кг</span>
+                    </div>
+
+                    <!-- бурутто -->
+                    <div class="cell">
+                      {{+product.gross}} <span class="color-gray ml-1">кг</span>
+                    </div>
+
+                    <!-- объем -->
+                    <div class="cell">
+                      {{+product.volume}} <span class="color-gray ml-1">м<sup>3</sup></span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="pagination-wrapper">
+              <mat-paginator [length]="length"
+                             [pageSize]="pageSize"
+                             [pageIndex]="pageIndex"
+                             (page)="getPage($event)">
+              </mat-paginator>
+            </div>
+          </section>
+        </div>
+
+        <p *ngIf="data && data.length === 0" class="text-center"><em>Товаров не найдено.</em></p>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="b-category">
+        <b2b-unmoderated-categories-list #categoryList></b2b-unmoderated-categories-list>
+        <b2b-unmoderated-properties-list *ngIf="categoryList?.items.length === 0"></b2b-unmoderated-properties-list>
+        <b2b-unmoderated-properties-value-list *ngIf="categoryList?.items.length === 0"></b2b-unmoderated-properties-value-list>
+        <!-- ↓ старая логика ↓ -->
+        <div *ngIf="false">
+          <h3 class="title-h3 mb-2">Самые старые непромодерированные категории</h3>
+          <p class="text-center" *ngIf="categoryData.length < 2">
+            <em>Нет неотмодерированных товаров</em>
+          </p>
+          <section class="mb-3" *ngIf="categoryData.length > 1">
+            <div class="b-category--inner" [class.select]="isShowSidebarScroll">
+              <div class="b-category--item"
+                   *ngFor="let item of categoryData"
+                   (click)="selectCategory(item)"
+                   [hidden]="category && item.id == category.id">
+                <div class="b-category--name">{{item.name}}</div>
+                <div class="b-category--time"><span>{{item.moderateMinTime}}</span></div>
+                <div class="b-category--counter">{{item.productCount}}</div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-center pt-2"
+                 *ngIf="!isShowSidebarScroll"
+                 (click)="showSidebarScroll()">
+              <span class="text-btn">Показать все</span>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-images-viewer *ngIf="isShowingImages"
+                     [images]="imagesToShow"
+                     (close)="isShowingImages = false">
+  </app-images-viewer>
+</ng-template>

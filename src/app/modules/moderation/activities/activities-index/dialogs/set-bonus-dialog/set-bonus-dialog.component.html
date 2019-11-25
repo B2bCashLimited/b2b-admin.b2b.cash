@@ -1,0 +1,43 @@
+<div class="b-modal">
+  <mat-dialog-content class="d-flex flex-column align-items-center mb-5">
+    <div class="col-12 d-flex justify-content-center">
+      <i class="bb bb-caution-sign"></i>
+    </div>
+
+    <h4 class="text-center">
+      Начислить бонус
+    </h4>
+
+    <div class="popup-text text-center mb-4">
+      {{dialogData.activityName}}: {{dialogData.count}}
+    </div>
+
+    <mat-form-field>
+      <input matInput
+             type="number"
+             min="1"
+             placeholder="Сумма бонуса"
+             [(ngModel)]="amount"
+             autocomplete="off">
+      <span matSuffix>RUR</span>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="justify-content-end">
+    <button
+      mat-raised-button
+      type="button"
+      (click)="close(false)"
+      color="warn">
+      Отмена
+    </button>
+
+    <button
+      mat-raised-button
+      type="button"
+      (click)="close(true)"
+      color="primary">
+      OK
+    </button>
+  </mat-dialog-actions>
+</div>

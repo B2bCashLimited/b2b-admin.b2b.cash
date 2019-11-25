@@ -1,0 +1,760 @@
+<mat-card class="d-flex flex-column flex-grow-1"
+          [formGroup]="formGroup"
+          *ngIf="activity">
+  <div>
+    <button mat-stroked-button
+            color="primary"
+            class="mr-3"
+            (click)="onBackClick()">
+      <mat-icon>arrow_back</mat-icon>
+      Назад
+    </button>
+
+    <button mat-raised-button
+            color="primary"
+            class="mr-3"
+            (click)="onModerateCompanyClick(1)">
+      <mat-icon>check</mat-icon>
+      Одобрить
+    </button>
+    <button mat-raised-button
+            color="warn"
+            (click)="onModerateCompanyClick(2)">
+      <mat-icon>close</mat-icon>
+      Отклонить
+    </button>
+
+    <div>
+      <mat-form-field class="w-50">
+        <textarea matInput
+                  placeholder="Комментарий"
+                  formControlName="message"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <section>
+    <div class="d-flex flex-column"
+         *ngxPermissionsOnly="['SUPER_ADMIN', 'MODERATE_FREE_PERIOD']">
+      <ng-container *ngIf="activity && activity.status === 1 && activityNameId === ACTIVITY_NAMES.Supplier">
+        <mat-checkbox formControlName="freeUsage">
+          Бесплатный период
+        </mat-checkbox>
+
+        <div class="d-flex mt-3">
+          <div class="data-range col-3 mr-3"
+               [class.disabled]="!formGroup.get('freeUsage').value"
+               (click)="onDateChange()"
+               [matTooltip]="formGroup.get('freeUsage').value ? 'Выберите период' : ''"
+               matTooltipPosition="above">
+            <div class="inner-wrap">
+              {{startDate | date:'dd.MM.yy'}} - {{finishDate | date:'dd.MM.yy'}}
+              <i class="material-icons">date_range</i>
+            </div>
+          </div>
+
+          <button mat-raised-button
+                  color="primary"
+                  [disabled]="!formGroup.get('freeUsage').value || isPending"
+                  (click)="setFreeUsage()">Сохранить
+          </button>
+        </div>
+      </ng-container>
+    </div>
+
+    <div>
+      <h1>{{activity.fullName}} ({{activity.name}})</h1>
+    </div>
+    <div style="display: flex; flex-direction: row">
+      <div>
+        <mat-card *ngIf="activity.logo.length"
+                  class="logo">
+          <img [src]="serverUrl + activity.logo[0].link">
+        </mat-card>
+        <mat-card *ngIf="!activity.logo.length"
+                  class="logo">
+          <mat-icon>photo</mat-icon>
+          <div>NO LOGO</div>
+        </mat-card>
+      </div>
+
+      <div style="padding-left: 20px">
+        <div>
+          <b>Адрес компании:</b> {{activity.factAddress?.geoObject?.address}}
+        </div>
+        <div>
+          <b>Контактное лицо:</b>
+          <div *ngFor="let contact of activity.contacts"
+               style="padding-left: 15px">
+            <div><b>ФИО:</b> {{contact.fullName}}<span *ngIf="contact.position">,&nbsp;{{contact.position}}</span></div>
+            <div *ngIf="contact.phone"><b>Телефон:</b> {{contact.phone}}</div>
+            <div *ngIf="contact.email"><b>Email:</b> {{contact.email}}</div>
+          </div>
+        </div>
+        <div>
+          <ng-container *ngIf="activity.siteUrls.length">
+            <b>Веб-сайт:</b>
+            <ul>
+              <li *ngFor="let site of activity.siteUrls">
+                <a href="{{site.url}}">{{site.url}}</a>
+              </li>
+            </ul>
+          </ng-container>
+        </div>
+        <div>
+          <b>Описание:</b> {{activity.description}}
+        </div>
+
+        <div>
+          <div>
+            <div><b>Количество сотрудников:</b> {{activity.countEmployees}} чел.</div>
+            <div><b>Площадь офиса:</b> {{activity.area?.officeArea}} кв.м</div>
+            <div><b>Год основания компании:</b> {{activity.yearOfFound}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ng-container *ngIf="activityNameId == 1;  then supplier"></ng-container>
+  <ng-container *ngIf="activityNameId == 2;  then manufacturer"></ng-container>
+  <ng-container *ngIf="activityNameId == 3;  then customsBroker"></ng-container>
+  <ng-container *ngIf="activityNameId == 4;  then customsBroker"></ng-container>
+  <ng-container *ngIf="activityNameId == 5;  then internationalTrucker"></ng-container>
+  <ng-container *ngIf="activityNameId == 6;  then internationalTrucker"></ng-container>
+  <ng-container *ngIf="activityNameId == 7;  then internationalRailCarrier"></ng-container>
+  <ng-container *ngIf="activityNameId == 8;  then internationalRailCarrier"></ng-container>
+  <ng-container *ngIf="activityNameId == 9;  then internationalAirCarrier"></ng-container>
+  <ng-container *ngIf="activityNameId == 10; then internationalAirCarrier"></ng-container>
+  <ng-container *ngIf="activityNameId == 11; then seaCarrier"></ng-container>
+  <ng-container *ngIf="activityNameId == 12; then seaCarrier"></ng-container>
+
+  <section>
+    <div>
+      <b>Способ оплаты:</b>
+      <ul>
+        <li *ngIf="activity.paymentMethods.cashPayments">Наличный расчет.&nbsp;</li>
+        <li *ngIf="activity.paymentMethods.cashlessPaymentsOnCard">Безналичный расчет без НДС.&nbsp;</li>
+        <li *ngIf="activity.paymentMethods.cashlessPaymentsVATIncluded">Безналичный расчет на карту.&nbsp;</li>
+        <li *ngIf="activity.paymentMethods.cashlessPaymentsWithoutVAT">Безналичный расчет с НДС.&nbsp;</li>
+      </ul>
+    </div>
+
+    <div>
+      <b>Принимаемые к оплате валюты:</b>
+      <ul>
+        <li *ngIf="activity.paymentCurrency.CNY">CNY</li>
+        <li *ngIf="activity.paymentCurrency.EUR">EUR</li>
+        <li *ngIf="activity.paymentCurrency.RUB">RUB</li>
+        <li *ngIf="activity.paymentCurrency.USD">USD</li>
+      </ul>
+    </div>
+
+    <div *ngIf="activity.termsIncoterms">
+      <b>Условия "Инкотермс":</b>
+      <ul>
+        <li *ngIf="activity.termsIncoterms.CFR">CFR</li>
+        <li *ngIf="activity.termsIncoterms.CIF">CIF</li>
+        <li *ngIf="activity.termsIncoterms.CIP">CIP</li>
+        <li *ngIf="activity.termsIncoterms.CPT">CPT</li>
+        <li *ngIf="activity.termsIncoterms.DAP">DAP</li>
+        <li *ngIf="activity.termsIncoterms.DAT">DAT</li>
+        <li *ngIf="activity.termsIncoterms.DDP">DDP</li>
+        <li *ngIf="activity.termsIncoterms.EXW">EXW</li>
+        <li *ngIf="activity.termsIncoterms.FAS">FAS</li>
+        <li *ngIf="activity.termsIncoterms.FCA">FCA</li>
+        <li *ngIf="activity.termsIncoterms.FOB">FOB</li>
+      </ul>
+    </div>
+  </section>
+
+  <section *ngIf="activity.legalFormActivity">
+    <ng-container *ngIf="activity.legalFormActivity.PTS?.length">
+      <div>ПТС</div>
+      <div *ngFor="let doc of activity.legalFormActivity.PTS">
+        <div>{{ doc.numberInput }}</div>
+        <a [href]="serverUrl + doc.link">
+          <img class="licence-picture"
+               [src]="serverUrl + doc.link">
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activity.legalFormActivity.licenses?.length">
+      <div>Лицензии</div>
+      <div *ngFor="let doc of activity.legalFormActivity.licenses">
+        <div>{{ doc.numberInput }}</div>
+        <a [href]="serverUrl + doc.link">
+          <img class="licence-picture"
+               [src]="serverUrl +doc.link">
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activity.legalFormActivity.certificates?.length">
+      <div>Сертификаты</div>
+      <div *ngFor="let doc of activity.legalFormActivity.certificates">
+        <div>{{ doc.numberInput }}</div>
+        <a [href]="serverUrl + doc.link">
+          <img class="licence-picture"
+               [src]="serverUrl + doc.link">
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activity.legalFormActivity.goodsCarriageLicenses?.length">
+      <div>Лицензии на провоз грузов</div>
+      <div *ngFor="let doc of activity.legalFormActivity.goodsCarriageLicenses">
+        <div *ngIf="doc.numberInput">{{ doc.numberInput }}</div>
+        <a [href]="serverUrl + doc.link">
+          <img class="licence-picture"
+               [src]="serverUrl + doc.link">
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activity.legalFormActivity.certificateOfLegalRegistration?.length">
+      <div>Свидетельство о юридической регистрации компании перевозчика</div>
+      <div *ngFor="let doc of activity.legalFormActivity.certificateOfLegalRegistration">
+        <div *ngIf="doc.numberInput">{{ doc.numberInput }}</div>
+        <a [href]="serverUrl + doc.link">
+          <img class="licence-picture"
+               [src]="serverUrl + doc.link">
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activity.legalFormActivity.ownershipDocumentation?.length">
+      <div>Документация на право владения судном</div>
+      <div *ngFor="let doc of activity.legalFormActivity.ownershipDocumentation">
+        <div *ngIf="doc.numberInput">{{ doc.numberInput }}</div>
+        <a [href]="serverUrl + doc.link">
+          <img class="licence-picture"
+               [src]="serverUrl + doc.link">
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activity.legalFormActivity.shipTechnicalDocumentation?.length">
+      <div>Техническая документация на корабль</div>
+      <div *ngFor="let doc of activity.legalFormActivity.shipTechnicalDocumentation">
+        <div *ngIf="doc.numberInput">{{ doc.numberInput }}</div>
+        <a [href]="serverUrl + doc.link">
+          <img class="licence-picture"
+               [src]="serverUrl + doc.link">
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activity.legalFormActivity.certificateDOPOG?.length">
+      <div>Свидетсво ДОПОГ, разрешающее провоз опасных грузов</div>
+      <div *ngFor="let doc of activity.legalFormActivity.certificateDOPOG">
+        <div *ngIf="doc.numberInput">{{ doc.numberInput }}</div>
+        <a [href]="serverUrl + doc.link">
+          <img class="licence-picture"
+               [src]="serverUrl + doc.link">
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activity.legalFormActivity.sanitaryPermission?.length">
+      <div>Санитарное разрешение</div>
+      <div *ngFor="let doc of activity.legalFormActivity.sanitaryPermission">
+        <div *ngIf="doc.numberInput">{{ doc.numberInput }}</div>
+        <a [href]="serverUrl + doc.link">
+          <img class="licence-picture"
+               [src]="serverUrl + doc.link">
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activity.legalFormActivity.certificatesOfPackagingQuality?.length">
+      <div>Декларации, патенты, сертификаты на кчество покупки, тары</div>
+      <div *ngFor="let doc of activity.legalFormActivity.certificatesOfPackagingQuality">
+        <div *ngIf="doc.numberInput">{{ doc.numberInput }}</div>
+        <a [href]="serverUrl + doc.link">
+          <img class="licence-picture"
+               [src]="serverUrl + doc.link">
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activity.legalFormActivity.awards?.length">
+      <div>Награды</div>
+      <div *ngFor="let doc of activity.legalFormActivity.awards">
+        <div>{{ doc.numberInput }}</div>
+        <a [href]="serverUrl + doc.link">
+          <img class="licence-picture"
+               [src]="serverUrl + doc.link">
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activity.legalFormActivity.otherDocuments?.length">
+      <div>Другие документы</div>
+      <div *ngFor="let doc of activity.legalFormActivity.otherDocuments">
+        <div *ngIf="doc.numberInput">{{ doc.numberInput }}</div>
+        <a [href]="serverUrl + doc.link">
+          <img class="licence-picture"
+               [src]="serverUrl + doc.link">
+        </a>
+      </div>
+    </ng-container>
+  </section>
+
+  <ng-template #supplier>
+    <h2>Информация о поставщике</h2>
+
+    <div>
+      <div>
+        <b>Поставляемый продукт:</b>
+        <ul>
+          <li *ngFor="let product of activity.suppliedProducts">{{product.product}}</li>
+        </ul>
+      </div>
+      <div>
+        <b>Торговый знак:</b>
+        <mat-card *ngIf="activity.trademarkLogo && activity.trademarkLogo.length"
+                  class="logo">
+          <img [src]="serverUrl + activity.trademarkLogo[0].link">
+        </mat-card>
+      </div>
+    </div>
+
+    <h2>Торговые возможности</h2>
+
+    <div *ngIf="activity.totalYearSales">
+      <b>Общегодовой объем продаж: </b>{{activity.totalYearSales.value}} {{activity.totalYearSales.currency}}
+      <div>
+        <b>Возможность поставки в кредит:</b>
+        <span *ngIf="activity.deliveryCredit">Да</span>
+        <span *ngIf="!activity.deliveryCredit">Нет</span>
+      </div>
+    </div>
+    <div>
+      <div>
+        <b>Условия доставки:</b>
+        <span *ngIf="activity.termsDelivery.deliver">
+          <span *ngIf="activity.termsDelivery.atHisOwnExpense">Доставка за счет клиента</span>
+          <span *ngIf="activity.termsDelivery.deliver">Доставка за счет поставщика</span>
+        </span>
+        <span *ngIf="!activity.termsDelivery.deliver">Нет доставки</span>
+      </div>
+    </div>
+    <div>
+      <div>
+        <table>
+          <tr>
+            <td><b>Основные рынки продаж с учетом экспорта:</b></td>
+            <td *ngFor="let market of activity.mainSupplyMarkets">
+              {{market.city}} - {{market.percent}} %
+            </td>
+          </tr>
+          <tr>
+            <td><b>Ближайшие порты доставки:</b></td>
+            <td *ngFor="let place of activity.nearestPortsDelivery">
+              {{place.city}} - {{place.googleStringName}}
+            </td>
+          </tr>
+          <tr>
+            <td><b>Ближайшие Ж/Д станции доставки:</b></td>
+            <td *ngFor="let place of activity.nearestRailwayStationDelivery">
+              {{place.city}} - {{place.googleStringName}}
+            </td>
+          </tr>
+          <tr>
+            <td><b>Ближайшие аэропорты доставки:</b></td>
+            <td *ngFor="let place of activity.nearestAirportDelivery">
+              {{place.city}} - {{place.googleStringName}}
+            </td>
+          </tr>
+          <tr>
+            <td><b>Собственное нефабричное производство:</b></td>
+            <td *ngFor="let place of activity.nonFactoryProduction">
+              {{place.city}}
+            </td>
+          </tr>
+          <tr>
+            <td><b>Адрес склада отгрузки:</b></td>
+            <td *ngFor="let place of activity.addressWarehouseShipment">
+              {{place.city}}
+            </td>
+          </tr>
+          <tr>
+            <td><b>Фабрики, с которых производятся поставки:</b></td>
+            <td *ngFor="let place of activity.factoriesDeliveries">
+              {{place.city}} - {{place.factoryName}}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #manufacturer>
+    <h2>Информация о заводе</h2>
+    <div>
+      <div>
+        <table>
+          <tr>
+            <td><span>Производственная мощность:</span></td>
+            <td>{{ activity.productiveCapacity}} конт./мес.</td>
+          </tr>
+          <tr>
+            <td><span>Среднее время изготовления заказа:</span></td>
+            <td>{{ activity.orderProductionTime}} дней</td>
+          </tr>
+        </table>
+        <b>Поставляемый продукт:</b>
+        <ul>
+          <li *ngFor="let product of activity.manufacturedProducts">{{product.product}}</li>
+        </ul>
+      </div>
+    </div>
+    <h2>Торговые возможности</h2>
+    <div>
+      <div>
+        <b>Общегодовой объем продаж:</b>
+        {{activity.totalYearSales.value}} {{activity.totalYearSales.currency}}
+      </div>
+    </div>
+    <div>
+      <b>Возможность поставки в кредит:</b>
+      <span *ngIf="activity.deliveryCredit">Да</span>
+      <span *ngIf="!activity.deliveryCredit">Нет</span>
+    </div>
+    <div>
+      <b>Условия доставки:</b>
+      <span *ngIf="activity.termsDelivery.deliver">
+        <span *ngIf="activity.termsDelivery.atHisOwnExpense">Доставка за счет клиента</span>
+        <span *ngIf="activity.termsDelivery.deliver">Доставка за счет поставщика</span>
+      </span>
+      <span *ngIf="!activity.termsDelivery.deliver && !activity.termsDelivery.atHisOwnExpense">Нет доставки</span>
+    </div>
+    <div>
+      <div *ngIf="activity.mainSupplyMarkets">
+        <b>Основные рынки продаж с учетом экспорта:</b>
+        <ul>
+          <li *ngFor="let market of activity.mainSupplyMarkets">
+            {{ market.city}} {{market.percent}} %
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="activity.nearestPortsDelivery">
+        <b *ngIf="activity.nearestPortsDelivery">Ближайшие порты доставки:</b>
+        <ul>
+          <li *ngFor="let port of activity.nearestPortsDelivery">
+            {{port.name.nameRu}} - {{port.googleStringName}}
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="activity.nearestRailwayStationDelivery">
+        <div>Ближайшие ж/д станции доставки</div>
+        <ul>
+          <li *ngFor="let station of activity.nearestRailwayStationDelivery">
+            {{station.name.nameRu}} - {{station.googleStringName}}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <table>
+      <tr>
+        <td><b>Основные рынки продаж с учетом экспорта:</b></td>
+        <td *ngFor="let market of activity.mainSupplyMarkets">
+          {{market.city}} - {{market.percent}} %
+        </td>
+      </tr>
+      <tr>
+        <td><b>Ближайшие порты доставки:</b></td>
+        <td *ngFor="let place of activity.nearestPortsDelivery">
+          {{place.city}} - {{place.googleStringName}}
+        </td>
+      </tr>
+      <tr>
+        <td><b>Ближайшие Ж/Д станции доставки:</b></td>
+        <td *ngFor="let place of activity.nearestRailwayStationDelivery">
+          {{place.city}} - {{place.googleStringName}}
+        </td>
+      </tr>
+      <tr>
+        <td><b>Ближайшие аэропорты доставки:</b></td>
+        <td *ngFor="let place of activity.nearestAirportDelivery">
+          {{place.city}} - {{place.googleStringName}}
+        </td>
+      </tr>
+      <tr>
+        <td><b>Собственное нефабричное производство:</b></td>
+        <td *ngFor="let place of activity.nonFactoryProduction">
+          {{place.city}}
+        </td>
+      </tr>
+      <tr>
+        <td><b>Адрес склада отгрузки:</b></td>
+        <td *ngFor="let place of activity.addressWarehouseShipment">
+          {{place.city}}
+        </td>
+      </tr>
+      <tr>
+        <td><b>Фабрики, с которых производятся поставки:</b></td>
+        <td *ngFor="let place of activity.factoriesDeliveries">
+          {{place.city}} - {{place.factoryName}}
+        </td>
+      </tr>
+    </table>
+  </ng-template>
+  <ng-template #customsBroker>
+    <h2>Информация о представителе</h2>
+    <div>
+      <div>
+        <table>
+          <tr>
+            <td><b>Количество материально ответственных лиц:</b></td>
+            <td>{{ activity.specialistsResponsiblePersons?.numberMateriallyPersons}} чел.</td>
+          </tr>
+          <tr>
+            <td><b>Наличие договора страховых рисков:</b></td>
+            <td>
+              <span *ngIf="activity.presenceContractRisks">Есть</span>
+              <span *ngIf="activity.insuranceRiskContract">Нет</span>
+            </td>
+          </tr>
+          <tr>
+            <td><b>Количество специалистов по таможенному оформлению:</b></td>
+            <td>{{activity.specialistsResponsiblePersons?.numberSpecialistsCustomsClearance}} чел.</td>
+          </tr>
+          <tr>
+            <td><b>Количество машин:</b></td>
+            <td>{{activity.property?.totalCountCars}} шт.</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div>
+      <b>Типы платежей:</b>
+      <ul>
+        <li *ngIf="activity.acceptedTypesPayments.LC">L/C</li>
+        <li *ngIf="activity.acceptedTypesPayments.TT">T/T</li>
+        <li *ngIf="activity.acceptedTypesPayments.cash">наличные</li>
+        <li *ngIf="activity.acceptedTypesPayments.creditCard">кредитной картой</li>
+        <li *ngIf="activity.acceptedTypesPayments.escrow">Escrow</li>
+        <li *ngIf="activity.acceptedTypesPayments.moneyGram">MoneyGram</li>
+        <li *ngIf="activity.acceptedTypesPayments.payPal">PayPal</li>
+        <li *ngIf="activity.acceptedTypesPayments.settlementAccount">Settlement Account</li>
+        <li *ngIf="activity.acceptedTypesPayments.westernUnion">Western Union</li>
+      </ul>
+    </div>
+
+    <div>
+      <div>
+        <b>Домашний коносамент:</b>
+        <span *ngIf="activity.isHomeBillOfLading">Возможен</span>
+        <span *ngIf="!activity.isHomeBillOfLading">Не возможен</span>
+      </div>
+
+      <div>
+        <b>Оформление груза на свой контракт:</b>
+        <span *ngIf="activity.registrationYourContract">Возможен</span>
+        <span *ngIf="!activity.registrationYourContract">Не возможен</span>
+      </div>
+
+      <div>
+        <b>Оформление груза на контракт клиента:</b>
+        <span *ngIf="activity.registrationClientContract">Возможен</span>
+        <span *ngIf="!activity.registrationClientContract">Не возможен</span>
+      </div>
+
+      <div>
+        <b>Таможенный пост:</b>
+        <div *ngFor="let port of activity.customsClearancePorts">
+          <span>{{port.city?.name}}, {{port.post}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div *ngIf="activity.license?.country">
+        <b>Действует на территории:</b> {{activity.license?.country}}
+      </div>
+      <div *ngIf="activity.license?.number">
+        <b>Номер лицензии:</b> {{activity.license?.number}}
+      </div>
+      <div *ngIf="activity.license?.dateTo">
+        <b>Действует до:</b> {{activity.license?.dateTo | date}}
+      </div>
+      <div *ngIf="activity.license?.services">
+        <b>На окозание услуг:</b> {{activity.license?.services}}
+      </div>
+      <div *ngIf="activity.license?.toWhom">
+        <b>Кому выдан:</b> {{activity.license?.toWhom}}
+      </div>
+      <div *ngIf="activity.license?.companyFullName">
+        <b>Полное наименвоание организации:</b> {{activity.license?.companyFullName}}
+      </div>
+      <div *ngIf="activity.license?.PSRN">
+        <b>ОГРН:</b> {{activity.license?.PSRN}}
+      </div>
+      <div *ngIf="activity.license?.TIN">
+        <b>ИНН:</b> {{activity.license?.TIN}}
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #customsWithoutLicense></ng-template>
+  <ng-template #internationalTrucker>
+    <h2>Автопарк</h2>
+    <div>
+      <div>
+        <div><b>Общее количество машин:</b> {{ activity.property.totalCountVehicles}} шт.</div>
+        <div><b>Общее количество машрутов:</b> {{ activity.property.totalCountRoutes}} шт.</div>
+        <div><b>Общее количество контейнеров:</b> {{ activity.property.totalCountContainers}} шт.</div>
+        <div><b>Общее количество машин в собственности:</b> {{ activity.property.totalCountCarsOwned}} шт.</div>
+      </div>
+    </div>
+    <div>
+      <div *ngIf="activity.typeOfGoods">
+        <b>Типы грузов:</b>
+        <span *ngIf="activity.typeOfGoods.animals">Животные.</span>
+        <span *ngIf="activity.typeOfGoods.assortedCargo">Сборный груз.</span>
+        <span *ngIf="activity.typeOfGoods.bulkCargo">Крупный груз.</span>
+        <span *ngIf="activity.typeOfGoods.carHauler">Автомобили.</span>
+        <span *ngIf="activity.typeOfGoods.container">Контейнер.</span>
+        <span *ngIf="activity.typeOfGoods.liquidCargo">Наливной груз.</span>
+        <span *ngIf="activity.typeOfGoods.other">остальное.</span>
+      </div>
+
+      <div *ngIf="activity.customsPost && activity.customsPost.length">
+        <b>Таможенный пост:</b>
+        <div *ngFor="let post of activity.customsPost">{{post.post}}</div>
+      </div>
+
+      <div>
+        <b>Помощь в таможенном оформлении:</b>
+        <span *ngIf="activity.assistanceCustomsClearance">Возможен</span>
+        <span *ngIf="!activity.assistanceCustomsClearance">Не возможен</span>
+      </div>
+
+      <div>
+        <b>Является таможенной компанией:</b>
+        <span *ngIf="activity.isCustomsCompany">Да</span>
+        <span *ngIf="!activity.isCustomsCompany">Нет</span>
+      </div>
+      <div>
+        <b>Экспортная декларация:</b> <span *ngIf="">{{activity.exportDeclaration ? 'Да' : 'Нет'}}</span>
+      </div>
+      <div>
+        <b>Представляем таможенную компанию:</b> - {{activity.customsCompanyName}}
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #internationalRailCarrier>
+    <h2>Вагонный парк</h2>
+    <div>
+      <div><b>Общее количество подвижных составов:</b> {{ activity.property.totalCountRollingStocks}} шт.</div>
+      <div><b>Общее количество машрутов:</b> {{ activity.property.totalCountRoutes}} шт.</div>
+      <div><b>Общее количество контейнеров:</b> {{ activity.property.totalCountContainers}} шт.</div>
+      <div><b>Общее количество контейнеров в собственности:</b> {{ activity.property.totalCountContainersOwned}} шт.
+      </div>
+    </div>
+
+    <h2>Торговые возможности</h2>
+    <div>
+      <div>
+        <b>Виды отправки грузов:</b>
+        <span *ngIf="activity.typeDispatch.consolidatedCargo">Сборный груз.&nbsp;</span>
+        <span *ngIf="activity.typeDispatch.container">Контейнер.&nbsp;</span>
+        <span *ngIf="activity.typeDispatch.group">Группа.&nbsp;</span>
+        <span *ngIf="activity.typeDispatch.wagon">Вагон.&nbsp;</span>
+      </div>
+
+      <div>
+        <b>Коносамент:</b>
+        <span *ngIf="activity.billOfLading">Есть</span>
+        <span *ngIf="!activity.billOfLading">Нет</span>
+      </div>
+
+      <div *ngIf="activity.otherPossibleOptionsDelivery">
+        <b>Другие варианты доставки груза Ж/Д транспортом:</b>
+        <div>{{activity.otherPossibleOptionsDelivery}}</div>
+      </div>
+
+      <div>
+        <b>Система отслеживания груза:</b>
+        <span *ngIf="activity.useCargoTracking">Есть</span>
+        <span *ngIf="!activity.useCargoTracking">Нет</span>
+      </div>
+
+      <div>
+        <b>Перевозка опасных грузов:</b>
+        <span *ngIf="activity.transportDangerousGoods">Да</span>
+        <span *ngIf="!activity.transportDangerousGoods">Нет</span>
+      </div>
+
+      <div>
+        <b>Организация индивидуальных маршрутов:</b>
+        <span *ngIf="activity.organizeIndividualRoutes">Да</span>
+        <span *ngIf="!activity.organizeIndividualRoutes">Нет</span>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #internationalAirCarrier>
+    <h2>Парк воздушных судов</h2>
+    <div>
+      <div><b>Общее количество воздушных судов:</b> {{ activity.property.totalCountAircraft}} шт.</div>
+      <div><b>Общее количество рейсов:</b> {{ activity.property.totalCountRoutes}} шт.</div>
+      <div><b>Общее количество контейнеров:</b> {{ activity.property.totalCountContainers}} шт.</div>
+      <div><b>Количество воздушных судов в собственности:</b> {{ activity.property.totalCountAircraftOwned}} шт.</div>
+    </div>
+
+    <div *ngIf="activity.companyNameRepresentative && activity.companyNameRepresentative.length">
+      <b>Представительство транспортных компаний:</b>
+      <ul>
+        <li *ngFor="let rep of activity.companyNameRepresentative">{{rep.name}}</li>
+      </ul>
+    </div>
+
+    <div>
+      <b>Вид отправки грузов:</b>
+      <ul>
+        <li *ngIf="activity.typeDispatch.consolidatedCargo">Сборный груз</li>
+        <li *ngIf="activity.typeDispatch.withWholePlane">Целый самолет</li>
+      </ul>
+    </div>
+
+    <div>
+      <b>Услуги:</b>
+      <li *ngIf="activity.services.airFreightDangerousGoods">Перевозка опасных грузов</li>
+      <li *ngIf="activity.services.airTransportationOversizedCargo">Перевозка негабаритных грузов</li>
+      <li *ngIf="activity.services.airTransportationRemoteAreas">Трансфер</li>
+      <li *ngIf="activity.services.cargoPalletization">Перевозка в паллетах</li>
+      <li *ngIf="activity.services.transportationAnimals">Перевозка животных</li>
+      <li *ngIf="activity.services.urgentCharter">Срочный чартер</li>
+      <li *ngIf="activity.services.valuableCargo">Перевозка опасных грузов</li>
+    </div>
+  </ng-template>
+  <ng-template #seaCarrier>
+    <h2>Парк судов</h2>
+    <div>
+      <div>
+        <div><b>Общее количество судов:</b> {{ activity.property.totalCountShips}} шт.</div>
+        <div><b>Общее количество маршрутов:</b> {{ activity.property.totalCountRoutes}} шт.</div>
+        <div><b>Общее количество контейнеров:</b> {{ activity.property.totalCountContainers}} шт.</div>
+        <div><b>Количество судов в собственности:</b> {{ activity.property.totalCountShipsOwn}} шт.</div>
+      </div>
+    </div>
+
+    <div>
+      <div>
+        <b>Вид отправки грузов:</b>
+        <ul>
+          <li *ngIf="activity.typeDispatch.consolidatedCargo">Сборный груз</li>
+          <li *ngIf="activity.typeDispatch.bulkCargo">Насыпной груз</li>
+          <li *ngIf="activity.typeDispatch.container">Контейнер</li>
+          <li *ngIf="activity.typeDispatch.liquidCargo">Наливной груз</li>
+        </ul>
+      </div>
+
+      <div>
+        <b>Представительство транспортной компании:</b>
+        <span *ngFor="let rep of activity.companyNameRepresentative">{{rep.name}}</span>
+      </div>
+    </div>
+  </ng-template>
+</mat-card>

@@ -1,0 +1,16 @@
+<h3 class="mt-0 mb-2">{{data.item ? data.item.value : 'Выберите категорию'}}</h3>
+
+<div class="row mb-5 flex-nowrap" *ngIf="data.item?.additionalParams?.productPreview">
+  <div class="col-auto img-wrap">
+    <img [src]="data.item.additionalParams.productPreview.image" alt="" class="img-fluid">
+  </div>
+  <div class="col">
+    <h6 class="my-0">{{data.item.additionalParams.productPreview.description}}</h6>
+    <h6 class="my-0">{{data.item.additionalParams.productPreview.model}}</h6>
+    <h6 class="my-0">{{data.item.additionalParams.productPreview.image}}</h6>
+    <h6 class="my-0">{{data.item.additionalParams.productPreview.name}}</h6>
+  </div>
+</div>
+
+<button mat-raised-button color="primary" (click)="onOverriteClick()">Переопределить</button>
+<button mat-raised-button color="" (click)="onCreateNewClick()">Создать новую</button>

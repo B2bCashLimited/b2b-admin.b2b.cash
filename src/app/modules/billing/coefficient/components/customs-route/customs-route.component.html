@@ -1,0 +1,122 @@
+<div [formGroup]="formGroup" class="d-flex" style="border-bottom: 1px solid #ccc;">
+    <mat-form-field class="mr-2">
+      <mat-select placeholder="Вид загрузки" formControlName="deliveryType">
+        <mat-option [value]="type.id" *ngFor="let type of deliveryTypes">
+          {{type.nameRu}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="e-find-input d-flex align-items-center w-100 mr-2 {{deliveryLoadIcon}}">
+      <span class="e-icon color-primary" (click)="onChangeIconClick(true)"></span>
+
+      <b2b-tarif-auto-complete
+        *ngIf="!deliveryLoad"
+        placeholder="Регион/Город заргрузки"
+        type="region"
+        [disabled]="!isEdit"
+        [selectedItem]="item && (item.localityFrom || item.regionFrom)"
+        (itemChange)="onAreaChanged($event, true)">
+      </b2b-tarif-auto-complete>
+
+      <b2b-station-country
+        *ngIf="deliveryLoad"
+        floatPlaceholder="never"
+        [disabled]="!isEdit"
+        [value]="item && loadStation"
+        placeholder="{{e_STATIONS[keyName]?.placeholder + ' заргрузки'}}"
+        floatPlaceholder="{{e_STATIONS[keyName]?.placeholder + ' заргрузки'}}"
+        [stationType]="e_STATIONS[keyName]?.type"
+        [fullLocationObj]="true"
+        (getFullSelectLocation)="onStationChanged($event, keyName, true)">
+      </b2b-station-country>
+    </div>
+
+    <div class="e-find-input d-flex align-items-center w-100 mr-2 {{deliveryUnloadIcon}}">
+      <span class="e-icon color-primary" (click)="onChangeIconClick(false)"></span>
+
+      <b2b-tarif-auto-complete
+        *ngIf="!deliveryUnload"
+        placeholder="Регион/Город выгрузки"
+        type="region"
+        [disabled]="!isEdit"
+        [selectedItem]="item && (item.localityTo || item.regionTo)"
+        (itemChange)="onAreaChanged($event, false)">
+      </b2b-tarif-auto-complete>
+
+      <b2b-station-country
+        *ngIf="deliveryUnload"
+        floatPlaceholder="never"
+        [disabled]="!isEdit"
+        [value]="item && unloadStation"
+        placeholder="{{e_STATIONS[keyName]?.placeholder + ' выгрузки'}}"
+        floatPlaceholder="{{e_STATIONS[keyName]?.placeholder + ' выгрузки'}}"
+        [stationType]="e_STATIONS[keyName]?.type"
+        [fullLocationObj]="true"
+        (getFullSelectLocation)="onStationChanged($event, keyName, false)">
+      </b2b-station-country>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <ng-template [ngIf]="!isPrepayment && !formGroup.get('isFixed').value">
+        <mat-form-field
+          class="w-80 w-auto mr-2" floatLabel="never">
+          <input matInput placeholder="Коэффициент"
+            formControlName="coefficient" autocomplete="off" autocorrect="off" type="number">
+          <span matSuffix>%</span>
+        </mat-form-field>
+      </ng-template>
+
+      <ng-template [ngIf]="!isPrepayment && formGroup.get('isFixed').value">
+        <mat-form-field
+          class="w-80 input-small w-auto mr-2" floatLabel="never">
+          <input matInput placeholder="Стоимость"
+            formControlName="priceExtra" autocomplete="off" autocorrect="off" type="number">
+        </mat-form-field>
+        <mat-form-field class="w-80 input-small w-auto mr-2" floatLabel="never">
+          <mat-select placeholder="Валюта" formControlName="currency">
+            <mat-option
+              *ngFor="let cur of currencies"
+              [value]="cur.id">{{cur.nameRu}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-template>
+
+      <button
+        mat-icon-button
+        color="primary"
+        *ngIf="isEdit && isPrepayment"
+        matTooltip="Цена заказа"
+        matTooltipPosition="above"
+        (click)="showOrderPriceDialog($event)">
+        <mat-icon>equalizer</mat-icon>
+      </button>
+
+      <button
+        *ngIf="isEdit && !isPrepayment"
+        mat-icon-button
+        color="primary"
+        matTooltip="Изменить тип коэффициента"
+        matTooltipPosition="above"
+        (click)="onChangePriceTypeClick()">
+        <mat-icon>sync</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        color="primary"
+        matTooltip="{{isEdit ? 'Сохранить' : 'Редактировать'}} маршрут"
+        matTooltipPosition="above"
+        (click)="addTariffRoute()">
+        <mat-icon>{{isEdit ? 'save' : 'create'}}</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        color="warn"
+        matTooltip="{{item ? isEdit ? 'Отменить редактирования' : 'Удалить маршрут' : 'Закрыть форму'}}"
+        matTooltipPosition="above"
+        (click)="onDeleteNodeClick($event)">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+  </div>

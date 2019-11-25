@@ -1,0 +1,9 @@
+<h6>Категории ожидающие модерацию</h6>
+
+<mat-card *ngFor="let item of items" class="mb-3 cursor" matRipple (click)="onCategoryClick(item)">
+  {{item.value}}
+  <button mat-icon-button (click)="onDeclineClick($event, item)"><mat-icon>close</mat-icon></button>
+</mat-card>
+
+<mat-paginator *ngIf="true" [length]="pager.length" [pageSize]="pager.pageSize" (page)="onPageChange($event)">
+</mat-paginator>

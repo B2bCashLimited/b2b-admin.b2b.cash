@@ -1,0 +1,64 @@
+<h1 mat-dialog-title>Выбрать категорий</h1>
+<div mat-dialog-content>
+  <mat-form-field class="col-12">
+    <input matInput [(ngModel)]="searchValue"
+      placeholder="Поиск категорий..."
+      (keyup.enter)="search()"
+      autocomplete="off">
+      <button mat-raised-button matSuffix (click)="search()">
+        <mat-icon (click)="search()">search</mat-icon> Поиск
+      </button>
+  </mat-form-field>
+
+  <div *ngIf="isLoading" class="col-12">
+    <mat-spinner class="spinner" mode="indeterminate"></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="isMultiple; else singleSelect">
+    <mat-tree class="col-12 scrollded-wrap" *ngIf="!isLoading" [dataSource]="dataSource" [treeControl]="treeControl">
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+        <button mat-icon-button disabled></button>
+        <mat-checkbox class="checklist-leaf-node"
+                      [checked]="checklistSelection.isSelected(node)"
+                      (change)="todoLeafItemSelectionToggle(node)">{{node[config.name]}}</mat-checkbox>
+      </mat-tree-node>
+
+      <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+        <button mat-icon-button matTreeNodeToggle
+                [attr.aria-label]="'toggle ' + node.filename">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+        <mat-checkbox [checked]="descendantsAllSelected(node)"
+                      [indeterminate]="descendantsPartiallySelected(node)"
+                      (change)="todoItemSelectionToggle(node)">{{node[config.name]}}</mat-checkbox>
+      </mat-tree-node>
+    </mat-tree>
+  </ng-container>
+</div>
+<div mat-dialog-actions class="d-flex justify-content-end">
+  <button mat-button color="primary" mat-dialog-close>Закрыть</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()">Выбрать</button>
+</div>
+
+<ng-template #singleSelect>
+  <mat-radio-group [(ngModel)]="selectedCategory">
+    <mat-tree class="col-12 scrollded-wrap" *ngIf="!isLoading" [dataSource]="dataSource" [treeControl]="treeControl">
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+        <button mat-icon-button disabled></button>
+        <mat-radio-button class="checklist-leaf-node"
+                      [value]="node">{{node[config.name]}}</mat-radio-button>
+      </mat-tree-node>
+      <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+        <button mat-icon-button matTreeNodeToggle
+                [attr.aria-label]="'toggle ' + node.filename">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+        <span matTreeNodeToggle class="cursor-pointer">{{node[config.name]}}</span>
+      </mat-tree-node>
+    </mat-tree>
+  </mat-radio-group>
+</ng-template>

@@ -1,0 +1,82 @@
+<div class="d-flex flex-column w-100" *ngIf="template" [formGroup]="formGroup">
+  <h4>Шаблон "{{formGroup.get('name').value}}"</h4>
+
+  <div class="d-flex w-100 mb-4">
+    <mat-card class="d-flex flex-column flex-grow-1 w-100 mr-4">
+      <mat-card>
+        <h5>Тип пользователя</h5>
+        <mat-card-content>
+          <div class="d-flex align-items-center mb-3">
+            <div class="d-flex" formGroupName="clientType">
+              <mat-checkbox class="mr-3" formControlName="buyer">Покупатели</mat-checkbox>
+              <mat-checkbox formControlName="seller">Продавцы</mat-checkbox>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-form-field style="width: 100%;">
+        <input matInput placeholder="Название" formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field style="width: 100%;">
+        <input matInput placeholder="Тема" formControlName="subject">
+      </mat-form-field>
+
+      <div class="drop-container"
+           ngFileDrop
+           [options]="options"
+           (uploadOutput)="onUploadOutput($event)"
+           [uploadInput]="uploadInput">
+        <label style="display: flex;align-items: center;flex-grow: 1;height: 100%;justify-content: center;">
+          <span>Перетащите файлы сюда или <span style="font-weight: bold;">выберите файл</span></span>
+          <input
+            style="display: none;"
+            type="file"
+            ngFileSelect
+            [options]="options"
+            (uploadOutput)="onUploadOutput($event)"
+            [uploadInput]="uploadInput"
+            multiple>
+        </label>
+      </div>
+      <ul style="list-style-type: none;padding: 0;margin: 16px 0 0;">
+        <li style="display: flex;flex-grow: 1;align-items: center;"
+            *ngFor="let file of template.htmlTemplateFiles;">
+          <a style="display:flex;align-items: center;text-decoration: none;margin-right: 8px;"
+             [href]="file.url" [download]="file.url">
+            <mat-icon>list_alt</mat-icon>
+            <span style="margin-left: 4px;">{{ file.filename}}</span>
+          </a>
+          <button mat-icon-button color="warn"
+                  (click)="onDestroyFileClick(file.id)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </li>
+      </ul>
+    </mat-card>
+    <mat-card class="d-flex flex-column flex-grow-1 w-100">
+      <mat-form-field class="w-100">
+        <textarea matInput rows="10" placeholder="Шаблон" formControlName="template"></textarea>
+      </mat-form-field>
+      <button class="align-self-end" mat-raised-button color="primary"
+              [disabled]="formGroup.invalid"
+              (click)="onSaveTemplateClick()">Сохранить шаблон
+      </button>
+    </mat-card>
+  </div>
+
+  <mat-card class="d-flex flex-column">
+    <div class="mb-4">
+      <quill-editor
+        formControlName="text"
+        [style]="{minHeight: '200px'}"
+        placeholder="Введите текст письма">
+      </quill-editor>
+    </div>
+
+    <div class="b2b-email-template" [innerHTML]="safeTemplate"></div>
+    <b2b-mailer-text-area #mailerTextArea></b2b-mailer-text-area>
+  </mat-card>
+
+</div>

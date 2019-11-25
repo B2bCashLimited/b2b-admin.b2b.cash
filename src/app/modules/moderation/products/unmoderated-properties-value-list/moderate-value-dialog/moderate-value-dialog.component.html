@@ -1,0 +1,15 @@
+<div *ngIf="categoryProperty">
+  <div class="overflow-box">
+    <button mat-raised-button color="primary" *ngFor="let item of categoryProperty.possibleValuesRu; let i = index"
+            class="mb-3 d-block w-100" (click)="onValueClick(categoryProperty.possibleValuesEn[i].value)">
+      {{categoryProperty.possibleValuesRu[i].display}} |
+      {{categoryProperty.possibleValuesEn[i].display}} |
+      {{categoryProperty.possibleValuesCn[i].display}}
+    </button>
+  </div>
+
+  <button mat-raised-button color="primary" class="mt-3 d-block w-100" (click)="onCreateNewClick()">
+    <mat-icon>add</mat-icon>
+    Добавить новое значение
+  </button>
+</div>

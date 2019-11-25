@@ -1,0 +1,17 @@
+export const ActivityIcons = {
+  supplier: 'bb bb-provider',
+  manufacturer: 'bb bb-factory',
+  customsWithoutLicense: 'bb bb-customs',
+  customsBroker: 'bb bb-customs-license',
+  domesticTrucker: 'bb bb-lorry-country',
+  domesticRailCarrier: 'bb bb-rails-country',
+  domesticAirCarrier: 'bb bb-plane-country',
+  internationalTrucker: 'bb bb-lorry-world',
+  internationalRailCarrier: 'bb bb-rails-world',
+  internationalAirCarrier: 'bb bb-plane-world',
+  seaCarrier: 'bb bb-ship-sea',
+  riverCarrier: 'bb bb-ship-river',
+  warehouseRent: 'bb bb-warehouse-rent',
+  warehouse: 'bb bb-warehouse-security',
+  bayer: 'bb bb-modern-buildings',
+};

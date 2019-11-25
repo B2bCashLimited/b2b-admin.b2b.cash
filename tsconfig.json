@@ -1,0 +1,54 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "importHelpers": true,
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "@b2b/services/*": [
+        "app/core/services/*"
+      ],
+      "@b2b/components/*": [
+        "app/components/*"
+      ],
+      "@b2b/components": [
+        "app/components/index"
+      ],
+      "@b2b/models/*": [
+        "app/core/models/*"
+      ],
+      "@b2b/models": [
+        "app/core/models/index"
+      ],
+      "@b2b/utils": [
+        "app/core/utils/index"
+      ],
+      "@b2b/enums": [
+        "app/core/enums/index"
+      ],
+      "@b2b/decorators": [
+        "app/core/decorators/index"
+      ],
+      "@b2b/pipes": [
+        "app/core/pipes/index"
+      ],
+      "@b2b/shared/*": [
+        "app/shared/*"
+      ]
+    }
+  }
+}

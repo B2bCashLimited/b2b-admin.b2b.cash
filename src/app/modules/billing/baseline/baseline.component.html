@@ -1,0 +1,127 @@
+<mat-card style="display: flex;flex-grow: 1;flex-direction: column;">
+  <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center" *ngIf="activityName">
+      <button class="d-inline-flex align-items-center e-back"
+        mat-button color="primary"
+        (click)="goBack()">
+        <span class="e-arrow">&larr;</span>
+      </button>
+      <i class="bb {{activityName.icon}} fz-26 mr-2"></i> {{activityName.nameRu}}
+    </div>
+    <div class="d-flex ml-auto">
+      <ng-container *ngIf="!isOrderPrice" [formGroup]="formGroup">
+        <mat-form-field class="input-small w-auto mr-2" floatLabel="never">
+          <input
+            matInput placeholder="Стоимость"
+            autocomplete="off" autocorrect="off" type="number"
+            formControlName="price">
+        </mat-form-field>
+        <mat-form-field class="input-small w-auto mr-2" floatLabel="never">
+          <mat-select placeholder="Валюта"
+            formControlName="currency">
+            <mat-option
+              *ngFor="let cur of currencies"
+              [value]="cur.id">{{cur.nameRu}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+
+      <button
+        *ngIf="!isOrderPrice"
+        class="align-self-center mr-4"
+        mat-raised-button color="primary"
+        [disabled]="isEdit && formGroup.invalid"
+        (click)="onAddBaseRouteClick()">
+        {{isEdit ? 'Сохранить' : 'Редактировать'}} базовый план
+      </button>
+      <button
+        class="align-self-center"
+        mat-raised-button color="primary"
+        [disabled]="!baseTariff"
+        (click)="onAddCountryClick()">Добавить страну
+      </button>
+    </div>
+  </div>
+  <mat-accordion>
+    <mat-expansion-panel
+      *ngFor="let base of tariffs"
+      (opened)="onCountryTariffExpanded(base)">
+      <mat-expansion-panel-header class="align-items-center">
+        <mat-panel-title class="align-items-center">{{base.nameRu}}</mat-panel-title>
+        <div *ngTemplateOutlet="actions;context: {base: base, node: base}"></div>
+      </mat-expansion-panel-header>
+      <mat-accordion>
+        <mat-expansion-panel
+          *ngFor="let child of base.children"
+          (opened)="onChildTariffExpanded(child)">
+          <mat-expansion-panel-header class="align-items-center">
+            <mat-panel-title class="align-items-center">{{child.nameRu}}</mat-panel-title>
+
+            <div *ngTemplateOutlet="actions;context: {base: base, node: child}"></div>
+          </mat-expansion-panel-header>
+          <div
+            class="d-flex align-items-center locality-item"
+            *ngFor="let item of child.children">
+
+            <span class="mr-auto">{{item.nameRu}}</span>
+            <div *ngTemplateOutlet="actions;context: {base: base, node: item}"></div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-expansion-panel>
+  </mat-accordion>
+</mat-card>
+
+<ng-template #actions let-node="node" let-base="base">
+  <button
+    mat-button color="primary"
+    *ngIf="!node.locality"
+    (click)="onAddLocationClick($event, node)">
+    +{{node.country && !node.region ? 'Добавить регион' : 'Добавить город'}}
+  </button>
+
+  <span *ngIf="!isOrderPrice" class="e-price">
+    <span *ngIf="node.isFixed">
+      {{node.priceExtra || node.tariff.price}}
+      {{node.currency?.nameRu || node.tariff?._embedded?.currency?.nameRu}}
+    </span>
+    <span *ngIf="!node.isFixed">
+      {{node.coefficient}}%
+    </span>
+  </span>
+
+  <button
+    mat-icon-button
+    color="primary"
+    *ngIf="isOrderPrice"
+    matTooltip="Цена заказа"
+    matTooltipPosition="above"
+    (click)="showOrderPriceDialog($event, node)">
+    <mat-icon>equalizer</mat-icon>
+  </button>
+
+  <a
+    mat-icon-button color="primary"
+    *ngIf="base.hasCoefficient"
+    [routerLink]="['/billing', activityName.id, 'coefficient']"
+    [queryParams]="{tariff: node.id}"
+    matTooltip="Коэффициент" matTooltipPosition="above">
+    <mat-icon>equalizer</mat-icon>
+  </a>
+
+  <button
+    *ngIf="!isOrderPrice"
+    mat-icon-button color="primary"
+    matTooltip="Редактирование базового плана" matTooltipPosition="above"
+    (click)="onEditNodeClick($event, node, base)">
+    <mat-icon>create</mat-icon>
+  </button>
+
+  <button
+    *ngIf="!isOrderPrice"
+    mat-icon-button color="warn"
+    matTooltip="Удалить тариф" matTooltipPosition="above"
+    (click)="onDeleteNodeClick($event, node)">
+    <mat-icon>clear</mat-icon>
+  </button>
+</ng-template>

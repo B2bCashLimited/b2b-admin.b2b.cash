@@ -1,0 +1,44 @@
+<div class="dialog-container" [formGroup]="formGroup">
+  <h4 style="margin: 0 0 16px;">Добавьте бизнес-значение</h4>
+  <mat-form-field>
+    <input matInput placeholder="Английское наименование" formControlName="nameEn">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Русское наименование" formControlName="nameRu">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Китайское наименование" formControlName="nameCn">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Количество" formControlName="value">
+  </mat-form-field>
+  <div style="display: flex;flex-grow: 1;">
+    <mat-form-field style="margin-right: 16px;width: 100%;">
+      <mat-select placeholder="Выберите ед.изм." formControlName="controlUnitType">
+        <mat-option
+          *ngFor="let type of controlUnitTypes$ | async" [value]="type.id">
+          {{type.nameRu}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select style="width: 100%;" placeholder="Единицы измерения" formControlName="unit">
+        <mat-option
+          *ngFor="let type of (units$ | async)?.units | controlUnitTypePipe: formGroup.value.controlUnitType" [value]="type.id">
+          {{type.nameRu}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+
+  <div style="display: flex;flex-grow: 1;justify-content: flex-end;">
+    <button style="margin-right: 10px;" mat-raised-button color="primary"
+            (click)="onCloseClick(true)">Добавить
+    </button>
+    <button mat-raised-button color="primary"
+            (click)="onCloseClick(false)">Закрыть
+    </button>
+  </div>
+</div>

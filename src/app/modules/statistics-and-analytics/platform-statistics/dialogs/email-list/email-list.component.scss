@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  user-select: none;
+  min-height: 310px;
+  max-height: 310px;
+  overflow-y: auto;
+}
+
+.material-icons {
+  cursor: pointer;
+  color: #3f51b5;
+}
+
+h4 {
+  margin-top: 0;
+}

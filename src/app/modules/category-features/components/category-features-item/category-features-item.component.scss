@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.category-feature-item-container {
+  display: flex;
+  flex-grow: 1;
+  padding: 10px 0;
+  border-bottom: solid 1px #ccc;
+}

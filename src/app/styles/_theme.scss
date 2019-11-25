@@ -1,0 +1,25 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$b2b-cash-admin-primary: mat-palette($mat-indigo);
+$b2b-cash-admin-accent: mat-palette($mat-deep-orange, A200, A100, A400);
+$b2b-cash-admin-warn: mat-palette($mat-red);
+
+$b2b-cash-admin-theme: mat-light-theme($b2b-cash-admin-primary, $b2b-cash-admin-accent, $b2b-cash-admin-warn);
+
+@include angular-material-theme($b2b-cash-admin-theme);
+/*
+
+
+@include mat-core();
+
+$b2b-cash-admin-primary: mat-palette($mat-indigo);
+$b2b-cash-admin-accent: mat-palette($mat-deep-orange, A200, A100, A400);
+
+$b2b-cash-admin-warn: mat-palette($mat-red);
+
+$b2b-cash-admin-theme: mat-light-theme($b2b-cash-admin-primary, $b2b-cash-admin-accent, $b2b-cash-admin-warn);
+
+@include angular-material-theme($b2b-cash-admin-theme);
+*/

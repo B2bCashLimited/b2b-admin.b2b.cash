@@ -1,0 +1,25 @@
+<div class="popup-confirmation">
+  <h5 class="mb-4 text-center mt-0">Подтверждение</h5>
+
+  <div class="popup-inner--text text-center mb-5">
+    Вы действительно хотите удалить
+    шаблон реквизитов?
+  </div>
+
+  <div class="row mb-2 b-row justify-content-center">
+    <div class="col-sm-auto col-12 mb-2">
+      <button class="btn-border w-100"
+              mat-raised-button
+              (click)="onCloseClicked()">Отмена
+      </button>
+    </div>
+
+    <div class="col-sm-auto col-12 mb-2">
+      <button class="fill-btn w-100"
+              color="primary"
+              mat-raised-button
+              (click)="onCloseClicked(true)">Удалить
+      </button>
+    </div>
+  </div>
+</div>

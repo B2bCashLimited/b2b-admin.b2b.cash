@@ -1,0 +1,68 @@
+<div class="setup-auto-component">
+  <h3 style="text-align: center;margin-bottom: 16px;">
+    Настройка количества звезд в зависимости от заказов
+  </h3>
+  <form class="ticks" [formGroup]="formGroup">
+    <div class="ticks-half">
+      <div class="rating-tick-element" formGroupName="0.25">
+        от <input type="number" formControlName="from">
+        до <input type="number" formControlName="to">
+         - <b2b-rating-star [format]="'onlyfull'" [rating]="0.25"></b2b-rating-star>
+      </div>
+      <div class="rating-tick-element" formGroupName="0.5">
+        от <input type="number" formControlName="from">
+        до <input type="number" formControlName="to">
+         - <b2b-rating-star [format]="'onlyfull'" [rating]="0.5"></b2b-rating-star>
+      </div>
+      <div class="rating-tick-element" formGroupName="0.75">
+        от <input type="number" formControlName="from">
+        до <input type="number" formControlName="to">
+         - <b2b-rating-star [format]="'onlyfull'" [rating]="0.75"></b2b-rating-star>
+      </div>
+      <div class="rating-tick-element" formGroupName="1">
+        от <input type="number" formControlName="from">
+        до <input type="number" formControlName="to">
+         - <b2b-rating-star [format]="'onlyfull'" [rating]="1"></b2b-rating-star>
+      </div>
+      <div class="rating-tick-element" formGroupName="1.25">
+        от <input type="number" formControlName="from">
+        до <input type="number" formControlName="to">
+         - <b2b-rating-star [format]="'onlyfull'" [rating]="1.25"></b2b-rating-star>
+      </div>
+    </div>
+    <div class="ticks-half">
+      <div class="rating-tick-element" formGroupName="1.5">
+        от <input type="number" formControlName="from">
+        до <input type="number" formControlName="to">
+         - <b2b-rating-star [format]="'onlyfull'" [rating]="1.5"></b2b-rating-star>
+      </div>
+      <div class="rating-tick-element" formGroupName="1.75">
+        от <input type="number" formControlName="from">
+        до <input type="number" formControlName="to">
+         - <b2b-rating-star [format]="'onlyfull'" [rating]="1.75"></b2b-rating-star>
+      </div>
+      <div class="rating-tick-element" formGroupName="2">
+        от <input type="number" formControlName="from">
+        до <input type="number" formControlName="to">
+         - <b2b-rating-star [format]="'onlyfull'" [rating]="2"></b2b-rating-star>
+      </div>
+      <div class="rating-tick-element" formGroupName="2.25">
+        от <input type="number" formControlName="from">
+        до <input type="number" formControlName="to">
+         - <b2b-rating-star [format]="'onlyfull'" [rating]="2.25"></b2b-rating-star>
+      </div>
+      <div class="rating-tick-element" formGroupName="2.5">
+        от <input type="number" formControlName="from">
+         - <b2b-rating-star [format]="'onlyfull'" [rating]="2.5"></b2b-rating-star>
+      </div>
+    </div>
+  </form>
+
+
+  <div style="display: flex;justify-content: flex-end;">
+    <button style="margin-right: 10px;" (click)="onCloseClick(true)" mat-raised-button color="primary"
+            [disabled]="formGroup.invalid || isLoading">Сохранить</button>
+    <button (click)="onCloseClick()" [disabled]="isLoading" mat-raised-button color="primary">Отмена</button>
+  </div>
+
+</div>

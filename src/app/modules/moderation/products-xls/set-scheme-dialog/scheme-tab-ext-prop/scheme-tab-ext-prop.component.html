@@ -1,0 +1,140 @@
+<div class="b-inner">
+  <div *ngFor="let category of categoryArray.controls; let i = index" class="b-extcategory-wrap">
+    <div class="d-flex b-extcategory-header-wrap">
+      <div class="b-extcategory-header-coll-1">
+        <div class="b-extcategory-header-title">Категория товара</div>
+      </div>
+      <ng-container *ngIf="category.get('valueStat').value">
+        <div class="b-extcategory-header-coll-2">
+          <div class="b-extcategory-header-subtitle">В загруженном xls</div>
+          <select *ngIf="categoriesSelectArray && categoriesSelectArray.length"
+                  class="form-control width-3" [(ngModel)]="categoriesSelectArray[i]" (change)="changeCategoryOrder(i, $event)">
+            <option *ngFor="let value of categoriesValues" [value]="value">{{ value }}</option>
+          </select>
+        </div>
+        <div class="b-extcategory-header-coll-3">
+          <div class="b-arrow"><div class="b-arrow--line"></div></div>
+        </div>
+        <div class="b-extcategory-header-coll-4">
+          <div class="b-extcategory-header-subtitle">У нас в базе</div>
+          <div class="category-btn" (click)="selectCategoryForArray(category, i)">
+            {{category.get('category').value ? category.get('category').value.nameRu : 'Выберите Категорию'}}
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!category.get('valueStat').value">
+        <div>
+          <div class="b-extcategory-text">
+            {{ category.get('category').value ? category.get('category').value.nameRu : '' }}
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="b-extcategory-prop-title">
+      Характеристики
+    </div>
+    <ng-container *ngIf="category.get('properties').controls.length">
+      <div class="d-flex b-extcategory-prop-subtitle-wrap">
+        <div class="b-extcategory-prop-subtitle">
+          В загруженном xls
+        </div>
+        <div class="b-extcategory-prop-subtitle">
+          У нас в базе
+        </div>
+      </div>
+    </ng-container>
+    <div *ngFor="let property of category.get('properties').controls; let propertyI = index" class="d-flex b-scheme-prop-wrap">
+      <ng-container *ngIf="!property.get('missing').value">
+        <div class="b-scheme-prop-coll1 d-flex">
+          <div class="b-scheme-prop-checkbox-wrap">
+            <mat-checkbox [formControl]="property.get('collectStats')"
+                          (change)="collectStatsChange($event)" color="primary"></mat-checkbox>
+          </div>
+        </div>
+        <div class="b-scheme-prop-coll2">
+          <div *ngIf="property.value?.type === 1 || property.value?.type === 3" class="b-input with-mat-select d-flex">
+            <mat-form-field>
+              <ng-container [ngSwitch]="property.get('subType').value">
+                <span *ngSwitchCase="1">
+                  <mat-icon>view_column</mat-icon>
+                </span>
+                <span *ngSwitchCase="2">
+                  <mat-icon>text_fields</mat-icon>
+                </span>
+              </ng-container>
+
+              <mat-select [formControl]="property.get('subType')">
+                <mat-option value="1">
+                  <mat-icon>view_column</mat-icon> Выбор названия столбца
+                </mat-option>
+                <mat-option value="2">
+                  <mat-icon>text_fields</mat-icon> Ввод номера столбца
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <ng-container *ngIf="property.get('subType').value == 1">
+              <select class="form-control width-3" [formControl]="property.get('column')" [compareWith]="compareFn"
+                      placeholder="Категория">
+                <option *ngFor="let fld of fieldsStat" [ngValue]="fld">{{ fld.name }}</option>
+              </select>
+            </ng-container>
+            <ng-container *ngIf="property.get('subType').value == 2">
+              <input (keyup)="changeColumnValue($event, property.get('column'))"
+                      [value]="property.get('column').value?.column"
+                      placeholder="Номер столбца">
+            </ng-container>
+          </div>
+          <div *ngIf="property.get('type').value === 3" class="b-input">
+            <button mat-raised-button color="primary"
+                    (click)="openRegexEdit(property)">
+              {{ property.get('regex').value && property.get('regex').value.length ? 'Изменить' : 'Задать' }} регулярное выражение
+             </button>
+          </div>
+          <div *ngIf="property.get('type').value === 2" class="b-input">
+            <input [formControl]="property.get('value')" placeholder="Точное значение">
+          </div>
+        </div>
+        <div class="b-scheme-prop-coll3">
+          <select class="form-control" [formControl]="property.get('prop')" (change)="setPropNameForProperty(property, $event, i)">
+            <option *ngFor="let prop of dictionariesDataSources[i]" [value]="prop.id">{{prop.nameRu}}</option>
+          </select>
+        </div>
+        <div class="b-scheme-prop-coll4 wrap-radio-button">
+          <mat-radio-group [formControl]="property.get('type')" (change)="onRadioChange($event.value, property)">
+            <mat-radio-button class="mr-1" [value]="1" color="primary">Столбец</mat-radio-button>
+            <mat-radio-button class="mr-1" [value]="3" color="primary">Столбец + рег. <br/> выражение </mat-radio-button>
+            <mat-radio-button [value]="2" color="primary">Точное <br/> значение</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="b-scheme-prop-coll5 btn-delete">
+          <button mat-icon-button (click)="deleteRow(category.get('properties'), propertyI)" color="warn">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+      <div *ngIf="property.get('missing').value" class="d-flex">
+        <div class="b-scheme-prop-missing-coll1">
+          В фиде отсутствует
+        </div>
+        <div class="b-scheme-prop-missing-coll2">
+          <select class="form-control" [formControl]="property.get('prop')" (change)="setPropNameForProperty(property, $event, i)">
+            <option *ngFor="let prop of dictionariesDataSources[i]" [value]="prop.id">{{prop.nameRu}}</option>
+          </select>
+        </div>
+        <div class="btn-delete b-scheme-prop-missing-coll3 d-flex justify-content-end">
+          <button mat-icon-button (click)="deleteRow(category.get('properties'), propertyI)" color="warn">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex" *ngIf="category.get('category').value">
+      <button class="b-scheme-prop-add-button" (click)="addRow(category)" mat-raised-button color="primary">
+        + Добавить хар-ку из фида
+      </button>
+      <button class="b-scheme-prop-add-missing-button" (click)="addRow(category, 1, true)" mat-button color="primary">
+        + Добавить отсутствующую хар-ку
+      </button>
+    </div>
+  </div>
+</div>

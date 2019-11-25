@@ -1,0 +1,71 @@
+.choice-language{
+  position: relative;
+  cursor: pointer;
+  width: 42px;
+  height: auto;
+  z-index: 100;
+
+  &:before{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 4px 5px 0 5px;
+    border-color: #212529 transparent transparent transparent;
+    top: 9px;
+    right: 0;
+  }
+
+  ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+    background: #F9F9F9;
+    border: 1px solid #F2F0F0;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 6px 0px 6px 6px;
+    width: 130px;
+    position: absolute;
+    left: -8px;
+    padding-top: 8px;
+    padding-left: 8px;
+
+
+    li{
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      margin-bottom: 14px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #000000;
+    }
+  }
+
+  .flags{
+    height: 14px;
+    width: 22px;
+    background-size: cover;
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25);
+    background-position: 50% 50%;
+    display: inline-block;
+    margin-right: 5px;
+    &.f-ru {
+      background-image: url("../../../assets/img/svg-icons/ru.svg");
+    }
+    &.f-en {
+      background-image: url("../../../assets/img/svg-icons/en.svg");
+    }
+    &.f-cn {
+      background-image: url("../../../assets/img/svg-icons/cn.svg");
+    }
+  }
+}
+.active{
+  ul{
+    display: block;
+  }
+}

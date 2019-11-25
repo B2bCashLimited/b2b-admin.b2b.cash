@@ -1,0 +1,1591 @@
+$ic-font-path: "assets/fonts/b2bcashCategory" !default;
+
+$ic-1278: "\e943";
+$ic-1: "\e900";
+$ic-2: "\e901";
+$ic-3: "\e902";
+$ic-6: "\e903";
+$ic-27: "\e904";
+$ic-60: "\e905";
+$ic-62: "\e906";
+$ic-67: "\e907";
+$ic-75: "\e908";
+$ic-78: "\e909";
+$ic-87: "\e90a";
+$ic-112: "\e90b";
+$ic-136: "\e90c";
+$ic-140: "\e90d";
+$ic-170: "\e90e";
+$ic-194: "\e90f";
+$ic-209: "\e910";
+$ic-230: "\e911";
+$ic-255: "\e912";
+$ic-266: "\e913";
+$ic-290: "\e914";
+$ic-291: "\e915";
+$ic-299: "\e916";
+$ic-307: "\e917";
+$ic-312: "\e918";
+$ic-317: "\e919";
+$ic-322: "\e91a";
+$ic-327: "\e91b";
+$ic-343: "\e91c";
+$ic-353: "\e91d";
+$ic-357: "\e91e";
+$ic-360: "\e91f";
+$ic-380: "\e920";
+$ic-406: "\e921";
+$ic-415: "\e922";
+$ic-422: "\e923";
+$ic-435: "\e924";
+$ic-464: "\e925";
+$ic-477: "\e926";
+$ic-505: "\e927";
+$ic-526: "\e928";
+$ic-536: "\e929";
+$ic-547: "\e92a";
+$ic-574: "\e92b";
+$ic-1084: "\e92c";
+$ic-1085: "\e92d";
+$ic-1086: "\e92e";
+$ic-1095: "\e92f";
+$ic-1112: "\e930";
+$ic-1119: "\e931";
+$ic-1129: "\e932";
+$ic-1150: "\e933";
+$ic-1164: "\e934";
+$ic-1167: "\e935";
+$ic-1168: "\e936";
+$ic-1170: "\e937";
+$ic-1171: "\e938";
+$ic-1172: "\e939";
+$ic-1174: "\e93a";
+$ic-1177: "\e93b";
+$ic-1201: "\e93c";
+$ic-1209: "\e93d";
+$ic-1212: "\e93e";
+$ic-1219: "\e93f";
+$ic-1230: "\e940";
+$ic-1240: "\e941";
+$ic-1266: "\e942";
+$ic-1287: "\e944";
+$ic-1298: "\e945";
+$ic-1303: "\e946";
+$ic-1311: "\e947";
+$ic-1335: "\e948";
+$ic-1341: "\e949";
+$ic-1349: "\e94a";
+$ic-1365: "\e94b";
+$ic-1373: "\e94c";
+$ic-1384: "\e94e";
+$ic-1392: "\e94f";
+$ic-1396: "\e950";
+$ic-1404: "\e951";
+$ic-1414: "\e952";
+$ic-1427: "\e953";
+$ic-1441: "\e954";
+$ic-1445: "\e955";
+$ic-1450: "\e956";
+$ic-1459: "\e957";
+$ic-1463: "\e958";
+$ic-1469: "\e959";
+$ic-1477: "\e95a";
+$ic-1482: "\e95b";
+$ic-1492: "\e95c";
+$ic-1650: "\e95e";
+$ic-1654: "\e95f";
+$ic-1667: "\e960";
+$ic-1680: "\e961";
+$ic-1686: "\e962";
+$ic-1707: "\e963";
+$ic-1738: "\e965";
+$ic-1745: "\e966";
+$ic-1757: "\e967";
+$ic-1763: "\e968";
+$ic-1775: "\e969";
+$ic-1776: "\e96a";
+$ic-1784: "\e96b";
+$ic-1791: "\e96c";
+$ic-1797: "\e96d";
+$ic-1822: "\e96e";
+$ic-1823: "\e96f";
+$ic-1835: "\e970";
+$ic-1880: "\e971";
+$ic-1887: "\e972";
+$ic-1897: "\e973";
+$ic-1898: "\e974";
+$ic-1910: "\e975";
+$ic-1919: "\e976";
+$ic-1937: "\e977";
+$ic-1945: "\e978";
+$ic-1959: "\e979";
+$ic-1964: "\e97a";
+$ic-2027: "\e97b";
+$ic-2187: "\e97d";
+$ic-2198: "\e97e";
+$ic-2211: "\e97f";
+$ic-2218: "\e980";
+$ic-2229: "\e981";
+$ic-2241: "\e982";
+$ic-2249: "\e983";
+$ic-2254: "\e984";
+$ic-2255: "\e985";
+$ic-2262: "\e986";
+$ic-2272: "\e987";
+$ic-2283: "\e988";
+$ic-2291: "\e989";
+$ic-2296: "\e98a";
+$ic-2302: "\e98b";
+$ic-2303: "\e98c";
+$ic-2319: "\e98d";
+$ic-3832: "\e98e";
+$ic-3833: "\e98f";
+$ic-3837: "\e990";
+$ic-3842: "\e991";
+$ic-3851: "\e992";
+$ic-3865: "\e993";
+$ic-3866: "\e994";
+$ic-3867: "\e995";
+$ic-3872: "\e996";
+$ic-3878: "\e997";
+$ic-3889: "\e998";
+$ic-3899: "\e999";
+$ic-3902: "\e99a";
+$ic-3909: "\e99b";
+$ic-3912: "\e99c";
+$ic-3922: "\e99d";
+$ic-3928: "\e99e";
+$ic-3933: "\e99f";
+$ic-3938: "\e9a0";
+$ic-3943: "\e9a1";
+$ic-3955: "\e9a2";
+$ic-3966: "\e9a3";
+$ic-3974: "\e9a4";
+$ic-3981: "\e9a5";
+$ic-3988: "\e9a6";
+$ic-4003: "\e9a7";
+$ic-4008: "\e9a8";
+$ic-4011: "\e9a9";
+$ic-4024: "\e9aa";
+$ic-4034: "\e9ab";
+$ic-4037: "\e9ac";
+$ic-4045: "\e9ad";
+$ic-4048: "\e9ae";
+$ic-4061: "\e9af";
+$ic-4068: "\e9b0";
+$ic-4069: "\e9b1";
+$ic-4200: "\e9b2";
+$ic-4284: "\e9b3";
+$ic-4303: "\e9b4";
+$ic-4304: "\e9b5";
+$ic-4313: "\e9b6";
+$ic-4327: "\e9b7";
+$ic-4328: "\e9b8";
+$ic-4329: "\e9b9";
+$ic-4330: "\e9ba";
+$ic-4331: "\e9bb";
+$ic-4332: "\e9bc";
+$ic-4335: "\e9bd";
+$ic-4345: "\e9be";
+$ic-4358: "\e9bf";
+$ic-4381: "\e9c0";
+$ic-4461: "\e9c1";
+$ic-4462: "\e9c2";
+$ic-4474: "\e9c3";
+$ic-4481: "\e9c4";
+$ic-4489: "\e9c5";
+$ic-4502: "\e9c6";
+$ic-4509: "\e9c7";
+$ic-4515: "\e9c8";
+$ic-4524: "\e9c9";
+$ic-4528: "\e9ca";
+$ic-4530: "\e9cb";
+$ic-4532: "\e9cc";
+$ic-4535: "\e9cd";
+$ic-4539: "\e9ce";
+$ic-4546: "\e9cf";
+$ic-4559: "\e9d0";
+$ic-4566: "\e9d1";
+$ic-4574: "\e9d2";
+$ic-5271: "\e9d3";
+$ic-5272: "\e9d4";
+$ic-5275: "\e9d5";
+$ic-5298: "\e9d6";
+$ic-5299: "\e9d7";
+$ic-5320: "\e9d8";
+$ic-5321: "\e9d9";
+$ic-5322: "\e9da";
+$ic-5323: "\e9db";
+$ic-5324: "\e9dc";
+$ic-5325: "\e9dd";
+$ic-5327: "\e9de";
+$ic-5330: "\e9df";
+$ic-5332: "\e9e0";
+$ic-600: "\e9e1";
+$ic-601: "\e9e2";
+$ic-853: "\e9e3";
+$ic-943: "\e9e4";
+$ic-1034: "\e9e5";
+$ic-1649: "\e9e6";
+$ic-1383: "\e9e7";
+$ic-1503: "\e9e9";
+$ic-1515: "\e9ea";
+$ic-1516: "\e9eb";
+$ic-1582: "\e9ec";
+$ic-1730: "\e9ed";
+$ic-1731: "\e9ee";
+$ic-1980: "\e9ef";
+$ic-1981: "\e9f0";
+$ic-2115: "\e9f1";
+$ic-2185: "\e9f2";
+$ic-2186: "\e9f3";
+$ic-2341: "\e9f4";
+$ic-2411: "\e9f5";
+$ic-2497: "\e9f6";
+$ic-2498: "\e9f7";
+$ic-2611: "\e9f8";
+$ic-2799: "\e9f9";
+$ic-2800: "\e9fa";
+$ic-3013: "\e9fb";
+$ic-3136: "\e9fc";
+$ic-3209: "\e9fd";
+$ic-3237: "\e9fe";
+$ic-3323: "\e9ff";
+$ic-3324: "\ea00";
+$ic-3325: "\ea01";
+$ic-3555: "\ea02";
+$ic-4142: "\ea04";
+$ic-4602: "\ea05";
+$ic-4603: "\ea06";
+$ic-4745: "\ea07";
+$ic-4908: "\ea08";
+$ic-5290: "\ea09";
+
+@font-face {
+  font-family: 'b2bcashCategory';
+  font-display: swap;
+  src:  url('#{$ic-font-path}/b2bcashCategory.eot?f4av9b');
+  src:  url('#{$ic-font-path}/b2bcashCategory.eot?f4av9b#iefix') format('embedded-opentype'),
+  url('#{$ic-font-path}/b2bcashCategory.ttf?f4av9b') format('truetype'),
+  url('#{$ic-font-path}/b2bcashCategory.woff?f4av9b') format('woff'),
+  url('#{$ic-font-path}/b2bcashCategory.svg?f4av9b#b2bcash') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.cat-s {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'b2bcashCategory' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.ic-1278 {
+  &:before {
+    content: $ic-1278;
+  }
+}
+.ic-1 {
+  &:before {
+    content: $ic-1;
+  }
+}
+.ic-2 {
+  &:before {
+    content: $ic-2;
+  }
+}
+.ic-3 {
+  &:before {
+    content: $ic-3;
+  }
+}
+.ic-6 {
+  &:before {
+    content: $ic-6;
+  }
+}
+.ic-27 {
+  &:before {
+    content: $ic-27;
+  }
+}
+.ic-60 {
+  &:before {
+    content: $ic-60;
+  }
+}
+.ic-62 {
+  &:before {
+    content: $ic-62;
+  }
+}
+.ic-67 {
+  &:before {
+    content: $ic-67;
+  }
+}
+.ic-75 {
+  &:before {
+    content: $ic-75;
+  }
+}
+.ic-78 {
+  &:before {
+    content: $ic-78;
+  }
+}
+.ic-87 {
+  &:before {
+    content: $ic-87;
+  }
+}
+.ic-112 {
+  &:before {
+    content: $ic-112;
+  }
+}
+.ic-136 {
+  &:before {
+    content: $ic-136;
+  }
+}
+.ic-140 {
+  &:before {
+    content: $ic-140;
+  }
+}
+.ic-170 {
+  &:before {
+    content: $ic-170;
+  }
+}
+.ic-194 {
+  &:before {
+    content: $ic-194;
+  }
+}
+.ic-209 {
+  &:before {
+    content: $ic-209;
+  }
+}
+.ic-230 {
+  &:before {
+    content: $ic-230;
+  }
+}
+.ic-255 {
+  &:before {
+    content: $ic-255;
+  }
+}
+.ic-266 {
+  &:before {
+    content: $ic-266;
+  }
+}
+.ic-290 {
+  &:before {
+    content: $ic-290;
+  }
+}
+.ic-291 {
+  &:before {
+    content: $ic-291;
+  }
+}
+.ic-299 {
+  &:before {
+    content: $ic-299;
+  }
+}
+.ic-307 {
+  &:before {
+    content: $ic-307;
+  }
+}
+.ic-312 {
+  &:before {
+    content: $ic-312;
+  }
+}
+.ic-317 {
+  &:before {
+    content: $ic-317;
+  }
+}
+.ic-322 {
+  &:before {
+    content: $ic-322;
+  }
+}
+.ic-327 {
+  &:before {
+    content: $ic-327;
+  }
+}
+.ic-343 {
+  &:before {
+    content: $ic-343;
+  }
+}
+.ic-353 {
+  &:before {
+    content: $ic-353;
+  }
+}
+.ic-357 {
+  &:before {
+    content: $ic-357;
+  }
+}
+.ic-360 {
+  &:before {
+    content: $ic-360;
+  }
+}
+.ic-380 {
+  &:before {
+    content: $ic-380;
+  }
+}
+.ic-406 {
+  &:before {
+    content: $ic-406;
+  }
+}
+.ic-415 {
+  &:before {
+    content: $ic-415;
+  }
+}
+.ic-422 {
+  &:before {
+    content: $ic-422;
+  }
+}
+.ic-435 {
+  &:before {
+    content: $ic-435;
+  }
+}
+.ic-464 {
+  &:before {
+    content: $ic-464;
+  }
+}
+.ic-477 {
+  &:before {
+    content: $ic-477;
+  }
+}
+.ic-505 {
+  &:before {
+    content: $ic-505;
+  }
+}
+.ic-526 {
+  &:before {
+    content: $ic-526;
+  }
+}
+.ic-536 {
+  &:before {
+    content: $ic-536;
+  }
+}
+.ic-547 {
+  &:before {
+    content: $ic-547;
+  }
+}
+.ic-574 {
+  &:before {
+    content: $ic-574;
+  }
+}
+.ic-1084 {
+  &:before {
+    content: $ic-1084;
+  }
+}
+.ic-1085 {
+  &:before {
+    content: $ic-1085;
+  }
+}
+.ic-1086 {
+  &:before {
+    content: $ic-1086;
+  }
+}
+.ic-1095 {
+  &:before {
+    content: $ic-1095;
+  }
+}
+.ic-1112 {
+  &:before {
+    content: $ic-1112;
+  }
+}
+.ic-1119 {
+  &:before {
+    content: $ic-1119;
+  }
+}
+.ic-1129 {
+  &:before {
+    content: $ic-1129;
+  }
+}
+.ic-1150 {
+  &:before {
+    content: $ic-1150;
+  }
+}
+.ic-1164 {
+  &:before {
+    content: $ic-1164;
+  }
+}
+.ic-1167 {
+  &:before {
+    content: $ic-1167;
+  }
+}
+.ic-1168 {
+  &:before {
+    content: $ic-1168;
+  }
+}
+.ic-1170 {
+  &:before {
+    content: $ic-1170;
+  }
+}
+.ic-1171 {
+  &:before {
+    content: $ic-1171;
+  }
+}
+.ic-1172 {
+  &:before {
+    content: $ic-1172;
+  }
+}
+.ic-1174 {
+  &:before {
+    content: $ic-1174;
+  }
+}
+.ic-1177 {
+  &:before {
+    content: $ic-1177;
+  }
+}
+.ic-1201 {
+  &:before {
+    content: $ic-1201;
+  }
+}
+.ic-1209 {
+  &:before {
+    content: $ic-1209;
+  }
+}
+.ic-1212 {
+  &:before {
+    content: $ic-1212;
+  }
+}
+.ic-1219 {
+  &:before {
+    content: $ic-1219;
+  }
+}
+.ic-1230 {
+  &:before {
+    content: $ic-1230;
+  }
+}
+.ic-1240 {
+  &:before {
+    content: $ic-1240;
+  }
+}
+.ic-1266 {
+  &:before {
+    content: $ic-1266;
+  }
+}
+.ic-1287 {
+  &:before {
+    content: $ic-1287;
+  }
+}
+.ic-1298 {
+  &:before {
+    content: $ic-1298;
+  }
+}
+.ic-1303 {
+  &:before {
+    content: $ic-1303;
+  }
+}
+.ic-1311 {
+  &:before {
+    content: $ic-1311;
+  }
+}
+.ic-1335 {
+  &:before {
+    content: $ic-1335;
+  }
+}
+.ic-1341 {
+  &:before {
+    content: $ic-1341;
+  }
+}
+.ic-1349 {
+  &:before {
+    content: $ic-1349;
+  }
+}
+.ic-1365 {
+  &:before {
+    content: $ic-1365;
+  }
+}
+.ic-1373 {
+  &:before {
+    content: $ic-1373;
+  }
+}
+.ic-1384 {
+  &:before {
+    content: $ic-1384;
+  }
+}
+.ic-1392 {
+  &:before {
+    content: $ic-1392;
+  }
+}
+.ic-1396 {
+  &:before {
+    content: $ic-1396;
+  }
+}
+.ic-1404 {
+  &:before {
+    content: $ic-1404;
+  }
+}
+.ic-1414 {
+  &:before {
+    content: $ic-1414;
+  }
+}
+.ic-1427 {
+  &:before {
+    content: $ic-1427;
+  }
+}
+.ic-1441 {
+  &:before {
+    content: $ic-1441;
+  }
+}
+.ic-1445 {
+  &:before {
+    content: $ic-1445;
+  }
+}
+.ic-1450 {
+  &:before {
+    content: $ic-1450;
+  }
+}
+.ic-1459 {
+  &:before {
+    content: $ic-1459;
+  }
+}
+.ic-1463 {
+  &:before {
+    content: $ic-1463;
+  }
+}
+.ic-1469 {
+  &:before {
+    content: $ic-1469;
+  }
+}
+.ic-1477 {
+  &:before {
+    content: $ic-1477;
+  }
+}
+.ic-1482 {
+  &:before {
+    content: $ic-1482;
+  }
+}
+.ic-1492 {
+  &:before {
+    content: $ic-1492;
+  }
+}
+.ic-1650 {
+  &:before {
+    content: $ic-1650;
+  }
+}
+.ic-1654 {
+  &:before {
+    content: $ic-1654;
+  }
+}
+.ic-1667 {
+  &:before {
+    content: $ic-1667;
+  }
+}
+.ic-1680 {
+  &:before {
+    content: $ic-1680;
+  }
+}
+.ic-1686 {
+  &:before {
+    content: $ic-1686;
+  }
+}
+.ic-1707 {
+  &:before {
+    content: $ic-1707;
+  }
+}
+.ic-1738 {
+  &:before {
+    content: $ic-1738;
+  }
+}
+.ic-1745 {
+  &:before {
+    content: $ic-1745;
+  }
+}
+.ic-1757 {
+  &:before {
+    content: $ic-1757;
+  }
+}
+.ic-1763 {
+  &:before {
+    content: $ic-1763;
+  }
+}
+.ic-1775 {
+  &:before {
+    content: $ic-1775;
+  }
+}
+.ic-1776 {
+  &:before {
+    content: $ic-1776;
+  }
+}
+.ic-1784 {
+  &:before {
+    content: $ic-1784;
+  }
+}
+.ic-1791 {
+  &:before {
+    content: $ic-1791;
+  }
+}
+.ic-1797 {
+  &:before {
+    content: $ic-1797;
+  }
+}
+.ic-1822 {
+  &:before {
+    content: $ic-1822;
+  }
+}
+.ic-1823 {
+  &:before {
+    content: $ic-1823;
+  }
+}
+.ic-1835 {
+  &:before {
+    content: $ic-1835;
+  }
+}
+.ic-1880 {
+  &:before {
+    content: $ic-1880;
+  }
+}
+.ic-1887 {
+  &:before {
+    content: $ic-1887;
+  }
+}
+.ic-1897 {
+  &:before {
+    content: $ic-1897;
+  }
+}
+.ic-1898 {
+  &:before {
+    content: $ic-1898;
+  }
+}
+.ic-1910 {
+  &:before {
+    content: $ic-1910;
+  }
+}
+.ic-1919 {
+  &:before {
+    content: $ic-1919;
+  }
+}
+.ic-1937 {
+  &:before {
+    content: $ic-1937;
+  }
+}
+.ic-1945 {
+  &:before {
+    content: $ic-1945;
+  }
+}
+.ic-1959 {
+  &:before {
+    content: $ic-1959;
+  }
+}
+.ic-1964 {
+  &:before {
+    content: $ic-1964;
+  }
+}
+.ic-2027 {
+  &:before {
+    content: $ic-2027;
+  }
+}
+.ic-2187 {
+  &:before {
+    content: $ic-2187;
+  }
+}
+.ic-2198 {
+  &:before {
+    content: $ic-2198;
+  }
+}
+.ic-2211 {
+  &:before {
+    content: $ic-2211;
+  }
+}
+.ic-2218 {
+  &:before {
+    content: $ic-2218;
+  }
+}
+.ic-2229 {
+  &:before {
+    content: $ic-2229;
+  }
+}
+.ic-2241 {
+  &:before {
+    content: $ic-2241;
+  }
+}
+.ic-2249 {
+  &:before {
+    content: $ic-2249;
+  }
+}
+.ic-2254 {
+  &:before {
+    content: $ic-2254;
+  }
+}
+.ic-2255 {
+  &:before {
+    content: $ic-2255;
+  }
+}
+.ic-2262 {
+  &:before {
+    content: $ic-2262;
+  }
+}
+.ic-2272 {
+  &:before {
+    content: $ic-2272;
+  }
+}
+.ic-2283 {
+  &:before {
+    content: $ic-2283;
+  }
+}
+.ic-2291 {
+  &:before {
+    content: $ic-2291;
+  }
+}
+.ic-2296 {
+  &:before {
+    content: $ic-2296;
+  }
+}
+.ic-2302 {
+  &:before {
+    content: $ic-2302;
+  }
+}
+.ic-2303 {
+  &:before {
+    content: $ic-2303;
+  }
+}
+.ic-2319 {
+  &:before {
+    content: $ic-2319;
+  }
+}
+.ic-3832 {
+  &:before {
+    content: $ic-3832;
+  }
+}
+.ic-3833 {
+  &:before {
+    content: $ic-3833;
+  }
+}
+.ic-3837 {
+  &:before {
+    content: $ic-3837;
+  }
+}
+.ic-3842 {
+  &:before {
+    content: $ic-3842;
+  }
+}
+.ic-3851 {
+  &:before {
+    content: $ic-3851;
+  }
+}
+.ic-3865 {
+  &:before {
+    content: $ic-3865;
+  }
+}
+.ic-3866 {
+  &:before {
+    content: $ic-3866;
+  }
+}
+.ic-3867 {
+  &:before {
+    content: $ic-3867;
+  }
+}
+.ic-3872 {
+  &:before {
+    content: $ic-3872;
+  }
+}
+.ic-3878 {
+  &:before {
+    content: $ic-3878;
+  }
+}
+.ic-3889 {
+  &:before {
+    content: $ic-3889;
+  }
+}
+.ic-3899 {
+  &:before {
+    content: $ic-3899;
+  }
+}
+.ic-3902 {
+  &:before {
+    content: $ic-3902;
+  }
+}
+.ic-3909 {
+  &:before {
+    content: $ic-3909;
+  }
+}
+.ic-3912 {
+  &:before {
+    content: $ic-3912;
+  }
+}
+.ic-3922 {
+  &:before {
+    content: $ic-3922;
+  }
+}
+.ic-3928 {
+  &:before {
+    content: $ic-3928;
+  }
+}
+.ic-3933 {
+  &:before {
+    content: $ic-3933;
+  }
+}
+.ic-3938 {
+  &:before {
+    content: $ic-3938;
+  }
+}
+.ic-3943 {
+  &:before {
+    content: $ic-3943;
+  }
+}
+.ic-3955 {
+  &:before {
+    content: $ic-3955;
+  }
+}
+.ic-3966 {
+  &:before {
+    content: $ic-3966;
+  }
+}
+.ic-3974 {
+  &:before {
+    content: $ic-3974;
+  }
+}
+.ic-3981 {
+  &:before {
+    content: $ic-3981;
+  }
+}
+.ic-3988 {
+  &:before {
+    content: $ic-3988;
+  }
+}
+.ic-4003 {
+  &:before {
+    content: $ic-4003;
+  }
+}
+.ic-4008 {
+  &:before {
+    content: $ic-4008;
+  }
+}
+.ic-4011 {
+  &:before {
+    content: $ic-4011;
+  }
+}
+.ic-4024 {
+  &:before {
+    content: $ic-4024;
+  }
+}
+.ic-4034 {
+  &:before {
+    content: $ic-4034;
+  }
+}
+.ic-4037 {
+  &:before {
+    content: $ic-4037;
+  }
+}
+.ic-4045 {
+  &:before {
+    content: $ic-4045;
+  }
+}
+.ic-4048 {
+  &:before {
+    content: $ic-4048;
+  }
+}
+.ic-4061 {
+  &:before {
+    content: $ic-4061;
+  }
+}
+.ic-4068 {
+  &:before {
+    content: $ic-4068;
+  }
+}
+.ic-4069 {
+  &:before {
+    content: $ic-4069;
+  }
+}
+.ic-4200 {
+  &:before {
+    content: $ic-4200;
+  }
+}
+.ic-4284 {
+  &:before {
+    content: $ic-4284;
+  }
+}
+.ic-4303 {
+  &:before {
+    content: $ic-4303;
+  }
+}
+.ic-4304 {
+  &:before {
+    content: $ic-4304;
+  }
+}
+.ic-4313 {
+  &:before {
+    content: $ic-4313;
+  }
+}
+.ic-4327 {
+  &:before {
+    content: $ic-4327;
+  }
+}
+.ic-4328 {
+  &:before {
+    content: $ic-4328;
+  }
+}
+.ic-4329 {
+  &:before {
+    content: $ic-4329;
+  }
+}
+.ic-4330 {
+  &:before {
+    content: $ic-4330;
+  }
+}
+.ic-4331 {
+  &:before {
+    content: $ic-4331;
+  }
+}
+.ic-4332 {
+  &:before {
+    content: $ic-4332;
+  }
+}
+.ic-4335 {
+  &:before {
+    content: $ic-4335;
+  }
+}
+.ic-4345 {
+  &:before {
+    content: $ic-4345;
+  }
+}
+.ic-4358 {
+  &:before {
+    content: $ic-4358;
+  }
+}
+.ic-4381 {
+  &:before {
+    content: $ic-4381;
+  }
+}
+.ic-4461 {
+  &:before {
+    content: $ic-4461;
+  }
+}
+.ic-4462 {
+  &:before {
+    content: $ic-4462;
+  }
+}
+.ic-4474 {
+  &:before {
+    content: $ic-4474;
+  }
+}
+.ic-4481 {
+  &:before {
+    content: $ic-4481;
+  }
+}
+.ic-4489 {
+  &:before {
+    content: $ic-4489;
+  }
+}
+.ic-4502 {
+  &:before {
+    content: $ic-4502;
+  }
+}
+.ic-4509 {
+  &:before {
+    content: $ic-4509;
+  }
+}
+.ic-4515 {
+  &:before {
+    content: $ic-4515;
+  }
+}
+.ic-4524 {
+  &:before {
+    content: $ic-4524;
+  }
+}
+.ic-4528 {
+  &:before {
+    content: $ic-4528;
+  }
+}
+.ic-4530 {
+  &:before {
+    content: $ic-4530;
+  }
+}
+.ic-4532 {
+  &:before {
+    content: $ic-4532;
+  }
+}
+.ic-4535 {
+  &:before {
+    content: $ic-4535;
+  }
+}
+.ic-4539 {
+  &:before {
+    content: $ic-4539;
+  }
+}
+.ic-4546 {
+  &:before {
+    content: $ic-4546;
+  }
+}
+.ic-4559 {
+  &:before {
+    content: $ic-4559;
+  }
+}
+.ic-4566 {
+  &:before {
+    content: $ic-4566;
+  }
+}
+.ic-4574 {
+  &:before {
+    content: $ic-4574;
+  }
+}
+.ic-5271 {
+  &:before {
+    content: $ic-5271;
+  }
+}
+.ic-5272 {
+  &:before {
+    content: $ic-5272;
+  }
+}
+.ic-5275 {
+  &:before {
+    content: $ic-5275;
+  }
+}
+.ic-5298 {
+  &:before {
+    content: $ic-5298;
+  }
+}
+.ic-5299 {
+  &:before {
+    content: $ic-5299;
+  }
+}
+.ic-5320 {
+  &:before {
+    content: $ic-5320;
+  }
+}
+.ic-5321 {
+  &:before {
+    content: $ic-5321;
+  }
+}
+.ic-5322 {
+  &:before {
+    content: $ic-5322;
+  }
+}
+.ic-5323 {
+  &:before {
+    content: $ic-5323;
+  }
+}
+.ic-5324 {
+  &:before {
+    content: $ic-5324;
+  }
+}
+.ic-5325 {
+  &:before {
+    content: $ic-5325;
+  }
+}
+.ic-5327 {
+  &:before {
+    content: $ic-5327;
+  }
+}
+.ic-5330 {
+  &:before {
+    content: $ic-5330;
+  }
+}
+.ic-5332 {
+  &:before {
+    content: $ic-5332;
+  }
+}
+.ic-600 {
+  &:before {
+    content: $ic-600;
+  }
+}
+.ic-601 {
+  &:before {
+    content: $ic-601;
+  }
+}
+.ic-853 {
+  &:before {
+    content: $ic-853;
+  }
+}
+.ic-943 {
+  &:before {
+    content: $ic-943;
+  }
+}
+.ic-1034 {
+  &:before {
+    content: $ic-1034;
+  }
+}
+.ic-1649 {
+  &:before {
+    content: $ic-1649;
+  }
+}
+.ic-1383 {
+  &:before {
+    content: $ic-1383;
+  }
+}
+.ic-1503 {
+  &:before {
+    content: $ic-1503;
+  }
+}
+.ic-1515 {
+  &:before {
+    content: $ic-1515;
+  }
+}
+.ic-1516 {
+  &:before {
+    content: $ic-1516;
+  }
+}
+.ic-1582 {
+  &:before {
+    content: $ic-1582;
+  }
+}
+.ic-1730 {
+  &:before {
+    content: $ic-1730;
+  }
+}
+.ic-1731 {
+  &:before {
+    content: $ic-1731;
+  }
+}
+.ic-1980 {
+  &:before {
+    content: $ic-1980;
+  }
+}
+.ic-1981 {
+  &:before {
+    content: $ic-1981;
+  }
+}
+.ic-2115 {
+  &:before {
+    content: $ic-2115;
+  }
+}
+.ic-2185 {
+  &:before {
+    content: $ic-2185;
+  }
+}
+.ic-2186 {
+  &:before {
+    content: $ic-2186;
+  }
+}
+.ic-2341 {
+  &:before {
+    content: $ic-2341;
+  }
+}
+.ic-2411 {
+  &:before {
+    content: $ic-2411;
+  }
+}
+.ic-2497 {
+  &:before {
+    content: $ic-2497;
+  }
+}
+.ic-2498 {
+  &:before {
+    content: $ic-2498;
+  }
+}
+.ic-2611 {
+  &:before {
+    content: $ic-2611;
+  }
+}
+.ic-2799 {
+  &:before {
+    content: $ic-2799;
+  }
+}
+.ic-2800 {
+  &:before {
+    content: $ic-2800;
+  }
+}
+.ic-3013 {
+  &:before {
+    content: $ic-3013;
+  }
+}
+.ic-3136 {
+  &:before {
+    content: $ic-3136;
+  }
+}
+.ic-3209 {
+  &:before {
+    content: $ic-3209;
+  }
+}
+.ic-3237 {
+  &:before {
+    content: $ic-3237;
+  }
+}
+.ic-3323 {
+  &:before {
+    content: $ic-3323;
+  }
+}
+.ic-3324 {
+  &:before {
+    content: $ic-3324;
+  }
+}
+.ic-3325 {
+  &:before {
+    content: $ic-3325;
+  }
+}
+.ic-3555 {
+  &:before {
+    content: $ic-3555;
+  }
+}
+.ic-4142 {
+  &:before {
+    content: $ic-4142;
+  }
+}
+.ic-4602 {
+  &:before {
+    content: $ic-4602;
+  }
+}
+.ic-4603 {
+  &:before {
+    content: $ic-4603;
+  }
+}
+.ic-4745 {
+  &:before {
+    content: $ic-4745;
+  }
+}
+.ic-4908 {
+  &:before {
+    content: $ic-4908;
+  }
+}
+.ic-5290 {
+  &:before {
+    content: $ic-5290;
+  }
+}

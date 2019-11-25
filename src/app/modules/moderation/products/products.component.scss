@@ -1,0 +1,725 @@
+@import "../../../../../node_modules/bootstrap/scss/bootstrap.scss";
+
+$font-family-roboto: 'Roboto', sans-serif !default;
+:host{
+  font-family: $font-family-roboto;
+  display: block;
+}
+
+
+@mixin rem($size) {
+  font-size: $size/16*1rem;
+}
+
+.b-input-border{
+  width: 100%;
+
+  &::ng-deep.mat-form-field,
+  &::ng-deep.mat-form-field-flex {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    color: #212529;
+
+    &.e-input-145px{
+      max-width: 145px;
+    }
+  }
+  &::ng-deep.mat-form-field-wrapper {
+    padding: 0;
+    border: 1px solid #C7C7C7;
+    background-color: #ffffff;
+    border-radius: 3px;
+    width: 100%;
+    height: 40px;
+  }
+  &::ng-deep.mat-form-field-infix {
+    border: 0;
+    padding: 4px 5px;
+    height: 100%;
+    width: 100%;
+  }
+  &::ng-deep.mat-form-field-underline {
+    display: none;
+  }
+  &::ng-deep input.mat-input-element {
+    margin-top: 0;
+    @include rem(15);
+    height: 100%;
+    color: #212529;
+  }
+
+  &::ng-deep .mat-form-field-placeholder {
+    padding-top: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    @include rem(16);
+  }
+  &::ng-deep .mat-form-field-label-wrapper {
+    top: 0;
+    padding-top: 0;
+  }
+
+  &::ng-deep.mat-form-field-suffix{
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1;
+    @include rem(15);
+    color: #909090;
+    margin-right: 4px;
+  }
+
+  .e-prefix {
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1;
+    @include rem(15);
+    color: #909090;
+    margin-right: 8px;
+  }
+}
+
+.b-input-line{
+
+  &::ng-deep.mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  &::ng-deep.mat-form-field-underline {
+    bottom: 0;
+  }
+  &::ng-deep.mat-form-field-infix {
+    padding: 2px 0;
+    border-top: none;
+    width: 100%;
+  }
+
+  &::ng-deep.mat-form-field-label{
+    font-size: .75rem;
+  }
+
+  &::ng-deep input.mat-input-element {
+    margin-top: 0;
+    font-size: .875rem;
+    top: -4px;
+    position: relative;
+  }
+
+  .bb-upload{
+    color: #828282;
+    @include rem(17);
+    margin-left: 8px;
+  }
+}
+
+.b-select-border {
+  ::ng-deep.mat-select {
+    border-radius: 3px;
+    background-color: #ffffff;
+    border: solid 1px #BDBDBD;
+    height: 40px;
+  }
+
+  ::ng-deep.mat-select-trigger{
+    height: 40px;
+  }
+  ::ng-deep.mat-select-value-text{
+    font-size: .875rem;
+    color: #2c2c2b;
+  }
+  ::ng-deep.mat-select-value{
+    padding: 8px 5px 5px 13px;
+  }
+  ::ng-deep.mat-select-arrow{
+    color: #3f51b5;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid;
+    margin: 0 14px 0 10px;
+  }
+
+}
+
+.b-select-line{
+  &::ng-deep.mat-form-field {
+    width: 100%;
+  }
+
+  &::ng-deep.mat-form-field-infix{
+    padding: 0;
+    border: 0;
+    width: 100%;
+  }
+
+  &::ng-deep.mat-form-field-underline{
+    bottom: 0;
+  }
+  &::ng-deep.mat-form-field-wrapper{
+    padding: 0;
+  }
+}
+
+.category-btn{
+  background-color: #3f51b5;
+  border-radius: 3px;
+  text-align: center;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  line-height: 1;
+  color: #fff;
+  font-weight: normal;
+  @include rem(14);
+  transition: .2s ease-out;
+
+  &.width-1{
+    width: 235px;
+  }
+
+  &:hover {
+    background: #2f3c88;
+  }
+}
+
+.title-h2{
+  font-family: $font-family-roboto;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1;
+  @include rem(24);
+  color: #000000;
+}
+
+.title-h3{
+  font-family: $font-family-roboto;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1;
+  @include rem(17);
+  color: #000000;
+}
+
+.title-h1{
+  font-family: $font-family-roboto;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1;
+  @include rem(30);
+  color: #000000;
+}
+
+.title-small{
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1;
+  @include rem(13);
+  color: #909090;
+  margin-bottom: 6px;
+}
+
+.e-line  {
+  border-bottom: 1px solid #E0E0E0;
+  margin-bottom: 4px;
+}
+
+.btn-delete{
+  cursor: pointer;
+
+  i{
+    color: #EB5757;
+  }
+}
+
+.b-checkbox-wrap{
+  ::ng-deep.mat-checkbox {
+    display: block;
+
+    &.mat-accent{
+       .mat-ripple-element {
+        background-color: #3f51b5;
+      }
+    }
+    &.mat-accent {
+      &.mat-checkbox-checked{
+        .mat-checkbox-background {
+          background-color: #3f51b5;
+        }
+      }
+    }
+  }
+
+  ::ng-deep.mat-checkbox-frame {
+    border-width: 1px;
+    border-color: #727272;
+  }
+  ::ng-deep.mat-checkbox-label {
+    line-height: 1;
+    @include rem(14);
+    color: #202020;
+    display: flex;
+    align-items: center;
+  }
+  ::ng-deep.mat-checkbox-layout {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+  ::ng-deep.mat-checkbox-inner-container {
+    width: 20px;
+    height: 20px;
+    margin: 0 8px 0 0;
+  }
+
+  .bb-timer-sand{
+    @include rem(21);
+    color: #828282;
+  }
+
+  .check-circle{
+    @include rem(24);
+    color: #828282;
+  }
+
+  .bb-cancel-circle{
+    @include rem(20);
+    color: #828282;
+  }
+}
+
+.btn-fill{
+  background: #3f51b5;
+  border-radius: 3px;
+  box-shadow: none !important;
+  outline: none !important;
+  height: 40px;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  @include rem(15);
+  color: #FFFFFF;
+  transition: .2s ease-out;
+
+  ::ng-deep.mat-button-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: normal;
+  }
+
+  i{
+    color: #ffffff;
+    margin-left: 6px;
+    @include rem(18);
+  }
+
+  &.width-120{
+    width: 120px;
+  }
+
+  &:hover {
+    background: #2f3c88;
+  }
+}
+
+.text-btn{
+  cursor: pointer;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  @include rem(14);
+  color: #3f51b5;
+  display: inline-flex;
+  align-items: center;
+
+  i{
+    @include rem(20);
+    color: #3f51b5;
+    margin-right: 5px;
+  }
+}
+
+.color-red{
+  color: #FF0000 !important;
+  i{
+    color: #FF0000 !important;
+  }
+}
+
+.section-wrap{
+  background: #FFFFFF;
+  padding: 4px;
+
+}
+
+.e-text{
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  @include rem(14);
+  color: #000000;
+}
+
+.b-showcase-wrap{
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  padding: 4px;
+
+
+  .b-showcase-item{
+    cursor: default;
+  }
+}
+
+.summary-info-body {
+  position: relative;
+  padding: 0;
+  border: 1px solid #b9b9b9;
+
+  .col {
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+
+    &.title {
+      width: 220px;
+      min-width: 220px;
+      padding-bottom: 17px !important;
+
+      .cell {
+        justify-content: flex-start;
+        flex-flow: row wrap;
+      }
+    }
+
+    &.text {
+      max-width: 400px;
+    }
+  }
+
+  .col-tex-wrap {
+    overflow-x: scroll;
+    padding-left: 10px;
+    display: flex;
+    width: 100%;
+    .col {
+      min-width: 156px;
+
+      &:first-child{
+        border-left: none;
+      }
+    }
+
+    .col-auto{
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+  }
+
+  .cell {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: .625rem .5rem;
+    justify-content: flex-start;
+    border-bottom: 1px solid #b9b9b9;
+    height: 52px;
+    position: relative;
+
+    @include rem(14);
+    line-height: 1;
+    font-weight: normal;
+
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &.cell-title{
+      height: 108px;
+      border-bottom: none;
+
+      font-family: $font-family-roboto;
+      font-style: normal;
+      font-weight: bold;
+      line-height: 1;
+      @include rem(14);
+      letter-spacing: 0.000127273px;
+      color: #000000;
+      text-transform: uppercase;
+    }
+
+    &.comment-container{
+      position: absolute;
+    }
+
+    .comment-textarea{
+      background: #FFE5E5;
+      border: 1px solid #EB5757;
+      resize: none;
+      padding: 3px;
+      width: 100%;
+      height: 100%;
+
+      font-family: $font-family-roboto;
+      font-style: normal;
+      font-weight: normal;
+      line-height: normal;
+      text-transform: none;
+      @include rem(13);
+      letter-spacing: 0.000127273px;
+      color: #333333;
+
+      +.actions{
+        position: absolute;
+        right: 1px;
+        bottom: 10px;
+        display: flex;
+
+        .ic-btn{
+          background-color: transparent;
+
+          .bb-union{
+            font-size: large;
+          }
+
+          .check-circle{
+            font-size: x-large;
+          }
+
+          .bb-mat-edit{
+            font-size: x-large;
+          }
+        }
+
+        .ic-btn+.ic-btn{
+          padding-left: 0;
+        }
+      }
+    }
+  }
+
+  .title {
+    color: #000735;
+    @include rem(14);
+    line-height: 1;
+    font-weight: normal;
+    box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .text {
+    color: #000735;
+    font-size: 1.125rem;
+    font-weight: 400;
+    justify-content: center;
+  }
+
+  .e-icon{
+    i{
+      color: #828282;
+      font-size: 18px;
+      margin-left: 4px;
+      cursor: pointer;
+    }
+  }
+}
+
+.ic-btn{
+  padding: 0 7px;
+  box-shadow: none!important;
+  min-width: 40px;
+  outline: none;
+
+  &::ng-deep.mat-button-ripple{
+    display: none;
+  }
+
+  &::ng-deep.mat-button-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .check-circle {
+    color: #BDBDBD;
+    @include rem(36);
+  }
+
+  .bb-cancel-circle {
+    color: #BDBDBD;
+    @include rem(30);
+  }
+
+  .bb-union {
+    color: #BDBDBD;
+    @include rem(20);
+  }
+
+  .bb-mat-edit {
+    color: #BDBDBD;
+    @include rem(36);
+  }
+
+  .bb-check{
+    color: #27AE60;
+    @include rem(22);
+  }
+
+  .ic-clear{
+    color: #EB5757;
+    @include rem(36);
+  }
+}
+
+.ic-text{
+  display: flex;
+  align-items: center;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  @include rem(14);
+  color: #828282;
+
+  .check-circle {
+    color: #27AE60;
+    @include rem(36);
+    margin-right: 5px;
+  }
+}
+
+.color-gray{
+  color: #9B9B9B;
+}
+
+.checked {
+  i {
+    color: #27AE60!important;
+  }
+}
+.cancel {
+  i {
+    color: #FF0000!important;
+  }
+}
+
+.b-category{
+  section{
+    background: #F2F0F0;
+    border-radius: 3px;
+    padding: 10px;
+    height: 400px;
+    overflow: hidden;
+  }
+
+  &--inner{
+    height: 350px;
+    overflow: hidden;
+
+    &.select{
+      overflow-y: auto;
+    }
+  }
+
+  &--item{
+    background: #FFFFFF;
+    border-radius: 3px;
+    height: 40px;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+    padding-right: 40px;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+    margin-bottom: 10px;
+  }
+
+  &--name{
+    font-family: $font-family-roboto;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 12px;
+    @include rem(15);
+    text-align: center;
+    color: #212529;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  &--time{
+    color: #868686;
+    font-family: $font-family-roboto;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 12px;
+    @include rem(13);
+    text-align: center;
+
+    span{
+      margin-right: 4px;
+    }
+  }
+
+  &--counter{
+    position: absolute;
+    border-radius: 50%;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    background-color:  #3C4858;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-family-roboto;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 1;
+    @include rem(11);
+    text-align: center;
+    color: #FFFFFF;
+  }
+
+  .text-btn{
+    font-weight: 500;
+  }
+}
+
+.e-text{
+  font-family: $font-family-roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  @include rem(15);
+  color: #212529;
+
+  &--counter{
+    background: #3f51b5;
+    border-radius: 15px;
+    height: 28px;
+    min-width: 28px;
+    padding: 0 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    line-height: 1;
+    @include rem(13);
+    color: #FFFFFF;
+    margin-left: 6px;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+

@@ -1,0 +1,93 @@
+<mat-expansion-panel [expanded]="isExtended"
+  (closed)="onPanelClose()"
+  (afterExpand)="onPanelOpen()"
+  [formGroup]="formGroup">
+  <mat-expansion-panel-header>
+    <mat-panel-title class="align-items-center">
+      {{item.category.nameRu}}
+
+      <mat-radio-group formControlName="isPrepayment" class="ml-5" (click)="$event.stopPropagation()">
+        <mat-radio-button class="mr-2"
+                          [value]="1">Цена заказа
+        </mat-radio-button>
+        <mat-radio-button class="mr-2"
+                          [value]="0">Коэффициент
+        </mat-radio-button>
+      </mat-radio-group>
+    </mat-panel-title>
+
+    <mat-panel-description class="d-flex justify-content-end">
+      <button style="margin-right: 8px;" mat-button color="primary" (click)="addNewRoute($event)">
+        + Маршрут
+      </button>
+    </mat-panel-description>
+
+    <mat-action-row>
+      <div class="d-flex align-items-center">
+        <ng-container *ngIf="isEdit">
+          <ng-template [ngIf]="!formGroup.get('isFixed').value">
+            <mat-form-field class="w-80 w-auto mr-2" floatLabel="never">
+              <input matInput placeholder="Коэффициент"
+                    formControlName="coefficient" type="number">
+              <span matSuffix>%</span>
+            </mat-form-field>
+          </ng-template>
+
+          <ng-template [ngIf]="formGroup.get('isFixed').value">
+            <mat-form-field class="w-80 w-auto mr-2" floatLabel="never">
+              <input matInput placeholder="Стоимость" autocomplete="off" autocorrect="off"
+                    formControlName="priceExtra" type="number">
+            </mat-form-field>
+            <mat-form-field class="w-80 w-auto mr-2" floatLabel="never">
+              <mat-select placeholder="Валюта" formControlName="currency">
+                <mat-option
+                  *ngFor="let cur of currencies"
+                  [value]="cur.id">{{cur.nameRu}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-template>
+        </ng-container>
+        <span class="e-price" *ngIf="!isEdit">
+          <span *ngIf="!item.isFixed">{{item.coefficient}}%</span>
+          <span *ngIf="item.isFixed">{{item.priceExtra}} {{item.currency?.nameRu}}</span>
+        </span>
+
+        <button *ngIf="isEdit" mat-icon-button color="primary"
+                (click)="onChangePriceClick($event)">
+          <mat-icon>sync</mat-icon>
+        </button>
+        <button
+          mat-icon-button color="primary"
+          (click)="onSaveClick($event)">
+          <mat-icon>{{isEdit ? 'save' : 'create'}}</mat-icon>
+        </button>
+        <button mat-icon-button color="warn"
+          matTooltip="Удалить категорию" matTooltipPosition="above"
+                (click)="onDeleteClick($event)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    </mat-action-row>
+  </mat-expansion-panel-header>
+
+  <b2b-customs-route
+    *ngIf="isNewRoute"
+    [baseTariff]="baseTariff"
+    [category]="category"
+    [deliveryTypes]="deliveryTypes"
+    [currencies]="currencies"
+    [isPrepayment]="formGroup.get('isPrepayment').value"
+    (itemOnChanged)="onRouteChanged($event)">
+  </b2b-customs-route>
+
+  <b2b-customs-route
+    *ngFor="let route of tariffRoutes"
+    [item]="route"
+    [baseTariff]="baseTariff"
+    [category]="category"
+    [deliveryTypes]="deliveryTypes"
+    [currencies]="currencies"
+    [isPrepayment]="formGroup.get('isPrepayment').value"
+    (itemOnChanged)="onRouteChanged($event)">
+  </b2b-customs-route>
+</mat-expansion-panel>

@@ -1,0 +1,146 @@
+<div class="chat__window" #List>
+  <mat-toolbar class="chat__window__heading">
+    <div class="chat__window__heading__summary" *ngIf="chat && loaded.messages !== -1 && chatType === 1">
+      <div class="chat__window__heading__avatar">
+        <img [src]="clientPhoto">
+      </div>
+      <a class="chat__window__heading__link">
+        {{clientCompanyName}}
+      </a>
+      <p class="chat__window__heading__activity">
+        <span class="w-100">
+          <i class="material-icons" matTooltip="Клиент" matTooltipPosition="above">person</i>
+          {{clientName}} (Клиент)
+        </span>
+      </p>
+    </div>
+    <div class="chat__window__heading__summary" *ngIf="!chat && loaded.messages !== -1">
+      <i class="fa fa-refresh fa-spin fa-3x fa-fw fa-ico" aria-hidden="true"></i>
+      <span class="sr-only">
+        Загружаю...
+      </span>
+    </div>
+    <div class="chat__window__actions" *ngIf="chat && loaded.messages !== -1">
+      <button mat-flat-button color="primary" class="chat__window__summary__icons" (click)="closeChat()">
+        Закрыть чат<i class="material-icons">star_border</i>
+      </button>
+      <button mat-button color="warn" class="p-0 ml-3 ban-button" (click)="banClient()">
+        <i class="material-icons">not_interested</i>
+      </button>
+    </div>
+  </mat-toolbar>
+  <div [hidden]="loaded.messages !== 1">
+    <div class="chat__messages" *ngIf="messages.length === 0">
+      <div class="chat__messages__empty__text">
+        Пока что нет сообщений, напишите первое сообщение ниже
+      </div>
+    </div>
+    <div class="chat__messages" *ngIf="messages.length > 0">
+      <!--<ul class="chat__messages__list" debounce infiniteScroll [infiniteScrollUpDistance]="2"-->
+          <!--(scroll)="onScroll($event)" [infiniteScrollThrottle]="300" [scrollWindow]="false"-->
+      <ul class="chat__messages__list" [style.height.px]="dimensions.ListCollection" #ListCollection>
+        <li class="chat__messages__preloader" [hidden]="loaded.loading !== true">
+          <i class="fa fa-refresh fa-spin fa-3x fa-fw fa-ico" aria-hidden="true"></i>
+          <span class="sr-only">
+            Загружаю...
+          </span>
+        </li>
+        <li class="chat__messages__list-{{nodeElement(message.type, message.user_id)}} message-{{message.id}}"
+            *ngFor="let message of messages">
+          <div class="chat__messages__list-name" *ngIf="message.type !== 'callMissed' && message.type !== 'callEnded'">
+            <i *ngIf="message.activityId" class="icon-activities {{OCCUPATION_CLASS[message.activityKey]}}"
+               matTooltip="{{ activityName(message.activityKey) }}" matTooltipPosition="above"></i>
+            <i class="material-icons icon-person">person</i> {{message.firstname}} {{message.lastname}} <span
+            *ngIf="message.activityId || message.companyName">&nbsp; ({{message.activityName ? message.activityName : message.companyName}})</span>
+          </div>
+          <div class="messages-wrap">
+            <p class="chat__messages__list-text">
+              <i *ngIf="message.type === 'callMissed'"
+                 class="material-icons chat__messages__icons missed">phone_missed</i>
+              <span *ngIf="isAddUser(message)">
+                Новый участник в чате
+              </span>
+              <span *ngIf="isDeleteUser(message)">
+                Покинул чат
+              </span>
+              <span *ngIf="isConsRate(message)">
+                Вас оценили <i class="bb bb-{{message.attributes.rate ? 'emoticon-excited' : 'emoticon-dead'}}"></i>
+              </span>
+              <!--НАЧАЛО служебные сообщения-->
+              <span *ngIf="isCloseQuestion(message)">
+                Клиент закрыл вопрос
+              </span>
+              <span *ngIf="isOpenWindow(message)">
+                Клиент открыл окно
+              </span>
+              <span *ngIf="isCloseWindow(message)">
+                Клиент закрыл окно
+              </span>
+              <span *ngIf="isChangeMode(message)">
+                Клиент перешел в другой режим
+              </span>
+              <span *ngIf="isClientConnected(message)">
+                Клиент подключился
+              </span>
+              <span *ngIf="isClientDisconnected(message)">
+                Клиент отключился
+              </span>
+              <span *ngIf="isBan(message)">
+                Вы заблокировали клиента до {{message.attributes.bannedTo}}
+              </span>
+              <!--КОНЕЦ служебные сообщения-->
+              <!--<span *ngIf="!isAddUser(message) && !isDeleteUser(message) && !isFile(message) && !isImage(message) && !isConsultantGreeting(message) && !isConsRate(message) && !isBlacklisted(message)"-->
+                    <!--[innerHTML]="nodeText(message.text ? (message.text | linkify) : 'chat.corruptMessage')"></span>-->
+              <span *ngIf="!isAddUser(message) && !isDeleteUser(message) && !isFile(message) && !isImage(message) && !isConsultantGreeting(message) && !isConsRate(message) && !isBlacklisted(message)"
+                    [innerHTML]="nodeText(message.text ? message.text : 'Данное сообщение необходимо удалить из базы данных')"></span>
+              <span *ngIf="isConsultantGreeting(message)">Я могу Вам помочь?</span>
+              <a [href]="_config.serverUrl + message.attributes.link" *ngIf="isImage(message)" target="_blank"><img
+                [matTooltip]="message.attributes.name" matTooltipPosition="above"
+                [src]="_config.serverUrl + message.attributes.link" class="e-item-img h-2"/></a>
+              <span *ngIf="isFile(message)" [matTooltip]="message.attributes.name" matTooltipPosition="above"
+                    class="e-item-file"><a [href]="_config.serverUrl + message.attributes.link" target="_blank">
+                <i class="material-icons">attach_file</i>{{message.attributes.name}}</a></span>
+            </p>
+            <p class="chat__messages__list-time"
+               *ngIf="isText(message) || isFile(message) || isImage(message)">
+              {{time(message.date_send)}}
+              <i *ngIf=" nodeElement(message.type, message.user_id) === 'to' && readMsg(message) === 'done_all' "
+                 class="material-icons chat__messages__icons read done_all readIcon msg-{{message.id}}"
+                 matTooltip="Прочитано" matTooltipPosition="above">{{ readMsg(message) }}</i>
+              <i *ngIf=" nodeElement(message.type, message.user_id) === 'to' && readMsg(message) === 'done' "
+                 class="material-icons chat__messages__icons read done readIcon msg-{{message.id}}"
+                 matTooltip="Доставлено" matTooltipPosition="above">{{ readMsg(message) }}</i>
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="chat__bottomPanel d-flex" #ToolBar>
+      <textarea class="chat__bottomPanel__area" matInput matTextareaAutosize matAutosizeMinRows="1"
+                matAutosizeMaxRows="5" [appAutofocus] [(ngModel)]="textareaValue" (keydown.enter)="sendByBtn($event)"
+                placeholder="Message" #TextArea><!--{{textareaValue}}--></textarea>
+
+      <label for="upload"><span class="chat__bottomPanel--add d-flex align-items-center justify-content-center"><i
+        class="bb chat__window__summary__icons bb-image-plus"></i></span></label>
+      <input id="upload" type="file" ng2FileSelect [uploader]="uploader" class="d-none">
+      <button mat-button class="chat__bottomPanel__button" (click)="sendByBtn($event)">
+        <i class="material-icons chat__bottomPanel__button-send">send</i>
+      </button>
+    </div>
+  </div>
+  <div *ngIf="loaded.messages === 0">
+    <div class="chat__messages__empty">
+      <mat-spinner class="spinner" mode="indeterminate"></mat-spinner>
+    </div>
+  </div>
+  <div *ngIf="loaded.messages === -1">
+    <div class="chat__messages__empty">
+      <div class="chat__messages__empty__text">
+        <span *ngIf=" chatType === 1 && mobile === 0 ">Выберите чат, чтобы просмотреть переписку</span>
+        <span *ngIf=" chatType === 1 && mobile === 1 ">
+          <mat-spinner class="spinner" mode="indeterminate"></mat-spinner>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

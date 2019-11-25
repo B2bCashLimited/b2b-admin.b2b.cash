@@ -1,0 +1,330 @@
+<mat-card class="d-flex flex-column" >
+  <h4>Создание маркетплейса</h4>
+  <mat-tab-group>
+    <mat-tab label="Техническая часть">
+      <div>
+        <div [formGroup]="formTech" class="add-field">
+          <div mat-dialog-content>
+            <h6>1) Укажите название маркетплейса и доменное имя</h6>
+            <div>
+              <mat-form-field class="first-line-tech">
+                <input formControlName="marketName" ngDefaultControl matInput placeholder="Название маркетплейса">
+                <mat-error *ngIf="formTech.invalid">
+                  Заполните поле
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="first-line-tech">
+                <input formControlName="domen" ngDefaultControl matInput placeholder="Доменное имя">
+                <mat-error *ngIf="formTech.invalid">
+                  Заполните поле
+                </mat-error>
+              </mat-form-field>
+              <mat-checkbox class="first-line-tech" color="primary" [(ngModel)]="needHelp" [ngModelOptions]="{standalone: true}">
+                Нужна помощь менеджера
+              </mat-checkbox>
+              </div>
+              <p class="grey-text">Для того чтобы приарковать домен на наш хостинг, необходимо в ЛК регистратора(nic.ru, reg.ru и тд.) прописать DNS нашего хостинга</p>
+              <p class="bold-text">ns8-cloud.nic.ru</p>
+              <p class="bold-text">ns3-l2.nic.ru</p>
+              <p class="bold-text">ns4-l2.nic.ru</p>
+              <p class="bold-text">ns8-l2.nic.ru</p>
+              <p class="bold-text">ns8-cloud.nic.ru</p>
+          </div>
+          <h6>2) Укажите Email имя отправителя информационных писем, например info@[domain.ru]</h6>
+          <mat-form-field class="first-line-tech" style="margin-right: 0">
+            <input formControlName="email" ngDefaultControl matInput placeholder="Электронный адрес">
+            <mat-error *ngIf="formTech.invalid">
+              Заполните поле
+            </mat-error>
+          </mat-form-field>
+          <span style="margin-right: 20px;">@[domain.ru]</span>
+          <mat-form-field class="first-line-tech">
+            <input formControlName="senderName" ngDefaultControl matInput placeholder="Имя отправителя">
+            <mat-error *ngIf="formTech.invalid">
+              Заполните поле
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Визуальная часть"> 
+      <div>
+        <div [formGroup]="formVisual">
+            <h6>1) Загрузите логотип сайта favicon.ico</h6>
+            <div class="images-upload">
+              <!--Печать-->
+              <div class="b-drop-container mr-3">
+                <div class="d-flex align-items-center flex-grow-1 position-relative">
+                  <div class="mr-auto">
+                    <input class="d-none"
+                           type="file"
+                           #logoUpload
+                           ng2FileSelect
+                           [uploader]="logoUploader"
+                           [accept]="allowedImageTypes">       
+                    <input ngDefaultControl matInput  placeholder="{{uploadedlogoImage ? uploadedlogoImage.name : 'Логотип'}}">
+                  </div>
+  
+                  <button (click)="logoUpload.click()"
+                          color="primary"
+                          type="button"
+                          mat-raised-button>Обзор
+                  </button>
+                </div>
+                <mat-error *ngIf="formVisual.get('imglogo').invalid">{{errorMessage}}</mat-error>
+  
+                <img *ngIf="uploadedlogoImage"
+                     style="max-width: 240px; max-height: 100px;"
+                     [src]="serverUrl + uploadedlogoImage.link"
+                     [matTooltip]="uploadedlogoImage.name"
+                     class="uploaded-image"
+                     matTooltipPosition="above"
+                     [alt]="uploadedlogoImage.name">
+              </div>
+  
+              <!--Подпись-->
+              <div class="b-drop-container">
+                <div class="d-flex align-items-center flex-grow-1 position-relative">
+                  <div class="mr-auto">
+                    <input class="d-none"
+                           type="file"
+                           #faviconUpload
+                           ng2FileSelect
+                           [uploader]="faviconUploader"
+                           [accept]="allowedImageTypes">
+                           <input ngDefaultControl matInput  placeholder="{{uploadedfaviconImage ? uploadedfaviconImage.name : 'favicon'}}">
+                  </div>
+                  <button (click)="faviconUpload.click()"
+                          color="primary"
+                          type="button"
+                          mat-raised-button>Обзор
+                  </button>
+                </div>
+  
+                <img *ngIf="uploadedfaviconImage"
+                     style="max-width: 100px; max-height: 100px;"
+                     [src]="serverUrl + uploadedfaviconImage.link"
+                     [matTooltip]="uploadedfaviconImage.name"
+                     class="uploaded-image"
+                     matTooltipPosition="above"
+                     [alt]="uploadedfaviconImage.name">
+              </div>
+            </div>
+            <h6>2) Выберите основные цвета сайта</h6>
+            <div style="display: flex;">
+              <div style="margin-right: 20px;">
+              <h6>Цвет текста</h6>
+                <input 
+                  style="width: 50px; height: 50px;"
+                  [(colorPicker)]="textColor" 
+                  [style.background]="textColor" 
+                  />
+                   <span>{{ textColor }}</span>
+              </div>
+              <div style="margin-right: 20px;">
+              <h6>Цвет ссылки</h6>
+                  <input
+                    style="width: 50px; height: 50px;"
+                    [(colorPicker)]="linkColor" 
+                    [style.background]="linkColor" 
+                    />
+                    <span>{{ linkColor }}</span>
+              </div>
+              <div style="margin-right: 20px;">
+              <h6>Цвет кнопки</h6>
+                <input 
+                  style="width: 50px; height: 50px;"
+                  [(colorPicker)]="buttonColor" 
+                  [style.background]="buttonColor" 
+                  />
+                  <span>{{ buttonColor }}</span>
+              </div>
+              
+              <div style="margin-right: 20px;">
+              <h6>Цвет при наведении</h6>
+                  <input
+                    style="width: 50px; height: 50px;"
+                    [(colorPicker)]="buttonHoverColor" 
+                    [style.background]="buttonHoverColor" 
+                    />
+                    <span>{{ buttonHoverColor }}</span>
+              </div>
+              <div style="margin-right: 20px;">
+                  <h6>Цвет текста на кнопке</h6>
+                <input
+                  style="width: 50px; height: 50px;"
+                  [(colorPicker)]="buttonTextColor" 
+                  [style.background]="buttonTextColor" 
+                  />
+                  <span>{{ buttonTextColor }}</span>
+              </div>
+          </div>
+            <h6>3) Загрузите банеры</h6>
+            <div class="baner-upload ">
+              <!--1-->
+              <div class="b-drop-container" style="margin-bottom: 25px;">
+                <div class="d-flex align-items-center flex-grow-1 position-relative">
+                  <div style="width: 250px">
+                    <input class="d-none"
+                           type="file"
+                           #abaner1360
+                           ng2FileSelect
+                           [uploader]="banerUploader1360"
+                           [accept]="allowedImageTypes"
+                           multiple>       
+                    <input ngDefaultControl matInput  placeholder="{{banerUploader1360Image ? banerUploader1360Image.name : 'Банер 1360х220'}}">
+                  </div>
+  
+                  <button (click)="abaner1360.click()"
+                          color="primary"
+                          type="button"
+                          mat-raised-button>Обзор
+                  </button>
+                </div>
+
+                <div *ngIf="baner1360Array.length > 0">
+                  <div *ngFor="let someBaner1360 of baner1360Array">
+                    <img *ngIf="banerUploader1360Image"
+                        style="margin-bottom: 8px;"
+                        [src]="serverUrl + someBaner1360"
+                        [matTooltip]="banerUploader1360Image.name"
+                        class="uploaded-image"
+                        matTooltipPosition="above"
+                        [alt]="banerUploader1360Image.name">
+                        <button mat-icon-button
+                          color="primary"
+                          (click)="deleteBaner1360(someBaner1360)"
+                        >
+                        <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+  
+              <!--2-->
+              <div class="b-drop-container" style="margin-bottom: 25px;">
+                <div class="d-flex align-items-center flex-grow-1 position-relative">
+                  <div style="width: 250px">
+                    <input class="d-none"
+                           type="file"
+                           #abaner984
+                           ng2FileSelect
+                           [uploader]="banerUploader984"
+                           [accept]="allowedImageTypes"
+                           multiple>
+                           <input ngDefaultControl matInput  placeholder="{{banerUploader984Image ? banerUploader984Image.name : 'Банер 984х220'}}">
+                  </div>
+                  <button (click)="abaner984.click()"
+                          color="primary"
+                          type="button"
+                          mat-raised-button>Обзор
+                  </button>
+                </div>
+                <div *ngIf="baner984Array.length > 0">
+                  <div *ngFor="let someBaner984 of baner984Array">
+                    <img *ngIf="banerUploader984Image"
+                        style="margin-bottom: 8px;"
+                        [src]="serverUrl + someBaner984"
+                        [matTooltip]="banerUploader984Image.name"
+                        class="uploaded-image"
+                        matTooltipPosition="above"
+                        [alt]="banerUploader984Image.name">
+                        <button mat-icon-button
+                          color="primary"
+                          (click)="deleteBaner984(someBaner984)"
+                        >
+                        <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!--3-->
+              <div class="b-drop-container " style="margin-bottom: 25px;">
+                <div class="d-flex align-items-center flex-grow-1 position-relative">
+                  <div style="width: 250px">
+                    <input class="d-none"
+                           type="file"
+                           #abaner728
+                           ng2FileSelect
+                           [uploader]="banerUploader728"
+                           [accept]="allowedImageTypes"
+                           multiple>
+                           <input ngDefaultControl matInput  placeholder="{{banerUploader728Image ? banerUploader728Image.name : 'Банер 728х220'}}">
+                  </div>
+                  <button (click)="abaner728.click()"
+                          color="primary"
+                          type="button"
+                          mat-raised-button>Обзор
+                  </button>
+                </div>
+                
+                <div *ngIf="baner728Array.length > 0">
+                  <div *ngFor="let someBaner728 of baner728Array">
+                    <img *ngIf="banerUploader728Image"
+                        style="margin-bottom: 8px;"
+                        [src]="serverUrl + someBaner728"
+                        [matTooltip]="banerUploader728Image.name"
+                        class="uploaded-image"
+                        matTooltipPosition="above"
+                        [alt]="banerUploader728Image.name">
+                        <button mat-icon-button
+                          color="primary"
+                          (click)="deleteBaner728(someBaner728)"
+                        >
+                        <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!--4-->
+              <div class="b-drop-container mr-3" style="margin-bottom: 25px;">
+                <div class="d-flex align-items-center flex-grow-1 position-relative">
+                  <div style="width: 250px">
+                    <input class="d-none"
+                           type="file"
+                           #abaner280
+                           ng2FileSelect
+                           [uploader]="banerUploader280"
+                           [accept]="allowedImageTypes"
+                           multiple>       
+                    <input ngDefaultControl matInput  placeholder="{{banerUploader280Image ? banerUploader280Image.name : 'Банер 280х220'}}">
+                  </div>
+  
+                  <button (click)="abaner280.click()"
+                          color="primary"
+                          type="button"
+                          mat-raised-button>Обзор
+                  </button>
+                </div>
+                <div *ngIf="baner280Array.length > 0">
+                  <div *ngFor="let someBaner280 of baner280Array">
+                    <img *ngIf="banerUploader280Image"
+                        style="margin-bottom: 8px;"
+                        [src]="serverUrl + someBaner280"
+                        [matTooltip]="banerUploader280Image.name"
+                        class="uploaded-image"
+                        matTooltipPosition="above"
+                        [alt]="banerUploader280Image.name">
+                        <button mat-icon-button
+                          color="primary"
+                          (click)="deleteBaner280(someBaner280)"
+                        >
+                        <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     
+    </mat-tab>
+  </mat-tab-group>
+  <button class="mr-2 button-save"
+    [disabled]="formTech.invalid || !this.banerUploader1360Image || !this.banerUploader984Image || !this.banerUploader728Image || !this.banerUploader280Image || !this.uploadedfaviconImage || !this.uploadedlogoImage"
+    mat-raised-button
+    color="primary"
+    (click)="saveMarket()"
+    >Создать маркетплейс
+  </button>
+</mat-card>

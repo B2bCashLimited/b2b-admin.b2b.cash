@@ -1,0 +1,54 @@
+<section class="section-wrap">
+  <h2 class="title-h2 mb-3">Актуализация заказов</h2>
+  <div class="row align-items-end mb-5">
+    <div class="col-xl-4 mb-2">
+      <div class="category-btn" (click)="selectCategory()">{{(selectedCategoryNames | ellipsis: 50) || 'Выберите Категорию'}}</div>
+    </div>
+
+    <div class="col-xl-8 mb-2">
+      <div class="d-flex">
+        <mat-form-field class="mr-3 pt-1">
+          <input matInput
+            [owlDateTime]="dateTimePickerFrom"
+            [owlDateTimeTrigger]="dateTimePickerFrom"
+            [(ngModel)]="dateFrom"
+            (ngModelChange)="dateFromChange()"
+            placeholder="От (дата/время)"
+            autocomplete="off">
+          <i class="material-icons"
+              [owlDateTimeTrigger]="dateTimePickerFrom"
+              matSuffix>calendar_today</i>
+          <owl-date-time [pickerType]="'calendar'" #dateTimePickerFrom></owl-date-time>
+        </mat-form-field>
+
+        <mat-form-field class="mr-3 pt-1">
+          <input matInput
+            [owlDateTime]="dateTimePickerTo"
+            [owlDateTimeTrigger]="dateTimePickerTo"
+            [(ngModel)]="dateTo"
+            (ngModelChange)="dateToChange()"
+            placeholder="До (дата/время)"
+            autocomplete="off">
+          <i class="material-icons"
+              [owlDateTimeTrigger]="dateTimePickerTo"
+              matSuffix>calendar_today</i>
+          <owl-date-time [pickerType]="'calendar'" #dateTimePickerTo></owl-date-time>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngFor="let item of items">
+    <b2b-product-item
+      [item]="item"
+      (itemChanged)="onItemChanged($event)"
+    ></b2b-product-item>
+  </ng-container>
+
+  <mat-paginator
+    [length]="pager.length"
+    [pageSize]="pager.pageSize"
+    [hidePageSize]="true"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+</section>

@@ -1,0 +1,65 @@
+$b2borange: #FA7600;
+
+.activity-schedule-container {
+  cursor: pointer;
+}
+
+.activity-schedule {
+  font-size: .875rem;
+  display: block;
+  text-align: left;
+  max-width: 102px;
+}
+
+.text1 {
+  color: #3c4858;
+}
+
+.text2 {
+  color: #868e96;
+}
+
+.text3 {
+  color: #f00;
+}
+
+.activity-schedule-ico {
+  background-color: $b2borange;
+  color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.p-text{
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.color-blue-charcoal{
+  color: #212529;
+}
+
+.color-light-grey {
+  color: #868E96;
+}
+
+.btn-edit-schedule{
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1;
+  font-size: .875rem;
+  color: #FF6F00;
+  padding: 0;
+  cursor: pointer;
+
+  .ic-schedule {
+    width: 20px;
+    height: 20px;
+    background-color: #FF6F00;
+    color: #ffffff;
+  }
+}

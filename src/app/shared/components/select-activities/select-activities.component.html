@@ -1,0 +1,14 @@
+<ng-select
+  bindLabel="name"
+  bindValue="id"
+  placeholder="Поиск вида деятельности"
+  [(ngModel)]="selectedActivities"
+  [disabled]="disabled"
+  [items]="activities"
+  [loading]="isLoading"
+  [closeOnSelect]="true"
+  [hideSelected]="true"
+  [multiple]="multiple"
+  [typeahead]="nameActivityInput$"
+  (change)="onSelectedActivityChanged($event)">
+</ng-select>

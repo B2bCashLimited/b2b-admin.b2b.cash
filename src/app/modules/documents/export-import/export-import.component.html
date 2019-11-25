@@ -1,0 +1,343 @@
+<section class="section-wrap">
+  <h2 class="mb-5">Экспорт и импорт документов</h2>
+  <mat-tab-group class="b-tab-group">
+    <!--Экспорт-->
+    <mat-tab label="Экспорт документов в 1С"
+             class="font-weight-bold">
+      <div class="d-flex my-4">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+          <mat-radio-group>
+            <mat-radio-button color="primary"
+                              checked>Совпадает с настройкой отправки
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+
+      <div class="d-flex">
+        <div class="col-sm-auto col-12">
+          <button class="fill-btn w-100"
+                  color="primary"
+                  disabled
+                  mat-raised-button>Сохранить
+          </button>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!--Импорт-->
+    <mat-tab label="Импорт документов из 1С"
+             [formGroup]="formGroup"
+             class="font-weight-bold">
+      <div class="font-weight-bold mb-4">Настройка</div>
+
+      <div class="d-flex my-4">
+        <div class="d-flex">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="row">
+              <span class="font-weight-bold">Период</span>
+
+              <mat-radio-group class="d-flex flex-column mt-4"
+                               formControlName="importDateTimes">
+                <mat-radio-button color="primary"
+                                  value="1">Каждый день
+                </mat-radio-button>
+                <mat-radio-button color="primary"
+                                  value="2">2 раза в день
+                </mat-radio-button>
+                <mat-radio-button color="primary"
+                                  value="3">
+                  Раз в&nbsp;
+                  <mat-form-field class="w-25">
+                    <input matInput
+                           class="text-center"
+                           type="number"
+                           formControlName="importDateDay"
+                           autocomplete="off">
+                  </mat-form-field>
+                  &nbsp;дня (дней)
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <button class="fill-btn my-4"
+                    color="primary"
+                    (click)="saveImportSettings()"
+                    mat-raised-button>Сохранить
+            </button>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+            <span class="font-weight-bold">Время</span>
+
+            <div class="row">
+              <div class="col-6 mt-4">
+                <mat-form-field class="w-100">
+                  <input type="time"
+                         matInput
+                         min="0"
+                         max="23"
+                         formControlName="importTimeFrom"
+                         placeholder="час/мин">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6">
+                <mat-form-field class="w-100">
+                  <input type="time"
+                         matInput
+                         min="0"
+                         max="23"
+                         formControlName="importTimeTo"
+                         placeholder="час/мин">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="font-weight-bold">Вывести список</div>
+
+          <div class="d-flex flex-column">
+            <mat-radio-group class="d-flex mt-4"
+                             formControlName="searchByCompany">
+              <mat-radio-button color="primary"
+                                [value]="0"
+                                checked>Все компании
+              </mat-radio-button>
+              <mat-radio-button color="primary"
+                                [value]="1">Одна компания
+              </mat-radio-button>
+            </mat-radio-group>
+
+            <mat-form-field>
+              <input type="text"
+                     matInput
+                     formControlName="companyName"
+                     placeholder="Название компании"
+                     autocomplete="off">
+            </mat-form-field>
+
+            <div class="font-weight-bold mb-2">Выбрать период</div>
+
+            <mat-form-field class="mr-3 pt-1">
+              <input matInput
+                     [owlDateTime]="dateTimePickerFrom"
+                     [owlDateTimeTrigger]="dateTimePickerFrom"
+                     formControlName="dateFrom"
+                     placeholder="От (дата/время)"
+                     autocomplete="off">
+              <i class="material-icons"
+                 [owlDateTimeTrigger]="dateTimePickerFrom"
+                 matSuffix>calendar_today</i>
+              <owl-date-time #dateTimePickerFrom></owl-date-time>
+            </mat-form-field>
+
+            <mat-form-field class="mr-3 pt-1">
+              <input matInput
+                     [owlDateTime]="dateTimePickerTo"
+                     [owlDateTimeTrigger]="dateTimePickerTo"
+                     formControlName="dateTo"
+                     placeholder="До (дата/время)"
+                     autocomplete="off">
+              <i class="material-icons"
+                 [owlDateTimeTrigger]="dateTimePickerTo"
+                 matSuffix>calendar_today</i>
+              <owl-date-time #dateTimePickerTo></owl-date-time>
+            </mat-form-field>
+          </div>
+
+          <button class="fill-btn my-4"
+                  color="primary"
+                  [disabled]="isPending"
+                  (click)="showDocuments1C()"
+                  mat-raised-button>Показать
+          </button>
+        </div>
+      </div>
+
+      <div class="position-relative mat-elevation-z8">
+        <div class="loading-shade"
+             *ngIf="isLoading">
+          <mat-spinner *ngIf="isLoading"></mat-spinner>
+        </div>
+
+        <div class="table-container">
+          <table mat-table
+                 [dataSource]="documents1C"
+                 class="table">
+            <!-- Number Column -->
+            <ng-container matColumnDef="number">
+              <th mat-header-cell
+                  *matHeaderCellDef>№
+              </th>
+              <td mat-cell
+                  *matCellDef="let row; index as i;">{{i + 1}}</td>
+            </ng-container>
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell
+                  *matHeaderCellDef>ID
+              </th>
+              <td mat-cell
+                  *matCellDef="let row">{{row.id}}</td>
+            </ng-container>
+
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+              <th mat-header-cell
+                  *matHeaderCellDef>Дата
+              </th>
+              <td mat-cell
+                  *matCellDef="let row">{{row.dateImported.date | date: 'dd/MM/yyyy'}}</td>
+            </ng-container>
+
+            <!-- Company name Column -->
+            <ng-container matColumnDef="company-name">
+              <th mat-header-cell
+                  *matHeaderCellDef>Название компании
+              </th>
+              <td mat-cell
+                  *matCellDef="let row">{{row.companyName}}</td>
+            </ng-container>
+
+            <!-- Accrual Column -->
+            <ng-container matColumnDef="accrual">
+              <th mat-header-cell
+                  *matHeaderCellDef>Начисления
+              </th>
+              <td mat-cell
+                  *matCellDef="let row">{{row.price}}</td>
+            </ng-container>
+
+            <!-- Currency Column -->
+            <ng-container matColumnDef="currency">
+              <th mat-header-cell
+                  *matHeaderCellDef>Валюта
+              </th>
+              <td mat-cell
+                  *matCellDef="let row">RUR
+              </td>
+            </ng-container>
+
+            <tr mat-header-row
+                *matHeaderRowDef="displayedColumnsImport; sticky: true"></tr>
+            <tr mat-row
+                *matRowDef="let row; columns: displayedColumnsImport;"></tr>
+          </table>
+        </div>
+
+        <mat-paginator
+          [length]="totalItems"
+          [pageIndex]="pageIndex"
+          [pageSize]="pageSize"
+          (page)="onPageChanged($event)"
+        ></mat-paginator>
+      </div>
+    </mat-tab>
+
+    <!-- Настройка отправки -->
+    <mat-tab label="Настройка отправки"
+             class="font-weight-bold">
+      <div class="row mb-3">
+        <div class="col-4">
+          <h5 class="mb-3">Дата выставления акта</h5>
+
+          <mat-radio-group [formControl]="actDateFrequency">
+            <mat-radio-button [value]="0">Раз в месяц</mat-radio-button>
+            <mat-radio-button [value]="1">Раз в неделю</mat-radio-button>
+          </mat-radio-group>
+
+          <mat-select *ngIf="actDateFrequency.value === 1"
+                      [formControl]="dayOfWeek"
+                      class="my-4">
+            <mat-option *ngFor="let day of daysOfWeek"
+                        [value]="day.value">{{day.label}}</mat-option>
+          </mat-select>
+
+          <div class="row">
+            <div class="col-12">
+              <b2b-ctm-calendar
+                *ngIf="actDateFrequency.value === 0"
+                [calendarType]="'date'"
+                [periods]="actsFrequencySelectedPeriods"
+                [minDate]="settingsMinDate"
+                [maxDate]="settingsMaxDate"
+                [existedSelectedDays]="existedActFrequencyDate"
+                (periodsChange)="onActFrequencyDayPeriodChanged($event)"
+                (addObject)="onActDateFrequencyDayObjectAdded($event)">
+              </b2b-ctm-calendar>
+
+              <button class="w-100 fill-btn"
+                      color="primary"
+                      (click)="setActFrequencyDate()"
+                      [disabled]="isPending"
+                      mat-raised-button>Сохранить
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <h5 class="mb-3">Дата отправки в клиентскую часть</h5>
+
+          <div class="row">
+            <div class="col-12">
+              <b2b-ctm-calendar
+                [calendarType]="'date'"
+                [periods]="sendingDaySelectedPeriods"
+                [minDate]="settingsMinDate"
+                [maxDate]="settingsMaxDate"
+                [existedSelectedDays]="existedSendingDate"
+                (periodsChange)="onSendingDayPeriodChanged($event)"
+                (addObject)="onSendingDayObjectAdded($event)">
+              </b2b-ctm-calendar>
+
+              <button class="w-100 fill-btn"
+                      color="primary"
+                      (click)="setDayParams(1)"
+                      [disabled]="isPending"
+                      mat-raised-button>Сохранить
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <h5 class="mb-3">Дата крайнего платежа поступления д.с</h5>
+
+          <div class="row">
+            <div class="col-12">
+              <b2b-ctm-calendar
+                [calendarType]="'date'"
+                [periods]="lastPaymentDaySelectedPeriods"
+                [minDate]="settingsMinDate"
+                [maxDate]="settingsMaxDate"
+                [existedSelectedDays]="existedLastPaymentDate"
+                (periodsChange)="onLastPaymentDayPeriodChanged($event)"
+                (addObject)="onLastPaymentDayObjectAdded($event)">
+              </b2b-ctm-calendar>
+
+              <button class="w-100 fill-btn"
+                      color="primary"
+                      (click)="setDayParams(2)"
+                      [disabled]="isPending"
+                      mat-raised-button>Сохранить
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="fill-btn mt-4"
+              color="primary"
+              (click)="setSwitchSystemParams()"
+              mat-raised-button>{{disableInvoices ? 'Включить' : 'Выключить'}}
+      </button>
+    </mat-tab>
+  </mat-tab-group>
+</section>

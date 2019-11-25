@@ -1,0 +1,304 @@
+<div style="display: flex;flex-grow: 1;flex-direction: column;" [formGroup]="formGroup">
+  <div class="img-logo mb-3" *ngIf="company.logo">
+    <img  [src]="company.logo" alt="company.shortName">
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-4 col-sm-6">
+      <div class="b-text-small-title">Наименование компании</div>
+      <div class="b-text-info">{{company.nameRu || company.nameEn || company.nameCn}}</div>
+    </div>
+    <div class="col-md-4 col-sm-6">
+      <div class="b-text-small-title">Страна</div>
+      <div class="b-text-info">{{company.country && company.country.nameRu || ''}}</div>
+    </div>
+    <div class="col-md-4 col-sm-6">
+      <div class="b-text-small-title">Сайт</div>
+      <div class="b-text-info">
+        <a *ngFor="let site of company.siteUrls" [href]="site.url">{{site.url}}</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-4 col-sm-6">
+      <div class="b-text-small-title">Кол-во сотрудников компании</div>
+      <div class="b-text-info">{{company.numberEmployees}}</div>
+    </div>
+    <div class="col-md-4 col-sm-6">
+      <div class="b-text-small-title">Год основания компании</div>
+      <div class="b-text-info" *ngIf="company.yearOfFound">{{company.yearOfFound | date:'dd/MM/yyyy'}}</div>
+    </div>
+    <div class="col-md-4 col-sm-6">
+      <div class="b-text-small-title">Площадь офиса</div>
+      <div class="b-text-info">{{company.officeArea}} м<sup>2</sup></div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-4 col-sm-6">
+      <div class="b-text-small-title">Телефон</div>
+      <div class="b-text-info">{{company._embedded.user && company._embedded.user.phone || ''}}</div>
+    </div>
+
+    <div class="col-md-4 col-sm-6">
+      <div class="b-text-small-title">Email адрес</div>
+      <div class="b-text-info">{{company.email}}</div>
+    </div>
+  </div>
+
+  <div class="row mb-4"  *ngIf="company.legalAddress">
+    <div class="col-md-6 mb-40">
+      <div class="b-text-big-title mb-2">Юридический адрес компании</div>
+      <div class="row">
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Страна:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.legalAddress['countryNameRu']}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Область/Регион:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.legalAddress['regionNameRu']}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Город:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.legalAddress['cityNameRu']}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Улица и дом:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.legalAddress.geoObject?.address}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-40"  *ngIf="company.factAddress">
+      <div class="b-text-big-title mb-2">Фактический адрес компании</div>
+      <div class="row">
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Страна:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.factAddress['countryNameRu']}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Область/Регион:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.factAddress['regionNameRu']}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Город:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.factAddress['cityNameRu']}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Улица и дом:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.factAddress.geoObject?.address}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="b-text-big-title mb-2">Реквизиты компании</div>
+    </div>
+    <div class="col-md-6 mb-40">
+      <div class="row" *ngIf="company.companyDetailsRu">
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">ОГРН:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetailsRu?.businesLicense}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Номер ЕГРЮЛ:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetailsRu?.identicalCard}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">ИНН:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetailsRu?.taxLicense}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">КПП:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetailsRu?.letterConsignment}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Код ОКТМО:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetailsRu?.certificateOrganizationCode}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Код ОКВЭД:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetailsRu?.registracionVED}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Генеральный директор:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetailsRu?.ceo}}</div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="!company.companyDetailsRu && company.companyDetailsEn || company.companyDetailsCn">
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Номер бизнес лицензии:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetailsEn?.businesLicense || company.companyDetailsCn?.businesLicense}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Номер карты юридического лица:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetailsEn?.identicalCard || company.companyDetailsCn?.identicalCard}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Генеральный директор:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetailsEn?.ceo || company.companyDetailsCn?.ceo}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-40">
+      <div class="row">
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Наименование банка:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetails?.bank?.name}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Адрес банка:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetails?.bank?.address}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="company.companyDetailsRu">
+          <div class="b-text-small-title">Расчетный счет:</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="company.companyDetailsRu">
+          <div class="b-text-info">{{company.companyDetailsRu?.bank?.RS}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="company.companyDetailsRu">
+          <div class="b-text-small-title">ИНН / КПП банка:</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="company.companyDetailsRu">
+          <div class="b-text-info">{{company.companyDetailsRu?.bank?.IIN}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="company.companyDetailsRu">
+          <div class="b-text-small-title">Кореспондентский счет банка:</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="company.companyDetailsRu">
+          <div class="b-text-info">{{company.companyDetailsRu?.bank?.accountHolder}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="company.companyDetailsRu">
+          <div class="b-text-small-title">БИК банка:</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="company.companyDetailsRu">
+          <div class="b-text-info">{{company.companyDetailsRu?.bank?.BIK}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="!company.companyDetailsRu && company.companyDetailsEn || company.companyDetailsCn">
+          <div class="b-text-small-title">Номер счёта:</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="!company.companyDetailsRu && company.companyDetailsEn || company.companyDetailsCn">
+          <div class="b-text-info">{{company.companyDetailsEn?.bank?.RS || company.companyDetailsCn?.bank?.RS}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="!company.companyDetailsRu && company.companyDetailsEn || company.companyDetailsCn">
+          <div class="b-text-small-title">Свифт:</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="!company.companyDetailsRu && company.companyDetailsEn || company.companyDetailsCn">
+          <div class="b-text-info">{{company.companyDetailsEn?.bank?.BIK || company.companyDetailsCn?.bank?.BIK}}</div>
+        </div>
+      </div>
+
+      <div class="row mt-3"
+           *ngIf="!company.companyDetailsRu && (company.companyDetailsEn && company.companyDetailsEn.bankInt) || (company.companyDetailsCn && company.companyDetailsCn.bankInt)">
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Наименование банка корреспондента:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetailsEn?.bankInt?.name || company.companyDetailsCn?.bankInt?.name}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-small-title">Адрес банка корреспондента:</div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="b-text-info">{{company.companyDetailsEn?.bankInt?.address || company.companyDetailsCn?.bankInt?.address}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="company.companyDetailsEn || company.companyDetailsCn">
+          <div class="b-text-small-title">Номер счёта:</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="company.companyDetailsEn || company.companyDetailsCn">
+          <div class="b-text-info">{{company.companyDetailsEn?.bankInt?.RS || company.companyDetailsCn?.bankInt?.RS}}</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="company.companyDetailsEn || company.companyDetailsCn">
+          <div class="b-text-small-title">Свифт:</div>
+        </div>
+        <div class="col-md-6 col-sm-6" *ngIf="company.companyDetailsEn || company.companyDetailsCn">
+          <div class="b-text-info">{{company.companyDetailsEn?.bankInt?.BIK || company.companyDetailsCn?.bankInt?.BIK}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex w-100">
+    <div class="b-text-info" style="display: flex;flex-grow: 1;"
+         *ngIf="!company.quiz || !company.quiz.length; else ratings">
+      Шаблон расчета рейтинга для страны {{ company?.country?.nameRu }} не задан администратором
+    </div>
+
+    <ng-template #ratings>
+      <div>
+        <div class="b-text-small-title">Модерирование юридической части рейтинга компании</div>
+
+        <div *ngFor="let question of company.quiz" class="mb-4">
+          <div class="b-text-small-title">{{ question.questionRu}}</div>
+
+          <mat-form-field>
+            <mat-select formControlName="question">
+              <mat-option
+                *ngFor="let answer of question.answers"
+                [value]="answer.scope">
+                {{answer.answerRu}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary"
+                (click)="onSaveCompanyQuizClick()">Сохранить рейтинг
+        </button>
+      </div>
+    </ng-template>
+  </div>
+
+  <hr class="w-100"/>
+  <div class="d-flex mb-4">
+    <button mat-raised-button color="primary" (click)="onModerateCompanyClick('approve')">
+      <mat-icon>check</mat-icon> Одобрить
+    </button>
+    <button style="margin-left: 15px" mat-raised-button color="warn" (click)="onModerateCompanyClick('reject')">
+      <mat-icon>close</mat-icon> Отклонить
+    </button>
+  </div>
+
+</div>

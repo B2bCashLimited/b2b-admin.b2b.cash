@@ -1,0 +1,18 @@
+<div style="width: 400px;display: flex;flex-grow: 1;flex-direction: column;margin-top: 200px;" [formGroup]="formGroup">
+  <h2 style="text-align: center;">Вход</h2>
+  <mat-form-field appearance="outline">
+    <input matInput placeholder="Введите email" formControlName="username">
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <input matInput type="password" placeholder="Введите пароль" formControlName="password">
+  </mat-form-field>
+
+  <div style="display: flex;flex-grow: 1;">
+    <button style="width: 100%;" mat-raised-button color="primary"
+            (click)="onSigninClick()">Войти
+    </button>
+  </div>
+  <div style="display: flex;color: #f00;padding: 8px 0;justify-content: center;width: 100%"
+       *ngIf="message">{{message}}
+  </div>
+</div>

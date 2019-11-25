@@ -1,0 +1,124 @@
+<mat-card class="d-flex flex-column flex-grow-1"
+          [formGroup]="formGroup">
+  <h2>Компании</h2>
+  <div class="col-12 mb-3">
+    <span class="mr-2"
+          *ngIf="!(selectedCountries && selectedCountries.length)">
+      Всего <span class="badge badge-primary">{{totalCounter}}</span>
+    </span>
+    <span *ngIf="selectedCountries && selectedCountries.length">
+      <span *ngFor="let item of selectedCountries"
+            class="mr-2">{{countries[item.id].nameRu}} <span class="badge badge-primary">{{item.count}}</span></span>
+    </span>
+  </div>
+  <div class="d-flex align-items-center">
+    <mat-form-field class="mr-3">
+      <mat-select placeholder="Фильтр по статусу"
+                  formControlName="status">
+        <mat-option
+          *ngFor="let status of companyStatuses"
+          [value]="status.value">
+          {{status.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div formGroupName="languages">
+      <mat-checkbox class="mr-3"
+                    formControlName="En">
+        <i class="flag flag-us ml-2"></i></mat-checkbox>
+      <mat-checkbox class="mr-3"
+                    formControlName="Ru">
+        <i class="flag flag-ru ml-2"></i></mat-checkbox>
+      <mat-checkbox formControlName="Cn">
+        <i class="flag flag-cn ml-2"></i></mat-checkbox>
+    </div>
+  </div>
+  <div class="d-flex w-100">
+    <mat-form-field class="w-100 pt-1 mr-3">
+      <input matInput
+             placeholder="Введите данные для поиска..."
+             formControlName="search"
+             autocomplete="off">
+    </mat-form-field>
+
+    <b2b-select-countries
+      style="min-width: 300px;"
+      (countriesChange)="onSelectCountriesChanged($event)">
+    </b2b-select-countries>
+  </div>
+
+  <mat-accordion>
+    <div class="loading-shade"
+         *ngIf="isLoading">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <mat-expansion-panel
+      *ngFor="let company of companies;"
+      (opened)="getRatingTemplate(company)">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="align-items-center">{{company.shortName}}</mat-panel-title>
+        <mat-panel-description class="flex-grow-0 align-items-center">
+          <div class="mr-1">
+            <i *ngIf="company.nameRu"
+               class="flag flag-ru mr-1"></i>
+            <i *ngIf="company.nameEn"
+               class="flag flag-us mr-1"></i>
+            <i *ngIf="company.nameCn"
+               class="flag flag-cn mr-1"></i>
+          </div>
+          <div style="min-width: 100px;">
+            <ng-container [ngSwitch]="company.status">
+              <span *ngSwitchCase="1">Одобрен</span>
+              <span *ngSwitchCase="2">Отклонен</span>
+              <span *ngSwitchCase="3">Уточнение</span>
+              <span *ngSwitchDefault>Ожидание</span>
+            </ng-container>
+          </div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <b2b-company-details [company]="company"
+                           (confirmCompany)="onConfirmCompany($event)"></b2b-company-details>
+      <div class="row"
+           *ngIf="!this.questions || !this.questions.length; else ratingTemplateExist">
+        Шаблон расчета рейтинга для страны {{ company?.country?.nameRu }} не задан администратором
+      </div>
+
+      <ng-template #ratingTemplateExist>
+        <div>
+          <div class="b-text-small-title mb-2">Модерирование юридической части рейтинга компании</div>
+
+          <div *ngFor="let question of questions; index as questionIdx"
+               class="mb-2">
+            <div class="b-text-info">{{ question['questionRu'] }}</div>
+            <select (change)="onSelectChange($event.target.value, questionIdx)"
+                    [value]="question.selectedAnswer"
+                    class=" e-select">
+              <option value="-1"></option>
+              <option *ngFor="let answer of question.answers"
+                      [value]="answer.scope">{{answer['answerRu']}}
+              </option>
+            </select>
+          </div>
+          <div class="pt-3">
+            <button mat-raised-button
+                    color="primary"
+                    (click)="saveQuiz(company)">Сохранить рейтинг
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <mat-paginator
+    [length]="length"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [showFirstLastButtons]="true"
+    [hidePageSize]="true"
+    (page)="getPage($event)">
+  </mat-paginator>
+</mat-card>

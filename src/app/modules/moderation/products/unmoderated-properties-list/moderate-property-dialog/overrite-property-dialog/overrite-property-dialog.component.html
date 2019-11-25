@@ -1,0 +1,23 @@
+<div mat-dialog-title>
+  <h6 class="mt-0 mb-3">Характеристики</h6>
+</div>
+<div mat-dialog-content>
+  <div *ngIf="!loading && items.length > 0">
+    <mat-card *ngFor="let item of items" class="mb-3 cursor" matRipple (click)="onPropertyClick(item)"
+              [ngClass]="{'selected': item.id == selectedProperty.id}">
+      <div class="row">
+        <div class="col-4"><b>Ru:</b> {{item.nameRu}}</div>
+        <div class="col-4"><b>En:</b> {{item.nameEn}}</div>
+        <div class="col-4"><b>Cn:</b> {{item.nameCn}}</div>
+      </div>
+    </mat-card>
+  </div>
+  <div *ngIf="!loading && items.length === 0">
+    <h3 class="text-danger">Нет характеристик для переопределения</h3>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="override()"
+          [disabled]="!selectedProperty.id">Переопределить</button>
+</div>

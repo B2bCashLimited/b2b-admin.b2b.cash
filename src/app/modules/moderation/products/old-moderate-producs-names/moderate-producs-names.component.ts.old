@@ -1,0 +1,319 @@
+import { Component, OnInit } from '@angular/core';
+import { CategoryService } from '@b2b/services/category.service';
+import { first, take, distinctUntilChanged, filter, timeout, delay, switchMap } from 'rxjs/operators';
+import { ImportModerates } from 'app/core/models/import-moderates';
+import { FormBuilder, FormGroup, Validators, FormArray, AbstractControl } from '@angular/forms';
+import { MatSelectionListChange, MatDialog, PageEvent } from '@angular/material';
+import { trigger, state, transition, style, animate, query, stagger } from '@angular/animations';
+// tslint:disable-next-line:max-line-length
+import { OverritePropertyDialogComponent } from '../unmoderated-properties-list/moderate-property-dialog/overrite-property-dialog/overrite-property-dialog.component';
+import { ConfigService } from '@b2b/services/config.service';
+import { CategoryFeatureDialogComponent } from '@b2b/shared/components/category-feature-dialog/category-feature-dialog.component';
+import { of } from 'rxjs';
+import { CategoryPropertySummary } from '../models/category-summary';
+
+@Component({
+  selector: 'b2b-moderate-producs-names',
+  templateUrl: './moderate-producs-names.component.html',
+  styleUrls: ['./moderate-producs-names.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({ height: '*', opacity: 0 })),
+      transition(':leave', [
+        style({ height: '*', opacity: 1 }),
+        animate(300, style({ height: 0 }))
+      ]),
+      transition(':enter', [
+        style({ height: '0', opacity: 0 }),
+        animate(300, style({ height: '*' }))
+      ])
+    ]),
+    trigger('filterAnimation', [
+      transition(':enter, * => 0, * => -1', []),
+      transition(':increment', [
+        query(':enter', [
+          style({ opacity: 0, width: '0px' }),
+          stagger(50, [
+            animate('300ms ease-out', style({ opacity: 1, width: '*' })),
+          ]),
+        ], { optional: true })
+      ]),
+      transition(':decrement', [
+        query(':leave', [
+          stagger(-50, [
+            animate('300ms ease-out', style({ opacity: 0, width: '0px' })),
+          ]),
+        ])
+      ]),
+    ])
+  ]
+})
+
+export class ModerateProducsNamesComponent implements OnInit {
+
+  data: ImportModerates[] = [];
+  selectedProducts: ImportModerates[] = [];
+  formRange: FormGroup;
+  formRules: FormGroup;
+  disableSelect = false;
+  currentCategory: number; // id выбранной каьтегории, чтобы не были выбраны продукты из разных категорий | selectedProducts[0].categoryId
+  nameExampleRaw: string;
+  nameExample: string[] = [];
+  nameExampleReversed: string[] = [];
+  page = 1;
+  limit = 25;
+  loading: boolean;
+  isPossibleNexPage = true;
+  properties: string;
+  regexForm: FormGroup;
+  regex = '';
+  searchedImportModerateProducts: number[] = [];
+
+  constructor(
+    private _categoryService: CategoryService,
+    private _fb: FormBuilder,
+    private _dialog: MatDialog,
+    private _config: ConfigService
+  ) { }
+
+  ngOnInit() {
+    this.formRange = this._fb.group({
+      from: [null, [Validators.min(0)]],
+      to: [null, [Validators.min(0)]]
+    }, { validator: this.bibaValidator });
+    this.formRange.valueChanges.pipe(
+      distinctUntilChanged(),
+      filter(() => this.formRange.valid)
+    ).subscribe(val => {
+      this.selectedProducts = this.data.filter((el, i) => (i + 1) >= val.from && (i + 1) <= val.to);
+    });
+
+    this.formRules = this._fb.group({
+      order: 'asc',
+      properties: this._fb.array([
+        this._getPropertiesRow()
+      ])
+    });
+    this.formRules.valueChanges.pipe(
+      distinctUntilChanged(),
+      // filter(() => this.formRules.get('properties').valid),
+      delay(10)
+    ).subscribe(val => {
+      this.handlePropertiesChange(val);
+    });
+
+    this.regexForm = this._fb.group({
+      arr: this._fb.array([
+        this._getRegexRow()
+      ])
+    });
+    this.regexForm.valueChanges.pipe(
+      distinctUntilChanged(),
+      filter(() => this.regexForm.valid)
+    ).subscribe(val => {
+      this.regex = '';
+      val.arr.map((el, i) => {
+        if (i === val.arr.length - 1) {
+          this.regex += `${el.rule}`;
+        } else {
+          this.regex += `${el.rule}+\\${el.separator}`;
+        }
+      });
+      this.regex += '+$';
+    });
+    this.getUnmoderatedProductsNames();
+  }
+
+  private _getRegexRow(): any {
+    return this._fb.group({
+      rule: ['[a-zA-Z0-9]', Validators.required],
+      separator: ['']
+    });
+  }
+
+  trackByFn(index, item) {
+    return item && item.id || index;
+  }
+
+  getUnmoderatedProductsNames(page = 1, newSearch = false) {
+    this.loading = true;
+    this._categoryService.getUnmoderatedCategories([7], page).pipe(first())
+      .subscribe(({ data }) => {
+        this.loading = false;
+        if (newSearch) {
+          this.data = data;
+        } else {
+          this.data = [...this.data, ...data];
+        }
+        this.formRange.get('to').setValidators([Validators.min(0), Validators.max(this.data.length)]);
+      }, () => this.loading = this.isPossibleNexPage = false);
+  }
+
+  selectionListChange(evt: MatSelectionListChange) {
+    // this.formRange.reset();
+    // if (evt.option.value.categoryId)
+    this.selectedProducts = this.selectedProducts.filter(prod => prod.categoryId === this.selectedProducts[0].categoryId);
+  }
+
+  makeRule() {
+    this.disableSelect = true;
+    this.nameExampleRaw = this.selectedProducts[0].value;
+  }
+
+  addNewRule() {
+    this.formRules.markAsTouched();
+    if (this.formRules.valid) {
+      const arr = <FormArray>this.formRules.controls.properties;
+      arr.push(this._getPropertiesRow());
+    }
+  }
+
+  onDeleteRowClick(index) {
+    const arr = <FormArray>this.formRules.controls.properties;
+    arr.removeAt(index);
+  }
+
+  onNewPropClick(group: FormGroup, index: number) {
+    this._dialog.open(CategoryFeatureDialogComponent, {
+      width: '500px',
+      disableClose: true,
+      data: {
+        categoryId: this.selectedProducts[0].categoryId
+      }
+    }).afterClosed()
+      .pipe(
+        filter((res) => res && !!res),
+        switchMap(res => this._categoryService.addCategoryProperty(res)),
+      )
+      .subscribe((categoryProperty: CategoryPropertySummary) => {
+        group.get('property').setValue(categoryProperty);
+      });
+  }
+
+  onOverritePropClick(group: FormGroup, index: number) {
+    this._dialog.open(OverritePropertyDialogComponent, {
+      width: '800px',
+      maxHeight: '90vh',
+      data: {
+        item: this.selectedProducts[0],
+        getPropId: true
+      }
+    }).afterClosed().pipe(take(1))
+      .subscribe((overriteProp: CategoryPropertySummary) => {
+        if (this.formRules.get('properties').value.find(val => val.property && val.property.id === overriteProp.id)) {
+          this._config.showSnackBar$.next({ message: 'Ошиибка! Одинаковые свойства!' });
+        } else {
+          group.get('property').setValue(overriteProp);
+        }
+      });
+  }
+
+  onOrderChange() {
+    this.nameExampleRaw = this._reverseString(this.nameExampleRaw);
+  }
+
+  handlePropertiesChange(val) {
+    const newArr = [];
+    let name = this.nameExampleRaw;
+    val.properties.forEach((el: { separator: string }) => {
+      const newName = name.substr(0, name.indexOf(el.separator));
+      newArr.push(newName);
+      name = name.replace(newName + el.separator, '');
+    });
+    this.nameExample = newArr;
+    this.nameExampleReversed = newArr.map(el => this._reverseString(el));
+  }
+
+  getColor(i) {
+    return 'hsl(' + (i / 10) * 360 + ', 100%, 75%)';
+  }
+
+  private _getPropertiesRow() {
+    return this._fb.group({
+      property: [null, Validators.required],
+      separator: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(1)]]
+    });
+  }
+
+  private _reverseString(str) {
+    return str.split('').reverse().join('');
+  }
+
+  onScroll() {
+    if (this.isPossibleNexPage) {
+      this.page++;
+      this.getUnmoderatedProductsNames(this.page);
+    }
+  }
+
+  bibaValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    // если один заполнен, то другой обязателен
+    const from = control.get('from');
+    const to = control.get('to');
+    if (!from.value && !to.value) {
+      return null;
+    }
+    if ((from.value && !to.value) || (!from.value && to.value)) {
+      return { bothIsRequired: true };
+    }
+  }
+
+  onSaveClick() {
+    if (this.formRules.invalid || this.selectedProducts.length === 0) {
+      this._config.showSnackBar$.next({ message: 'Не все поля заполнены' });
+      return;
+    }
+    const ids = this.searchedImportModerateProducts.length ? this.searchedImportModerateProducts : this.selectedProducts.map(pr => pr.id);
+    const properties = this.formRules.value.properties.map(prop => {
+      return {
+        property: prop.property.id,
+        separator: prop.separator
+      };
+    });
+    const body = {
+      ids,
+      rules: { ...this.formRules.value, properties }
+    };
+
+    this._categoryService.moderateProductName(body).pipe(first()).subscribe(() => {
+      this.page = 1;
+      this.searchedImportModerateProducts = [];
+      this.selectedProducts = [];
+      this.getUnmoderatedProductsNames(1, true);
+      this._config.showSnackBar$.next({ message: 'Все ок!' });
+    });
+  }
+
+  onAddRegexClick() {
+    const arr = <FormArray>this.regexForm.controls.arr;
+    arr.push(this._getRegexRow());
+    arr.controls.forEach((ctrl, i) => {
+      if (i === arr.length - 1) {
+        ctrl.get('separator').clearValidators();
+      } else {
+        ctrl.get('separator').setValidators([Validators.required, Validators.minLength(1), Validators.maxLength(1)]);
+      }
+      ctrl.get('separator').updateValueAndValidity();
+    });
+  }
+
+  onRemoveRegexClick(index) {
+    const arr = <FormArray>this.formRules.controls.properties;
+    arr.removeAt(index);
+  }
+
+  getIdsForModerate() {
+    const re = new RegExp(this.regex, 'i');
+    const match = this.properties && this.properties.match(re);
+    if (this.regexForm.invalid || !match) {
+      this._config.showSnackBar$.next({ message: 'Не верно заполнена форма' });
+      return;
+    }
+    this._categoryService.searchImportModerateProducts(this.regex)
+      .pipe(first())
+      .subscribe((res: { count: number, ids: number[], regex: string }) => {
+        this.searchedImportModerateProducts = res.ids;
+        this.selectedProducts = this.data.filter((el, i) => res.ids.includes(el.id));
+      });
+  }
+}

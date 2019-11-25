@@ -1,0 +1,29 @@
+<div class="all-wrapper" *ngIf="!dataIsFetching && properties.length > 0">
+  <!--<div class="wrapper"
+       infinite-scroll
+       [infiniteScrollDistance]="5"
+       (scrolled)="onScroll()">-->
+    <div class="wrapper">
+    <div class="list-link" *ngFor="let item of properties">
+      <span>{{item.nameRu}}</span>
+      <span class="text-right text-nowrap">
+      <mat-checkbox (change)="getItemsProp(item, selectedProp[item.id])" [(ngModel)]="selectedProp[item.id]"></mat-checkbox>
+    </span>
+    </div>
+  </div>
+  <div class="btn-wrapper">
+    <button class="btn-fill" mat-raised-button (click)="addProp()">
+      Добавить
+    </button>
+  </div>
+</div>
+
+<div *ngIf="!dataIsFetching && properties.length === 0">
+  <p><em>Дополнительные характеристики отсутствуют</em></p>
+  <div class="btn-wrapper">
+    <button class="btn-fill" mat-raised-button mat-dialog-close>
+        Закрыть
+    </button>
+  </div>
+</div>
+<mat-spinner *ngIf="dataIsFetching" style="margin: 0 auto;"></mat-spinner>

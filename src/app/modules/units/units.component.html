@@ -1,0 +1,44 @@
+<mat-card>
+  <div style="display: flex;flex-grow: 1;align-items: center;margin-bottom: 16px;">
+    <h2 style="margin: 0 auto 0 0;">Единицы измерений</h2>
+    <button
+      *ngxPermissionsOnly="['SUPER_ADMIN', 'UNITS_ADD']"
+      mat-raised-button color="primary"
+      (click)="onAddUnitDialogClick()">
+      Добавить Ед. изм
+    </button>
+  </div>
+  <mat-tab-group
+    style="display: flex; flex-grow: 1;"
+    (selectedIndexChange)="onSelectedIndexChanged($event)">
+    <mat-tab *ngFor="let type of controlUnitTypes$ | async" [label]="type.nameRu">
+      <div style="display: flex;flex-grow: 1;flex-direction: column; margin: 16px 0;">
+        <div style="display: flex;align-items: center; border-bottom: 1px solid #ccc;padding: 10px;"
+             *ngFor="let unit of units | controlUnitTypePipe : type.id">
+          <span style="margin-right: auto;">{{unit.nameRu}}</span>
+          <button
+            *ngxPermissionsOnly="['SUPER_ADMIN', 'UNITS_EDIT']"
+            mat-icon-button color="primary"
+            (click)="onEditUnitClick(unit)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            *ngxPermissionsOnly="['SUPER_ADMIN', 'UNITS_DELETE']"
+            mat-icon-button color="warn"
+            (click)="onDestroyUnitClick(unit.id)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <mat-paginator
+    [pageSizeOptions]="[25, 50, 100]"
+    [length]="length"
+    [pageSize]="pageSize"
+    [hidePageSize]="true"
+    showFirstLastButtons
+    (page)="getPage($event)">
+  </mat-paginator>
+</mat-card>

@@ -1,0 +1,125 @@
+$orange: #FA7600;
+// .e-select {
+//   box-shadow: 0.6px 0.8px 2.5px 0.5px rgba(0, 0, 1, 0.25);
+//   background-color: #ffffff;
+//   padding: 5px;
+// }
+
+.e-input {
+  box-shadow: 0.6px 0.8px 2.5px 0.5px rgba(0, 0, 1, 0.25);
+  padding: 5px;
+  border: 1px solid #aaa;
+  background-color: #ffffff;
+}
+
+.location-select {
+  display: flex;
+}
+
+.location-select__country .e-select,
+.location-select__region .e-select,
+.location-select__city .e-select {
+  width: 300px;
+  margin-right: 15px;
+}
+
+.question {
+  // transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
+  display: flex;
+  position: relative;
+  padding: 9px;
+  border-radius: 2px;
+  background: white;
+  color: rgba(0, 0, 0, 0.87);
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+
+  .number {
+    width: 40px;
+    flex: none;
+    font-weight: bold;
+    line-height: 35px;
+    text-align: center;
+  }
+
+  .content {
+    width: 100%;
+    flex: auto;
+  }
+}
+.remove-button {
+  display: none;
+  position: absolute;
+  right: 0px;
+  top: -1px;
+}
+
+.question-title {
+  height: 34px;
+  width: 890px;
+  position: relative;
+  input{
+    width: 800px;
+    padding: 5px;
+  }
+
+
+}
+.question-title:hover .remove-button {
+  display: inline-block;
+}
+
+.question-answer {
+  margin-top: 10px;
+  display: flex;
+  height: 34px;
+  width: 890px;
+  position: relative;
+
+  input {
+    width: 700px;
+    margin-right: 20px;
+  }
+
+  select {
+    width: 80px;
+    text-align: center;
+  }
+}
+.question-answer:hover .remove-button {
+  display: inline-block;
+}
+
+.answer-add, .question-add {
+  .mat-button {
+    padding-left: 0px;
+  }
+  i {
+    color: $orange;
+  }
+  span {
+    line-height: 30px;
+  }
+}
+
+a#back-arrow {
+  color: orange;
+  text-decoration: none;
+}
+
+.language-button-wrap {
+  margin-right: 20px;
+}
+
+.language-button-wrap button{
+  width: 70px;
+  padding: 0;
+  margin: 5px;
+  height: 70px;
+  border: none;
+  background: none;
+}
+
+.opaque {
+  opacity: 0.4;
+}
+

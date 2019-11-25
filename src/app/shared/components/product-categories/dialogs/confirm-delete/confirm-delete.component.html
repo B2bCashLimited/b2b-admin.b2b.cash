@@ -1,0 +1,17 @@
+<div class="dialog-container">
+  <h4 style="margin-top: 0;">Удаление кода {{data.type}}</h4>
+
+  <div style="display: flex;flex-grow: 1;margin-bottom: 16px;">
+    Вы действительно хотите удалить?
+  </div>
+
+  <div style="display: flex;flex-grow: 1;justify-content: flex-end;">
+    <button style="margin-right: 10px;"
+            mat-raised-button color="primary"
+            (click)="onCloseClick(false)">Закрыть
+    </button>
+    <button mat-raised-button color="warn"
+            (click)="onCloseClick(true)">Удалить
+    </button>
+  </div>
+</div>

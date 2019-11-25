@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-between">
+  <div class="d-flex">
+    <img [src]="imgUrl" />
+    <div class="ml-3">
+      <h6>
+          <span class="ic-text mr-1" 
+                [ngClass]="{'checked': activity.moderateStatus === 4}"
+                *ngIf="activity.type === 'manufacturer'">
+            <i class="bb bb-manufactory"></i>
+          </span>
+          <span class="ic-text mr-1" 
+                [ngClass]="{'checked': activity.moderateStatus === 4}"
+                *ngIf="activity.type === 'supplier'">
+            <i class="bb bb-provider"></i>
+          </span>
+        {{ activity.name }}
+      </h6>
+      <div class="mb-1">Рейтинг B2B.Cash</div>
+      <!--<app-rating-star [rating]="activity.rating" [format]="'full'"></app-rating-star>-->
+      <div class="color-gray">{{ activity.description }}</div>
+    </div>
+  </div>
+
+  <div class="d-flex activity-info">
+    <div>
+      <div class="mb-1">Номер телефона</div>
+      <div class="color-gray">{{ activity.contacts[0].phone }}</div>
+    </div>
+    <div class="d-flex justify-content-between">
+      <div>
+        <div class="mb-1">E-mail</div>
+        <div class="color-gray">{{ activity.contacts[0].email }}</div>
+      </div>
+      <button mat-raised-button *ngIf="!isSelected" class="btn-fill" (click)="onSelect()">Добавить</button>
+      <button mat-button *ngIf="isSelected" disabled>Добавлено</button>
+    </div>
+  </div>
+</div>

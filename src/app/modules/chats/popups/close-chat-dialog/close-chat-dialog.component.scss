@@ -1,0 +1,68 @@
+.popup-inner-1{
+  max-width: 250px;
+  background-color: #ffffff;
+
+  .e-star{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    i{
+      color: #EE6D06;
+      font-size: 2.125rem;
+    }
+  }
+
+  .e-text{
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: .875rem;
+    text-align: center;
+    color: #4F4F4F;
+    margin-bottom: 12px;
+  }
+
+  .btn-full{
+    background: #EE6D06;
+    border: 1px solid #EE6D06;
+    height: 38px;
+    margin: 0 5px;
+    color: #ffffff;
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: .875rem;
+    box-shadow: none !important;
+    text-align: center;
+
+    ::ng-deep .mat-button-wrapper{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .btn-border{
+    border: 1px solid #EE6D06;
+    background-color: #ffffff;
+    height: 38px;
+    margin: 0 5px;
+    color: #EE6D06;
+    font-family: Arimo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: .875rem;
+    text-align: center;
+    box-shadow: none !important;
+
+    ::ng-deep .mat-button-wrapper{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

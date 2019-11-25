@@ -1,0 +1,50 @@
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.dialog-container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 { font-family: "Arimo", Helvetica, sans-serif }
+.activity-picker {
+  width: 350px;
+}
+
+.ticks {
+  display: flex;
+  min-height: 185px;
+}
+
+.ticks-half {
+  width: 100%;
+}
+
+.rating-tick-element {
+  padding-bottom: 10px;
+
+  input {
+    width: 50px;
+    text-align: center;
+  }
+}
+
+
+.button-row {
+  text-align: right;
+}
+
+input.ng-invalid {
+  outline: 2px solid red;
+}
+
+input[disabled] {
+  border: 1px solid lightgrey !important;
+  background: #f5f5f5 !important;
+  color: grey !important;
+}
+
